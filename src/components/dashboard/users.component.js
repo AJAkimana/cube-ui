@@ -73,7 +73,7 @@ export default function Users() {
               </TableHead>
               <TableBody>
                   {users.data.slice(0, 5).map((user) => (
-                  <StyledTableRow key={user._id} sortDirection="desc">
+                  <StyledTableRow key={user._id}>
                       <StyledTableCell>{user.fullName}</StyledTableCell>
                       <StyledTableCell>{user.email}</StyledTableCell>
                       <StyledTableCell>{user.phoneNumber}</StyledTableCell>

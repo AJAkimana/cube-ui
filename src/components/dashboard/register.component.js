@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       backgroundColor: '#8967fc',
     },
+    input: {
+      fontSize: 16
+    },
     form: {
       width: '100%',
       marginTop: theme.spacing(2),
@@ -48,7 +51,6 @@ export default function Registration(props) {
 
   const userRegister = useSelector((state) => state.userRegister);
   const { userInfo, loading, error } = userRegister;
-  console.log(userInfo);
 
   const dispatch = useDispatch();
   const submitHandler = (e) => {
@@ -56,7 +58,7 @@ export default function Registration(props) {
     dispatch(register(fullName, email, phoneNumber, companyName, address));
   }
   return (
-    <Container component='main' fontSize='26px'>
+    <Container component='main'>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -70,7 +72,7 @@ export default function Registration(props) {
         <form className={classes.form} onSubmit={submitHandler}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <TextField
+              <TextField className={classes.input}
                 autoComplete='fname'
                 name='fullName'
                 variant='outlined'

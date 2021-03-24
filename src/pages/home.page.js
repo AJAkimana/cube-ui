@@ -5,7 +5,6 @@ import TotalCustomers from '../components/dashboard/customers.component';
 import TotalProjects from '../components/dashboard/count.projects.component';
 import Users from '../components/dashboard/users.component';
 import TotalQuotes from '../components/dashboard/quotes.component';
-
 import {
     Box,
     Container,
