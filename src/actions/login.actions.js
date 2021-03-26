@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import env from 'react-dotenv';
 import {
   USER_SIGNIN_FAIL,
   USER_SIGNIN_REQUEST,
@@ -10,7 +11,7 @@ import {
 export const signin = (email, password) => async (dispatch) => {
     dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } });
     try {
-      const { data } = await Axios.post('/api/v1/auth/login', { email, password });
+      const { data } = await Axios.post(`${env.API_URL}auth/login`, { email, password });
       dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {

@@ -105,6 +105,7 @@ button {
   cursor: pointer;
   width: 40%;
   outline: none !important;
+  color: white;
 }
 input:hover,
 select:hover,
@@ -112,6 +113,7 @@ textarea:hover,
 button:hover {
   border: 0.1rem #030202 solid;
 }
+
 button.primary {
   background-color: #8967fc;
   border-radius: 30rem;
@@ -125,7 +127,7 @@ button.block {
 .form {
   max-width: 40rem;
   margin: 4.5rem auto;
-  border: 0.1rem teal solid;
+  border: 0.2rem #d3d3d3 solid;
   border-radius: 0.5rem;
   background-color: white;
 }
@@ -137,8 +139,9 @@ button.block {
 .form label {
   margin: 1rem 0;
   display: block;
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
+
 .logo {
   width: 30%;
   display: block;
@@ -192,6 +195,10 @@ button.block {
 
 @media only screen and (max-width: 600px) {
   .App-Header h2 {
-    font-size: 2rem;
+    font-size: 1.4rem;
+    margin-left: 1rem;
+  }
+  .dropdown {
+    margin-right: 0.1rem;
   }
 }
