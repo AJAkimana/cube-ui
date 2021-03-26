@@ -16,7 +16,7 @@ function App() {
     <BrowserRouter>
     <div className="App">
       <header className="App-Header">
-        <h2>ARI CUBE</h2>
+        <h2>Augmented Reality Innovations</h2>
         {userInfo ? (
               <div className="dropdown">
                 <Link to="#">
@@ -24,19 +24,19 @@ function App() {
                 </Link>
                 <ul className="dropdown-content">
                   <li>
-                    <Link to="signout" onClick={signoutHandler}>
+                    <Link to="/" onClick={signoutHandler}>
                       Sign Out
                     </Link>
                   </li>
                 </ul>
               </div>
             ) : (
-              <Link to="/login">Login</Link>
+              <Link to="/">Home</Link>
             )}
       </header>
       <main>
-      <Route path="/" component={HomePage} exact />
-      <Route path="/login" component={LoginPage} />
+        <Route path="/" component={LoginPage} exact />
+        <Route path="/home" component={HomePage} />
       </main>
     </div>
     </BrowserRouter>

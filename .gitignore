@@ -105,3 +105,7 @@ dist
 
 # Package lock file
 package-lock.json
+
+#env for public
+public/env.js
+build/env.js
