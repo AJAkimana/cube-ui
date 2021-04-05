@@ -157,7 +157,7 @@ button.block {
   position: absolute;
   display: none;
   right: 0;
-  min-width: 16rem;
+  min-width: 12rem;
   padding: 1rem;
   z-index: 1;
   background-color: #8967fc;
