@@ -63,7 +63,7 @@ export const usersListReducer = (state = baseState('users', []), action) => {
 				...state,
 				loading: false,
 				loaded: true,
-				user: action.payload.data.data
+				users: action.payload.data.data
 			};
 		}
 		case rejected(USER_LIST):

@@ -5,6 +5,7 @@ import { store } from './redux/store';
 import { createBrowserHistory } from 'history';
 import { ToastContainer } from 'react-toastify';
 import routes from './routes';
+import { renderRoutes } from 'react-router-config';
 
 function App() {
 	const history = createBrowserHistory();

@@ -20,6 +20,9 @@ const routes = [
 				component: HomePage
 			}
 		]
+	},
+	{
+		component: () => <Redirect to='/dashboard/home' />
 	}
 ];
 export default routes;

@@ -7,9 +7,10 @@ import TotalCustomers from '../components/dashboard/customers.component';
 import TotalProjects from '../components/dashboard/count.projects.component';
 import TotalQuotes from '../components/dashboard/quotes.component';
 import { signout } from '../redux/actions/user';
+import { Link } from 'react-router-dom';
 
 export const DashboardLayout = ({ route }) => {
-	const { userInfo } = useSelector((state) => state.userSignin);
+	const { userInfo } = useSelector((state) => state.login);
 	return (
 		<div className='App'>
 			<header className='App-Header'>
@@ -47,8 +48,8 @@ export const DashboardLayout = ({ route }) => {
 							<TotalQuotes sx={{ height: '100%' }} />
 						</Grid>
 					</Grid>
+					{renderRoutes(route.routes)}
 				</Container>
-				{renderRoutes(route.routes)}
 			</main>
 		</div>
 	);

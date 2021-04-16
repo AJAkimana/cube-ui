@@ -1,5 +1,5 @@
 import isPromise from 'is-promise';
-import { notifier } from 'utils/notifier';
+import { notifier } from '../../utils/notifier';
 
 export const errorHandler = () => {
 	return (next) => (action) => {
@@ -16,7 +16,10 @@ export const errorHandler = () => {
 				} else {
 					errorMessage = error.message;
 				}
-				notifier.error(errorMessage);
+				const displayMsg = Array.isArray(errorMessage)
+					? errorMessage[0]
+					: errorMessage;
+				notifier.error(displayMsg);
 			});
 		}
 

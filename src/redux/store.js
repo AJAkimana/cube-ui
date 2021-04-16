@@ -7,7 +7,7 @@ import rootReducer from './reducers';
 import { errorHandler } from './utils';
 
 const initialState = {
-	userSignin: {
+	login: {
 		userInfo: localStorage.getItem('userInfo')
 			? JSON.parse(localStorage.getItem('userInfo'))
 			: null
