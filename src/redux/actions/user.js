@@ -1,5 +1,6 @@
 import { store } from '../store';
 import {
+	SET_PASSWORD,
 	USER_LIST,
 	USER_REGISTER,
 	USER_SIGNIN,
@@ -29,5 +30,11 @@ export const getUsersList = () => {
 	store.dispatch({
 		type: USER_LIST,
 		payload: http.get('/auth/users')
+	});
+};
+export const setPassword = (credentials) => {
+	store.dispatch({
+		type: SET_PASSWORD,
+		payload: http.patch('/auth/set-password', credentials)
 	});
 };

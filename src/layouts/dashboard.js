@@ -18,7 +18,7 @@ export const DashboardLayout = ({ route }) => {
 				{userInfo ? (
 					<div className='dropdown'>
 						<Link to='#'>
-							{userInfo.data.user.fullName} <i className='fa fa-caret-down'></i>{' '}
+							{userInfo.user.fullName} <i className='fa fa-caret-down'></i>{' '}
 						</Link>
 						<ul className='dropdown-content'>
 							<li>

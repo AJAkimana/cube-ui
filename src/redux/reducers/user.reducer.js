@@ -1,5 +1,10 @@
 import { baseState } from '../utils/baseStates';
-import { USER_REGISTER, USER_SIGNIN, USER_LIST } from '../actions/actionTypes';
+import {
+	USER_REGISTER,
+	USER_SIGNIN,
+	USER_LIST,
+	SET_PASSWORD
+} from '../actions/actionTypes';
 import { pending, fulfilled, rejected } from '../utils/actions';
 
 export const loginReducer = (state = baseState('userInfo', {}), action) => {
@@ -67,6 +72,33 @@ export const usersListReducer = (state = baseState('users', []), action) => {
 			};
 		}
 		case rejected(USER_LIST):
+		default:
+			return {
+				...state,
+				loading: false
+			};
+	}
+};
+export const setPasswordReducer = (
+	state = baseState('message', ''),
+	action
+) => {
+	switch (action.type) {
+		case pending(SET_PASSWORD): {
+			return {
+				...state,
+				loading: true
+			};
+		}
+		case fulfilled(SET_PASSWORD): {
+			return {
+				...state,
+				loading: false,
+				loaded: true,
+				message: 'Success'
+			};
+		}
+		case rejected(SET_PASSWORD):
 		default:
 			return {
 				...state,
