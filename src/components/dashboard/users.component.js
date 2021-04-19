@@ -1,100 +1,43 @@
-import React, { useEffect } from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import LoadingBox from '../loading.component';
-import {
-	Box,
-	Button,
-	Paper,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow
-} from '@material-ui/core';
+import { Paper, TableContainer } from '@material-ui/core';
 import { getUsersList } from '../../redux/actions/user';
+import { paginate } from '../../utils/paginate';
+import { CustomisedTable } from '../CustomizedTable';
+import { userColumns } from '../columns/userColumns';
 
-const StyledTableCell = withStyles((theme) => ({
-	head: {
-		backgroundColor: '#8967fc',
-		color: theme.palette.common.white,
-		fontSize: 16
-	},
-	body: {
-		fontSize: 16
-	}
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-	root: {
-		'&:nth-of-type(odd)': {
-			backgroundColor: theme.palette.action.hover
-		}
-	}
-}))(TableRow);
-
-const StyleButton = withStyles((theme) => ({
-	root: {
-		color: '#8967fc',
-		float: 'right',
-		fontSize: 14,
-		'&:hover': {
-			backgroundColor: 'none',
-			color: 'none',
-			BorderColor: 'none'
-		}
-	}
-}))(Button);
-
-const useStyles = makeStyles({
-	table: {
-		width: '100%'
-	}
-});
-
+const initialPaginate = { pageSize: 5, pageNumber: 1 };
 export default function Users() {
-	const classes = useStyles();
+	const [paginatedUsers, setPaginatedUsers] = useState([]);
+	const [paginator, setPaginator] = useState(initialPaginate);
 	const userList = useSelector((state) => state.userList);
 	const { loading, users } = userList;
 	useEffect(() => {
 		getUsersList();
 	}, []);
+	useEffect(() => {
+		if (users.length > 0) {
+			const { pageNumber, pageSize } = paginator;
+			const paginatedUsers = paginate(users, pageNumber, pageSize);
+			setPaginatedUsers(paginatedUsers);
+		}
+	}, [users, paginator]);
+	const onPageChange = ({ selected }) => {
+		setPaginator({ ...paginator, pageNumber: selected + 1 });
+	};
 	return (
 		<TableContainer component={Paper}>
-			<h1>Users</h1>
-			{loading ? (
-				<LoadingBox></LoadingBox>
-			) : (
-				<Table className={classes.table} aria-label='customized table'>
-					<TableHead>
-						<TableRow>
-							<StyledTableCell>NAME</StyledTableCell>
-							<StyledTableCell>EMAIL</StyledTableCell>
-							<StyledTableCell>TELEPHONE</StyledTableCell>
-							<StyledTableCell>COMPANY NAME</StyledTableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{users.slice(0, 5).map((user) => (
-							<StyledTableRow key={user._id}>
-								<StyledTableCell>{user.fullName}</StyledTableCell>
-								<StyledTableCell>{user.email}</StyledTableCell>
-								<StyledTableCell>{user.phoneNumber}</StyledTableCell>
-								<StyledTableCell>{user.companyName}</StyledTableCell>
-							</StyledTableRow>
-						))}
-					</TableBody>
-				</Table>
-			)}
-			<Box
-				sx={{
-					p: 2
-				}}
-			>
-				<StyleButton endIcon={<ArrowRightIcon />}>View All</StyleButton>
-			</Box>
+			<CustomisedTable
+				tableTitle='All users'
+				loading={loading}
+				columns={userColumns()}
+				dataCount={paginatedUsers.length}
+				data={paginatedUsers}
+				withPagination
+				pageCount={Math.ceil(users.length / paginator.pageSize)}
+				handlePageChange={onPageChange}
+				page={paginator.pageNumber}
+			/>
 		</TableContainer>
 	);
 }

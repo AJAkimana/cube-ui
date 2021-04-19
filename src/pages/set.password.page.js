@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import LoadingBox from '../components/loading.component';
 import Logo from '../assets/ari_cube.png';
 import { setPassword } from '../redux/actions/user';
+import { notifier } from '../utils/notifier';
 
 const initialState = { password: '', confirmPassword: '' };
 const SetPassword = (props) => {
@@ -12,7 +13,10 @@ const SetPassword = (props) => {
 	const { loaded, loading } = useSelector((state) => state.passwordSet);
 	useEffect(() => {
 		if (loaded) {
-			props.history.replace(redirect);
+			notifier.success('The password has been set');
+			setTimeout(() => {
+				props.history.replace(redirect);
+			}, 2000);
 		}
 	}, [props.history, redirect, loaded]);
 	const onHandleChange = (e) => {
@@ -53,7 +57,7 @@ const SetPassword = (props) => {
 				<div>
 					<label htmlFor='confirmPassword'>Confirm password</label>
 					<input
-						type='confirmPassword'
+						type='password'
 						name='confirmPassword'
 						id='confirmPassword'
 						placeholder='Confirm password'

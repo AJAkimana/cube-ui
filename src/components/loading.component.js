@@ -1,9 +1,10 @@
 import React from 'react';
 
-export default function LoadingBox() {
-    return (
-        <div className="loading">
-            <i className="fa fa-spinner fa-spin"></i> Loading...
-        </div>
-    );
-}
+export const Loading = () => {
+	return (
+		<div className='loading text-center'>
+			<i className='fa fa-spinner fa-spin'></i> Loading...
+		</div>
+	);
+};
+export default Loading;
