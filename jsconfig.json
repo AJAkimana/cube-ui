@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src"
+  },
+  "include": ["src"],
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.singleQuote": true
+}

@@ -29,6 +29,9 @@ export const DashboardLayout = ({ route, history }) => {
 						</Link>
 						<ul className='dropdown-content'>
 							<li>
+								<Link to='/dashboard/projects'>Projects</Link>
+							</li>
+							<li>
 								<Link to='#' onClick={() => signout()}>
 									Sign Out
 								</Link>
