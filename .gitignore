@@ -108,3 +108,7 @@ package-lock.json
 #env for public
 public/env.js
 build/env.js
+package-lock.json
+
+# Build
+build/
