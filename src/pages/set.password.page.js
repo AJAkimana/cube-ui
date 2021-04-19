@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import LoadingBox from '../components/loading.component';
 import Logo from '../assets/ari_cube.png';
-import { signin, setPassword } from '../redux/actions/user';
+import { setPassword } from '../redux/actions/user';
 
 const initialState = { password: '', confirmPassword: '' };
 const SetPassword = (props) => {
@@ -14,7 +14,7 @@ const SetPassword = (props) => {
 		if (loaded) {
 			props.history.replace(redirect);
 		}
-	}, [props.history, redirect]);
+	}, [props.history, redirect, loaded]);
 	const onHandleChange = (e) => {
 		e.preventDefault();
 		const {
@@ -28,7 +28,6 @@ const SetPassword = (props) => {
 		credentials.token = props.match.params.token;
 		setPassword(credentials);
 	};
-	const { password, confirmPassword } = credentials;
 	return (
 		<div>
 			<form className='form' onSubmit={submitHandler}>
@@ -65,7 +64,7 @@ const SetPassword = (props) => {
 				</div>
 				<div>
 					<label />
-					<button className='primary' type='submit'>
+					<button className='primary' type='submit' disabled={loading}>
 						Set password
 					</button>
 				</div>

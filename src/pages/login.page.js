@@ -15,7 +15,7 @@ export default function SigninScreen(props) {
 	const userSignin = useSelector((state) => state.login);
 	const { userInfo, loading } = userSignin;
 	useEffect(() => {
-		if (userInfo) {
+		if (userInfo.user.fullName) {
 			props.history.push(redirect);
 			localStorage.setItem(USER_INFO, JSON.stringify(userInfo));
 		}

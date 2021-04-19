@@ -10,7 +10,7 @@ const initialState = {
 	login: {
 		userInfo: localStorage.getItem('userInfo')
 			? JSON.parse(localStorage.getItem('userInfo'))
-			: null
+			: { user: {} }
 	}
 };
 const configureStore = (preloadedState = initialState) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { renderRoutes } from 'react-router-config';
 import { Container, Grid } from '@material-ui/core';
 import { useSelector } from 'react-redux';
@@ -8,9 +8,16 @@ import TotalProjects from '../components/dashboard/count.projects.component';
 import TotalQuotes from '../components/dashboard/quotes.component';
 import { signout } from '../redux/actions/user';
 import { Link } from 'react-router-dom';
+import { USER_INFO } from '../utils/constants';
 
-export const DashboardLayout = ({ route }) => {
+export const DashboardLayout = ({ route, history }) => {
 	const { userInfo } = useSelector((state) => state.login);
+	useEffect(() => {
+		if (!userInfo.user.fullName) {
+			localStorage.removeItem(USER_INFO);
+			history.replace('/');
+		}
+	}, [userInfo, history]);
 	return (
 		<div className='App'>
 			<header className='App-Header'>
@@ -22,7 +29,7 @@ export const DashboardLayout = ({ route }) => {
 						</Link>
 						<ul className='dropdown-content'>
 							<li>
-								<Link to='/' onClick={() => signout()}>
+								<Link to='#' onClick={() => signout()}>
 									Sign Out
 								</Link>
 							</li>

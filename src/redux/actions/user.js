@@ -6,7 +6,6 @@ import {
 	USER_SIGNIN,
 	USER_SIGNOUT
 } from './actionTypes';
-import { USER_INFO } from '../../utils/constants';
 import { http } from '../../utils/http';
 
 export const signin = (userInfo) => {
@@ -22,7 +21,6 @@ export const registerUser = (userInfo) => {
 	});
 };
 export const signout = () => {
-	localStorage.removeItem(USER_INFO);
 	store.dispatch({ type: USER_SIGNOUT });
 };
 

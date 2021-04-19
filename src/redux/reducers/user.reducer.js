@@ -3,11 +3,15 @@ import {
 	USER_REGISTER,
 	USER_SIGNIN,
 	USER_LIST,
-	SET_PASSWORD
+	SET_PASSWORD,
+	USER_SIGNOUT
 } from '../actions/actionTypes';
 import { pending, fulfilled, rejected } from '../utils/actions';
 
-export const loginReducer = (state = baseState('userInfo', {}), action) => {
+export const loginReducer = (
+	state = baseState('userInfo', { user: {} }),
+	action
+) => {
 	switch (action.type) {
 		case pending(USER_SIGNIN): {
 			return {
@@ -21,6 +25,13 @@ export const loginReducer = (state = baseState('userInfo', {}), action) => {
 				loading: false,
 				loaded: true,
 				userInfo: action.payload.data.data
+			};
+		}
+		case USER_SIGNOUT: {
+			return {
+				...state,
+				loaded: false,
+				userInfo: { user: {} }
 			};
 		}
 		case rejected(USER_SIGNIN):
