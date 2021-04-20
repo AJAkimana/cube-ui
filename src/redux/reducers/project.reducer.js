@@ -11,6 +11,7 @@ export const projectAddReducer = (state = baseState("message", ""), action) => {
     case pending(ADD_NEW_PROJECT): {
       return {
         ...state,
+        loaded: false,
         loading: true,
       };
     }
@@ -38,6 +39,7 @@ export const projectEditReducer = (
     case pending(EDIT_PROJECT): {
       return {
         ...state,
+        loaded: false,
         loading: true,
       };
     }

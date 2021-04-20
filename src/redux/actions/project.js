@@ -1,5 +1,5 @@
 import { store } from "../store";
-import { ADD_NEW_PROJECT, EDIT_PROJECT, GET_PROJECT } from "./actionTypes";
+import { ADD_NEW_PROJECT, EDIT_PROJECT, GET_PROJECTS } from "./actionTypes";
 import { http } from "utils/http";
 
 export const addNewProject = (projectInfo) => {
@@ -10,13 +10,14 @@ export const addNewProject = (projectInfo) => {
 };
 export const getProjects = () => {
   store.dispatch({
-    type: GET_PROJECT,
+    type: GET_PROJECTS,
     payload: http.get("/project"),
   });
 };
 export const updateProject = (projectInfo, projectId) => {
+  const { name, ...rest } = projectInfo;
   store.dispatch({
     type: EDIT_PROJECT,
-    payload: http.patch(`/project/${projectId}`, projectInfo),
+    payload: http.patch(`/project/${projectId}`, rest),
   });
 };

@@ -15,8 +15,8 @@ import {
 } from "@material-ui/core";
 import { ComputerOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { getUsersList, registerUser } from "redux/actions/user";
-import Loading from "components/loading.component";
+import { addNewProject, updateProject } from "redux/actions/project";
+import { Loading } from "components/loading.component";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -54,23 +54,31 @@ const useStyles = makeStyles((theme) => ({
 
 const initialState = {
   name: "",
-  status: "",
+  status: "pending",
   description: "",
 };
 const projectStatuses = ["pending", "approved", "canceled"];
-export const ProjectRegistration = (props) => {
+export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
+  const projectState = useSelector((state) => state);
 
-  const userRegister = useSelector((state) => state.register);
-  const { loading: registering, loaded: registered } = userRegister;
+  const {
+    projectAdd: { loading: adding, loaded: added },
+    projectEdit: { loading: updating, loaded: updated },
+  } = projectState;
 
   useEffect(() => {
-    if (registered) {
-      getUsersList();
+    if (added || updated) {
       setValues(initialState);
     }
-  }, [registered]);
+  }, [added, updated]);
+  useEffect(() => {
+    if (currentItem) {
+      const { status, name, description } = currentItem;
+      setValues({ name, status, description });
+    }
+  }, [currentItem]);
   const onHandleChange = (e) => {
     e.preventDefault();
     const {
@@ -80,7 +88,11 @@ export const ProjectRegistration = (props) => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    registerUser(values);
+    if (action !== "add" && currentItem) {
+      updateProject(values, currentItem._id);
+    } else {
+      addNewProject(values);
+    }
   };
   return (
     <Container component="main">
@@ -90,9 +102,11 @@ export const ProjectRegistration = (props) => {
           <ComputerOutlined />
         </Avatar>
         <Typography component="h1" variant="h4">
-          Add a new project
+          {currentItem
+            ? `Update "${currentItem.name.toUpperCase()}" project`
+            : "Add a new project"}
         </Typography>
-        {registering && <Loading />}
+        {(adding || updating) && <Loading />}
         <form className={classes.form} onSubmit={submitHandler}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
@@ -104,7 +118,7 @@ export const ProjectRegistration = (props) => {
                 id="name"
                 label="Project name"
                 onChange={onHandleChange}
-                value={values.fullName}
+                value={values.name}
                 autoFocus
               />
             </Grid>
@@ -116,6 +130,7 @@ export const ProjectRegistration = (props) => {
                   value={values.status}
                   name="status"
                   onChange={onHandleChange}
+                  disabled={action !== "change"}
                 >
                   <MenuItem value="">---</MenuItem>
                   {projectStatuses.map((status, choiceIdx) => (
@@ -138,14 +153,27 @@ export const ProjectRegistration = (props) => {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            className={classes.submit}
-          >
-            Save
-          </Button>
+          {action === "add" ? (
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              className={classes.submit}
+              disabled={adding}
+            >
+              Save
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              className={classes.submit}
+              disabled={updating}
+            >
+              Update the project
+            </Button>
+          )}
         </form>
       </div>
     </Container>
