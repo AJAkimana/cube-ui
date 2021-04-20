@@ -108,7 +108,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
         </Typography>
         {(adding || updating) && <Loading />}
         <form className={classes.form} onSubmit={submitHandler}>
-          <Grid container spacing={1}>
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 className={classes.input}
@@ -130,7 +130,6 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                   value={values.status}
                   name="status"
                   onChange={onHandleChange}
-                  disabled={action !== "change"}
                 >
                   <MenuItem value="">---</MenuItem>
                   {projectStatuses.map((status, choiceIdx) => (
