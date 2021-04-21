@@ -12,6 +12,8 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Card,
+  CardActions,
 } from "@material-ui/core";
 import { ComputerOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,6 +21,9 @@ import { addNewProject, updateProject } from "redux/actions/project";
 import { Loading } from "components/loading.component";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(3),
+  },
   paper: {
     display: "flex",
     flexDirection: "column",
@@ -95,8 +100,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
     }
   };
   return (
-    <Container component="main">
-      <CssBaseline />
+    <Card component="main" className={classes.root}>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <ComputerOutlined />
@@ -130,6 +134,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                   value={values.status}
                   name="status"
                   onChange={onHandleChange}
+                  disabled={action !== "change"}
                 >
                   <MenuItem value="">---</MenuItem>
                   {projectStatuses.map((status, choiceIdx) => (
@@ -142,6 +147,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                className={classes.input}
                 variant="outlined"
                 fullWidth
                 name="description"
@@ -152,29 +158,31 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
               />
             </Grid>
           </Grid>
-          {action === "add" ? (
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              className={classes.submit}
-              disabled={adding}
-            >
-              Save
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              className={classes.submit}
-              disabled={updating}
-            >
-              Update the project
-            </Button>
-          )}
+          <CardActions>
+            {action === "add" ? (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                className={classes.submit}
+                disabled={adding}
+              >
+                Save
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                className={classes.submit}
+                disabled={updating}
+              >
+                Update the project
+              </Button>
+            )}
+          </CardActions>
         </form>
       </div>
-    </Container>
+    </Card>
   );
 };

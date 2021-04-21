@@ -45,10 +45,8 @@ export const ProjectPage = () => {
   return (
     <Grid
       container
-      spacing={3}
+      spacing={2}
       sx={{
-        backgroundColor: "background.default",
-        minHeight: "100%",
         py: 3,
       }}
     >
