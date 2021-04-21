@@ -8,10 +8,14 @@ export const addNewProject = (projectInfo) => {
     payload: http.post("/project", projectInfo),
   });
 };
-export const getProjects = () => {
+export const getProjects = ({ status }) => {
+  let params = "";
+  if (status) {
+    params += `status=${status}`;
+  }
   store.dispatch({
     type: GET_PROJECTS,
-    payload: http.get("/project"),
+    payload: http.get(`/project?${params}`),
   });
 };
 export const updateProject = (projectInfo, projectId) => {
