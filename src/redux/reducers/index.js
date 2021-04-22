@@ -5,6 +5,11 @@ import {
   projectsGetReducer,
 } from "./project.reducer";
 import {
+  quoteAddReducer,
+  quoteEditReducer,
+  quotesGetReducer,
+} from "./quote.reducer";
+import {
   loginReducer,
   registerReducer,
   setPasswordReducer,
@@ -19,4 +24,7 @@ export default combineReducers({
   projectAdd: projectAddReducer,
   projectsGet: projectsGetReducer,
   projectEdit: projectEditReducer,
+  quoteAdd: quoteAddReducer,
+  quotesGet: quotesGetReducer,
+  quoteEdit: quoteEditReducer,
 });
