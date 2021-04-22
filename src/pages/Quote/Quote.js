@@ -17,6 +17,7 @@ export const QuotePage = () => {
     quotesGet: { loading, quotes },
     quoteAdd: { loaded: added },
     quoteEdit: { loaded: updated },
+    login: { userInfo },
   } = quoteState;
   useEffect(() => {
     if (quotes.length > 0) {
@@ -56,7 +57,7 @@ export const QuotePage = () => {
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable
           tableTitle="All quotes"
-          columns={quoteColumns(onQuoteClick)}
+          columns={quoteColumns(onQuoteClick, userInfo.user)}
           loading={loading}
           data={paginatedData}
           withPagination

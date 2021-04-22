@@ -107,6 +107,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                   value={values.billingCycle}
                   name="billingCycle"
                   onChange={onHandleChange}
+                  disabled={action === "change"}
                 >
                   <MenuItem value="">---</MenuItem>
                   {quoteCycles.map((cyle, choiceIdx) => (
@@ -127,9 +128,10 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                 type="number"
                 value={values.amount}
                 onChange={onHandleChange}
+                disabled={action === "change"}
               />
             </Grid>
-            {action === "change" ? (
+            {action === "change" && (
               <Grid item xs={12}>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel id="project-status">Status</InputLabel>
@@ -148,8 +150,8 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                   </Select>
                 </FormControl>
               </Grid>
-            ) : null}
-            {values.status ? (
+            )}
+            {values.status && action === "change" && (
               <Grid item xs={12}>
                 <TextField
                   className={classes.input}
@@ -161,7 +163,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                   onChange={onHandleChange}
                 />
               </Grid>
-            ) : null}
+            )}
           </Grid>
           <CardActions>
             {action === "add" ? (
