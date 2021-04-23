@@ -12,3 +12,6 @@ export const GET_PROJECTS = "GET_PROJECTS";
 export const ADD_NEW_QUOTE = "ADD_NEW_QUOTA";
 export const UPDATE_QUOTE = "UPDATE_QUOTE";
 export const GET_QUOTES = "GET_QUOTES";
+
+export const GET_INVOICES = "GET_INVOICES";
+export const UPDATE_INVOICE = "UPDATE_INVOICE";
