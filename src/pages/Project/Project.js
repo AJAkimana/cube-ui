@@ -26,13 +26,13 @@ export const ProjectPage = () => {
     }
   }, [projects, paginator]);
   useEffect(() => {
-    getProjects();
+    getProjects({});
   }, []);
   useEffect(() => {
     if (added || updated) {
       setCurrentItem(null);
       setAction("add");
-      getProjects();
+      getProjects({});
     }
   }, [added, updated]);
   const onPageChange = ({ selected }) => {

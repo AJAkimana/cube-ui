@@ -68,7 +68,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
         </Avatar>
         <Typography component="h1" variant="h4">
           {currentItem
-            ? `Update "${currentItem.name.toUpperCase()}" project`
+            ? `Update "${currentItem?.name?.toUpperCase()}" project`
             : "Add a new project"}
         </Typography>
         {(adding || updating) && <Loading />}
