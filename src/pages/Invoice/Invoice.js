@@ -28,12 +28,12 @@ export const InvoicePage = () => {
     getInvoices({});
   }, []);
   useEffect(() => {
-    if (added || updated) {
+    if (updated) {
       setCurrentItem(null);
       setAction("add");
       getInvoices({});
     }
-  }, [added, updated]);
+  }, [updated]);
   const onPageChange = ({ selected }) => {
     setPaginator({ ...paginator, pageNumber: selected + 1 });
   };

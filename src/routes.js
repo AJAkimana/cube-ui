@@ -6,6 +6,7 @@ import HomePage from "pages/home.page";
 import SetPassword from "pages/set.password.page";
 import { ProjectPage } from "pages/Project";
 import { QuotePage } from "pages/Quote";
+import { InvoicePage } from "pages/Invoice";
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
         path: "/dashboard/quotes",
         exact: true,
         component: QuotePage,
+      },
+      {
+        path: "/dashboard/invoices",
+        exact: true,
+        component: InvoicePage,
       },
     ],
   },

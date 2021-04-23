@@ -63,66 +63,72 @@ export const InvoiceRegistration = ({ action = "add", currentItem = null }) => {
           <ComputerOutlined />
         </Avatar>
         <Typography component="h1" variant="h4">
-          {currentItem ? "Approve invoice" : "Add a new invoice"}
+          Invoice
         </Typography>
         {updating && <Loading />}
-        <form className={classes.form} onSubmit={submitHandler}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                className={classes.input}
-                name="amount"
-                variant="outlined"
-                fullWidth
-                label="Invoice amount"
-                onChange={onHandleChange}
-                value={values.amount}
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel id="invoice-status">Status</InputLabel>
-                <Select
-                  labelId="invoice-status"
-                  value={values.status}
-                  name="status"
+        {currentItem ? (
+          <form className={classes.form} onSubmit={submitHandler}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  className={classes.input}
+                  name="amount"
+                  variant="outlined"
+                  fullWidth
+                  label="Invoice amount"
                   onChange={onHandleChange}
-                  disabled={action !== "change"}
-                >
-                  <MenuItem value="">---</MenuItem>
-                  {invoiceStatuses.map((status, choiceIdx) => (
-                    <MenuItem value={status} key={choiceIdx}>
-                      {status.toUpperCase()}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  value={values.amount}
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel id="invoice-status">Status</InputLabel>
+                  <Select
+                    labelId="invoice-status"
+                    value={values.status}
+                    name="status"
+                    onChange={onHandleChange}
+                    disabled={action !== "change"}
+                  >
+                    <MenuItem value="">---</MenuItem>
+                    {invoiceStatuses.map((status, choiceIdx) => (
+                      <MenuItem value={status} key={choiceIdx}>
+                        {status.toUpperCase()}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
-          <CardActions>
-            {action === "add" ? (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                className={classes.submit}
-              >
-                Save
-              </Button>
-            ) : (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                className={classes.submit}
-                disabled={updating}
-              >
-                Change invoice status
-              </Button>
-            )}
-          </CardActions>
-        </form>
+            <CardActions>
+              {action === "add" ? (
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  className={classes.submit}
+                >
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  className={classes.submit}
+                  disabled={updating}
+                >
+                  Change invoice status
+                </Button>
+              )}
+            </CardActions>
+          </form>
+        ) : (
+          <Typography variant="caption">
+            You can change a status of an invoice
+          </Typography>
+        )}
       </div>
     </Card>
   );

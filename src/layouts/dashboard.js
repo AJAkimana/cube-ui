@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { renderRoutes } from "react-router-config";
-import { Container, Grid } from "@material-ui/core";
+import { Container, Divider, Grid } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import Invoices from "../components/dashboard/invoices.component";
 import TotalCustomers from "../components/dashboard/customers.component";
@@ -33,6 +33,12 @@ export const DashboardLayout = ({ route, history }) => {
               </li>
               <li>
                 <Link to="/dashboard/quotes">Quotes</Link>
+              </li>
+              <li>
+                <Link to="/dashboard/invoices">Invoices</Link>
+              </li>
+              <li>
+                <Divider />
               </li>
               <li>
                 <Link to="#" onClick={() => signout()}>
