@@ -2,7 +2,7 @@ import { store } from "../store";
 import { UPDATE_INVOICE, GET_INVOICES } from "./actionTypes";
 import { http } from "utils/http";
 
-export const getInvoices = () => {
+export const getInvoices = ({}) => {
   store.dispatch({
     type: GET_INVOICES,
     payload: http.get("/invoice"),
