@@ -22,7 +22,7 @@ const initialState = {
   amount: "",
   status: "pending",
 };
-const invoiceStatuses = ["pending", "approved"];
+const invoiceStatuses = ["pending", "paid"];
 export const InvoiceRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);

@@ -16,6 +16,7 @@ export const InvoicePage = () => {
   const {
     invoicesGet: { loading, invoices },
     invoiceEdit: { loaded: updated },
+    login: { userInfo },
   } = invoiceState;
   useEffect(() => {
     if (invoices.length > 0) {
@@ -55,7 +56,7 @@ export const InvoicePage = () => {
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable
           tableTitle="List of invoices"
-          columns={invoiceColumns(onInvoiceClick)}
+          columns={invoiceColumns(onInvoiceClick, userInfo.user)}
           loading={loading}
           data={paginatedData}
           withPagination
