@@ -30,7 +30,7 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
         </Typography>
       ) : (
         <ButtonGroup variant="outlined">
-          {user.role === "Manager" && (
+          {user.role === "Client" && (
             <Tooltip title="Edit">
               <IconButton
                 aria-label="Edit"
@@ -42,7 +42,7 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
               </IconButton>
             </Tooltip>
           )}
-          {user.role === "Client" && (
+          {user.role === "Manager" && (
             <Tooltip title="Change status">
               <IconButton
                 aria-label="Change status"
