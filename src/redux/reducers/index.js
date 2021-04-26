@@ -10,6 +10,7 @@ import {
   quoteEditReducer,
   quotesGetReducer,
 } from "./quote.reducer";
+import { subscriptionsGetReducer } from "./subscription.reducer";
 import {
   loginReducer,
   registerReducer,
@@ -30,4 +31,5 @@ export default combineReducers({
   quoteEdit: quoteEditReducer,
   invoicesGet: invoicesGetReducer,
   invoiceEdit: invoiceEditReducer,
+  subscriptionsGet: subscriptionsGetReducer,
 });

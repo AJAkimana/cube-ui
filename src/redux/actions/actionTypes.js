@@ -15,3 +15,5 @@ export const GET_QUOTES = "GET_QUOTES";
 
 export const GET_INVOICES = "GET_INVOICES";
 export const UPDATE_INVOICE = "UPDATE_INVOICE";
+
+export const GET_SUBSCRIPTIONS = "GET_SUBSCRIPTIONS";
