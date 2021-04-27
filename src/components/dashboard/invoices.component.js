@@ -1,38 +1,24 @@
 import {
-    Avatar,
-    Box,
-    Card,
-    CardContent,
-    Grid,
-    Typography
-  } from '@material-ui/core';
-import MoneyIcon from '@material-ui/icons/Money';
-import { red } from '@material-ui/core/colors';
-  
-const Invoices = (props) => (
-  <Card
-    sx={{ height: '100%' }}
-    {...props}
-  >
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+} from "@material-ui/core";
+import MoneyIcon from "@material-ui/icons/Money";
+import { red } from "@material-ui/core/colors";
+
+const Invoices = ({ counts }) => (
+  <Card sx={{ height: "100%" }}>
     <CardContent>
-      <Grid
-        container
-        spacing={3}
-        sx={{ justifyContent: 'space-between' }}
-      >
+      <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
-          <Typography
-            color="textSecondary"
-            gutterBottom
-            variant="h6"
-          >
+          <Typography color="textSecondary" gutterBottom variant="h6">
             INVOICE's AMOUNT
           </Typography>
-          <Typography
-            color="textPrimary"
-            variant="h3"
-          >
-            $2,000
+          <Typography color="textPrimary" variant="h3">
+            Rwf{counts}
           </Typography>
         </Grid>
         <Grid item>
@@ -40,7 +26,7 @@ const Invoices = (props) => (
             sx={{
               backgroundColor: red[600],
               height: 56,
-              width: 56
+              width: 56,
             }}
           >
             <MoneyIcon />
@@ -50,11 +36,10 @@ const Invoices = (props) => (
       <Box
         sx={{
           pt: 2,
-          display: 'flex',
-          alignItems: 'center'
+          display: "flex",
+          alignItems: "center",
         }}
-      >
-      </Box>
+      ></Box>
     </CardContent>
   </Card>
 );

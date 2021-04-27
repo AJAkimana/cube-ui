@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import { invoiceEditReducer, invoicesGetReducer } from "./invoice.reducer";
 import {
+  dashboardReducer,
   projectAddReducer,
   projectEditReducer,
   projectsGetReducer,
@@ -32,4 +33,5 @@ export default combineReducers({
   invoicesGet: invoicesGetReducer,
   invoiceEdit: invoiceEditReducer,
   subscriptionsGet: subscriptionsGetReducer,
+  dashboard: dashboardReducer,
 });

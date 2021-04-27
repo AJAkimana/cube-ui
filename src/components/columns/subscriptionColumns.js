@@ -8,11 +8,11 @@ export const subscriptionColumns = () => [
     label: "User names",
   },
   {
-    content: (item) => <Typography>{item.quote.billingCycle}</Typography>,
+    content: (item) => <Typography>{item?.quote?.billingCycle}</Typography>,
     label: "Billing cycle",
   },
   {
-    content: (item) => <Typography>{item.quote.amount}</Typography>,
+    content: (item) => <Typography>{item?.quote?.amount}</Typography>,
     label: "Amount",
   },
   {

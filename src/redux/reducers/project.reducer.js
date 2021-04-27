@@ -2,6 +2,7 @@ import { baseState } from "../utils/baseStates";
 import {
   ADD_NEW_PROJECT,
   EDIT_PROJECT,
+  GET_DASHBOARD_COUNTS,
   GET_PROJECTS,
 } from "../actions/actionTypes";
 import { pending, fulfilled, rejected } from "../utils/actions";
@@ -79,6 +80,30 @@ export const projectsGetReducer = (
       };
     }
     case rejected(GET_PROJECTS):
+    default:
+      return {
+        ...state,
+        loading: false,
+      };
+  }
+};
+export const dashboardReducer = (state = baseState("counts", {}), action) => {
+  switch (action.type) {
+    case pending(GET_DASHBOARD_COUNTS): {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case fulfilled(GET_DASHBOARD_COUNTS): {
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        counts: action.payload.data.data,
+      };
+    }
+    case rejected(GET_DASHBOARD_COUNTS):
     default:
       return {
         ...state,

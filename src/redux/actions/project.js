@@ -1,5 +1,10 @@
 import { store } from "../store";
-import { ADD_NEW_PROJECT, EDIT_PROJECT, GET_PROJECTS } from "./actionTypes";
+import {
+  ADD_NEW_PROJECT,
+  EDIT_PROJECT,
+  GET_DASHBOARD_COUNTS,
+  GET_PROJECTS,
+} from "./actionTypes";
 import { http } from "utils/http";
 
 export const addNewProject = (projectInfo) => {
@@ -19,9 +24,15 @@ export const getProjects = ({ status }) => {
   });
 };
 export const updateProject = (projectInfo, projectId) => {
-  const { name, ...rest } = projectInfo;
+  const { name, type, ...rest } = projectInfo;
   store.dispatch({
     type: EDIT_PROJECT,
     payload: http.patch(`/project/${projectId}`, rest),
+  });
+};
+export const getDashboardCounts = () => {
+  store.dispatch({
+    type: GET_DASHBOARD_COUNTS,
+    payload: http.get("/home/dashboard"),
   });
 };
