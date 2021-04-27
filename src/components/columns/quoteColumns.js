@@ -12,7 +12,7 @@ import {
 
 export const quoteColumns = (onQuoteClick, user = {}) => [
   {
-    content: (item) => <Typography>{item.project.name}</Typography>,
+    content: (item) => <Typography>{item?.project?.name}</Typography>,
     label: "Project",
   },
   { path: "billingCycle", label: "Billing cycle" },

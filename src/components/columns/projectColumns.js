@@ -7,6 +7,7 @@ import {
 
 export const projectColumns = (onProjectClick) => [
   { path: "name", label: "Project name" },
+  { path: "type", label: "Type" },
   { path: "status", label: "Status" },
   { path: "description", label: "Description" },
   {

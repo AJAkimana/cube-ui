@@ -20,10 +20,18 @@ import { useStyles } from "styles/formStyles";
 
 const initialState = {
   name: "",
+  type: "",
   status: "pending",
   description: "",
 };
 const projectStatuses = ["pending", "approved", "canceled"];
+const projectTypes = [
+  "Cube Platform",
+  "3D modeling",
+  "3D Viewer",
+  "3D Configurator",
+  "AR",
+];
 export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
@@ -41,8 +49,8 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   }, [added, updated]);
   useEffect(() => {
     if (currentItem) {
-      const { status, name, description } = currentItem;
-      setValues({ name, status, description });
+      const { status, name, description, type } = currentItem;
+      setValues({ name, status, description, type });
     }
   }, [currentItem]);
   const onHandleChange = (e) => {
@@ -80,12 +88,29 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                 name="name"
                 variant="outlined"
                 fullWidth
-                id="name"
                 label="Project name"
                 onChange={onHandleChange}
                 value={values.name}
                 autoFocus
               />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl variant="outlined" fullWidth>
+                <InputLabel id="project-type">Project type</InputLabel>
+                <Select
+                  labelId="project-type"
+                  value={values.type}
+                  name="type"
+                  onChange={onHandleChange}
+                >
+                  <MenuItem value="">---</MenuItem>
+                  {projectTypes.map((type, typeIdx) => (
+                    <MenuItem value={type} key={typeIdx}>
+                      {type.toUpperCase()}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth>

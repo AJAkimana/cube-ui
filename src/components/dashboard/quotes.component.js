@@ -1,35 +1,24 @@
 import {
-    Avatar,
-    Box,
-    Card,
-    CardContent,
-    Grid,
-    Typography
-  } from '@material-ui/core';
-import { green } from '@material-ui/core/colors';
-import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+} from "@material-ui/core";
+import { green } from "@material-ui/core/colors";
+import PeopleIcon from "@material-ui/icons/PeopleOutlined";
 
-const TotalQuotes = (props) => (
-  <Card {...props}>
+const TotalQuotes = ({ counts }) => (
+  <Card>
     <CardContent>
-      <Grid
-        container
-        spacing={3}
-        sx={{ justifyContent: 'space-between' }}
-      >
+      <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
-          <Typography
-            color="textSecondary"
-            gutterBottom
-            variant="h6"
-          >
+          <Typography color="textSecondary" gutterBottom variant="h6">
             TOTAL QUOTES
           </Typography>
-          <Typography
-            color="textPrimary"
-            variant="h3"
-          >
-            10
+          <Typography color="textPrimary" variant="h3">
+            {counts}
           </Typography>
         </Grid>
         <Grid item>
@@ -37,7 +26,7 @@ const TotalQuotes = (props) => (
             sx={{
               backgroundColor: green[600],
               height: 56,
-              width: 56
+              width: 56,
             }}
           >
             <PeopleIcon />
@@ -46,14 +35,13 @@ const TotalQuotes = (props) => (
       </Grid>
       <Box
         sx={{
-          alignItems: 'center',
-          display: 'flex',
-          pt: 2
+          alignItems: "center",
+          display: "flex",
+          pt: 2,
         }}
-      >
-      </Box>
+      ></Box>
     </CardContent>
   </Card>
 );
-  
+
 export default TotalQuotes;
