@@ -30,6 +30,11 @@ const routes = [
         component: HomePage,
       },
       {
+        path: "/dashboard/customers",
+        exact: true,
+        component: HomePage,
+      },
+      {
         path: "/dashboard/projects",
         exact: true,
         component: ProjectPage,

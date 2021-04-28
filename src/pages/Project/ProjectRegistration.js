@@ -17,12 +17,14 @@ import { ComputerOutlined } from "@material-ui/icons";
 import { addNewProject, updateProject } from "redux/actions/project";
 import { Loading } from "components/loading.component";
 import { useStyles } from "styles/formStyles";
+import { getUsersList } from "redux/actions/user";
 
 const initialState = {
   name: "",
   type: "",
   status: "pending",
   description: "",
+  userId: "",
 };
 const projectStatuses = ["pending", "approved", "canceled"];
 const projectTypes = [
@@ -40,8 +42,19 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   const {
     projectAdd: { loading: adding, loaded: added },
     projectEdit: { loading: updating, loaded: updated },
+    userList: { users },
+    login: {
+      userInfo: { user },
+    },
   } = projectState;
-
+  useEffect(() => {
+    getUsersList();
+  }, []);
+  useEffect(() => {
+    if (user.role === "Client") {
+      setValues({ ...values, userId: user._id });
+    }
+  }, []);
   useEffect(() => {
     if (added || updated) {
       setValues(initialState);
@@ -94,6 +107,26 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                 autoFocus
               />
             </Grid>
+            {user.role === "Manager" && (
+              <Grid item xs={12}>
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel id="project-owner">Project owner</InputLabel>
+                  <Select
+                    labelId="project-owner"
+                    value={values.userId}
+                    name="userId"
+                    onChange={onHandleChange}
+                  >
+                    <MenuItem value="">---</MenuItem>
+                    {users.map(({ _id, fullName }, userIdx) => (
+                      <MenuItem value={_id} key={userIdx}>
+                        {fullName}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            )}
             <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth>
                 <InputLabel id="project-type">Project type</InputLabel>

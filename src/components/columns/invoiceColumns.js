@@ -10,7 +10,7 @@ import { Publish as PublishIcon } from "@material-ui/icons";
 
 export const invoiceColumns = (onInvoiceClick, user = {}) => [
   {
-    content: (item) => <Typography>{item.user.fullName}</Typography>,
+    content: (item) => <Typography>{item?.user?.fullName}</Typography>,
     label: "Project owner",
   },
   { path: "amount", label: "Amount" },

@@ -39,6 +39,9 @@ export const DashboardLayout = ({ route, history }) => {
             </Link>
             <ul className="dropdown-content">
               <li>
+                <Link to="/dashboard/customers">Customers</Link>
+              </li>
+              <li>
                 <Link to="/dashboard/projects">Projects</Link>
               </li>
               <li>
