@@ -54,6 +54,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
     if (user.role === "Client") {
       setValues({ ...values, userId: user._id });
     }
+    // eslint-disable-next-line
   }, []);
   useEffect(() => {
     if (added || updated) {
