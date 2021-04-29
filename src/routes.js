@@ -8,6 +8,7 @@ import { ProjectPage } from "pages/Project";
 import { QuotePage } from "pages/Quote";
 import { InvoicePage } from "pages/Invoice";
 import { SubscriptionPage } from "./pages/Subscription";
+import { store } from "redux/store";
 
 const routes = [
   {
@@ -27,7 +28,15 @@ const routes = [
       {
         path: "/dashboard/home",
         exact: true,
-        component: HomePage,
+        component: () => {
+          const {
+            login: {
+              userInfo: { user },
+            },
+          } = store.getState();
+          const route = user.role === "Manager" ? "customers" : "projects";
+          return <Redirect to={`/dashboard/${route}`} />;
+        },
       },
       {
         path: "/dashboard/customers",

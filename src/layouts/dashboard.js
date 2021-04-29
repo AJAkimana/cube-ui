@@ -12,19 +12,28 @@ import { USER_INFO } from "../utils/constants";
 import { getDashboardCounts } from "redux/actions/project";
 import Loading from "components/loading.component";
 
+const countsSize = (role) => {
+  const sizes = {
+    Manager: { lg: 3, sm: 6, xl: 3, xs: 12 },
+    Client: { lg: 4, sm: 6, xl: 4, xs: 12 },
+  };
+  return role ? sizes[role] : sizes.Client;
+};
 export const DashboardLayout = ({ route, history }) => {
   const dashboardState = useSelector((state) => state);
   const {
-    login: { userInfo },
+    login: {
+      userInfo: { user },
+    },
     dashboard: { loading, counts },
   } = dashboardState;
 
   useEffect(() => {
-    if (!userInfo.user.fullName) {
+    if (!user.fullName) {
       localStorage.removeItem(USER_INFO);
       history.replace("/");
     }
-  }, [userInfo, history]);
+  }, [user, history]);
   useEffect(() => {
     getDashboardCounts();
   }, []);
@@ -32,15 +41,17 @@ export const DashboardLayout = ({ route, history }) => {
     <div className="App">
       <header className="App-Header">
         <h2>Augmented Reality Innovations</h2>
-        {userInfo ? (
+        {user.fullName ? (
           <div className="dropdown">
             <Link to="#">
-              {userInfo.user.fullName} <i className="fa fa-caret-down"></i>{" "}
+              {user.fullName} <i className="fa fa-caret-down"></i>{" "}
             </Link>
             <ul className="dropdown-content">
-              <li>
-                <Link to="/dashboard/customers">Customers</Link>
-              </li>
+              {user.role === "Manager" && (
+                <li>
+                  <Link to="/dashboard/customers">Customers</Link>
+                </li>
+              )}
               <li>
                 <Link to="/dashboard/projects">Projects</Link>
               </li>
@@ -73,16 +84,42 @@ export const DashboardLayout = ({ route, history }) => {
             <Loading />
           ) : (
             <Grid container spacing={3}>
-              <Grid item lg={3} sm={6} xl={3} xs={12}>
+              <Grid
+                item
+                lg={countsSize(user.role).lg}
+                sm={countsSize(user.role).sm}
+                xl={countsSize(user.role).xl}
+                xs={countsSize(user.role).xs}
+              >
                 <Invoices counts={counts.invoicesAmount || 0} />
               </Grid>
-              <Grid item lg={3} sm={6} xl={3} xs={12}>
-                <TotalCustomers counts={counts.users || 0} />
-              </Grid>
-              <Grid item lg={3} sm={6} xl={3} xs={12}>
+              {user.role === "Manager" && (
+                <Grid
+                  item
+                  lg={countsSize(user.role).lg}
+                  sm={countsSize(user.role).sm}
+                  xl={countsSize(user.role).xl}
+                  xs={countsSize(user.role).xs}
+                >
+                  <TotalCustomers counts={counts.users || 0} />
+                </Grid>
+              )}
+              <Grid
+                item
+                lg={countsSize(user.role).lg}
+                sm={countsSize(user.role).sm}
+                xl={countsSize(user.role).xl}
+                xs={countsSize(user.role).xs}
+              >
                 <TotalProjects counts={counts.projects || 0} />
               </Grid>
-              <Grid item lg={3} sm={6} xl={3} xs={12}>
+              <Grid
+                item
+                lg={countsSize(user.role).lg}
+                sm={countsSize(user.role).sm}
+                xl={countsSize(user.role).xl}
+                xs={countsSize(user.role).xs}
+              >
                 <TotalQuotes
                   sx={{ height: "100%" }}
                   counts={counts.quotes || 0}
