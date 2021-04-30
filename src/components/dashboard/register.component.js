@@ -201,7 +201,7 @@ export default function Registration(props) {
                 >
                  <MenuItem value="">---</MenuItem>
                   {userRoles.map((role, roleIdx) => (
-                    <MenuItem value={role} } key={roleIdx}>
+                    <MenuItem value={role} key={roleIdx}>
                       {role.toUpperCase()}
                     </MenuItem>
                 </Select>
