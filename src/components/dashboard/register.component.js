@@ -57,7 +57,7 @@ const initialState = {
   fullName: "",
   email: "",
   phoneNumber: "",
-  role: "Client",
+  role: "client",
   companyName: "",
   address: "",
   country: "",
@@ -199,13 +199,13 @@ export default function Registration(props) {
                   name="role"
                   onChange={onHandleChange}
                 >
-                  <MenuItem value="">---</MenuItem>
-                  {userRoles.map((role, roleIdx) => (
-                    const rol = {(role === 'client') ? 'visitor : role;
-                    <MenuItem value={rol} } key={roleIdx}>
-                      {role.toUpperCase()}
+                  <MenuItem>
+                    <MenuItem value='visitor' key='1'>
+                     Client
                     </MenuItem>
-                  ))}
+                    <MenuItem value='manager' key='2'>
+                     Manager
+                    </MenuItem>z
                 </Select>
               </FormControl>
             </Grid>
