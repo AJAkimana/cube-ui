@@ -57,7 +57,7 @@ const initialState = {
   fullName: "",
   email: "",
   phoneNumber: "",
-  role: "Client",
+  role: "client",
   companyName: "",
   address: "",
   country: "",
@@ -190,7 +190,7 @@ export default function Registration(props) {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12}>
+           <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth>
                 <InputLabel id="user-role">Role</InputLabel>
                 <Select
