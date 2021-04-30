@@ -190,7 +190,7 @@ export default function Registration(props) {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12}>
+           <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth>
                 <InputLabel id="user-role">Role</InputLabel>
                 <Select
@@ -199,11 +199,12 @@ export default function Registration(props) {
                   name="role"
                   onChange={onHandleChange}
                 >
-                 <MenuItem value="">---</MenuItem>
+                  <MenuItem value="">---</MenuItem>
                   {userRoles.map((role, roleIdx) => (
                     <MenuItem value={role} key={roleIdx}>
                       {role.toUpperCase()}
                     </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
