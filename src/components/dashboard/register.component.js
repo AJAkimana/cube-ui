@@ -13,6 +13,7 @@ import {
   Select,
   MenuItem,
 } from "@material-ui/core";
+import PhoneInput from "material-ui-phone-number";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import LoadingBox from "../loading.component";
@@ -59,6 +60,8 @@ const initialState = {
   role: "Client",
   companyName: "",
   address: "",
+  country: "",
+  city: "",
 };
 const userRoles = ["Client", "Manager"];
 export default function Registration(props) {
@@ -84,6 +87,9 @@ export default function Registration(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     registerUser(userInfo);
+  };
+  const onPhoneChange = (value, country) => {
+    setUserInfo({ ...userInfo, phoneNumber: value, country: country.name });
   };
   return (
     <Container component="main">
@@ -125,17 +131,64 @@ export default function Registration(props) {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                name="phoneNumber"
-                label="Phone Number"
-                type="phoneNumber"
-                id="phoneNumber"
-                autoComplete="phone number"
-                value={userInfo.phoneNumber}
-                onChange={onHandleChange}
-              />
+              <Grid container spacing={1}>
+                <Grid item lg={6} md={6} xl={6} xs={12}>
+                  <PhoneInput
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="phone number"
+                    label="Phone Number"
+                    defaultCountry="rw"
+                    countryCodeEditable={false}
+                    value={userInfo.phoneNumber}
+                    onChange={onPhoneChange}
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} xl={6} xs={12}>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    name="country"
+                    autoComplete="country"
+                    value={userInfo.country}
+                    disabled
+                    onChange={onHandleChange}
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} xl={6} xs={12}>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    label="City"
+                    name="city"
+                    autoComplete="city"
+                    value={userInfo.city}
+                    onChange={onHandleChange}
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} xl={6} xs={12}>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    label="State"
+                    name="state"
+                    autoComplete="state"
+                    value={userInfo.state}
+                    onChange={onHandleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    label="Postal code"
+                    name="postalCode"
+                    autoComplete="postalCode"
+                    value={userInfo.postalCode}
+                    onChange={onHandleChange}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth>

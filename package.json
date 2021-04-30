@@ -11,6 +11,7 @@
     "axios": "^0.21.1",
     "history": "^4.10.1",
     "is-promise": "^4.0.0",
+    "material-ui-phone-number": "^2.2.6",
     "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

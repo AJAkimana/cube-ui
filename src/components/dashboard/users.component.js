@@ -8,7 +8,7 @@ import { userColumns } from "../columns/userColumns";
 
 export default function Users() {
   const [paginatedUsers, setPaginatedUsers] = useState([]);
-  const [paginator, setPaginator] = useState(initialPaginate());
+  const [paginator, setPaginator] = useState(initialPaginate(10));
   const userList = useSelector((state) => state.userList);
   const { loading, users } = userList;
   useEffect(() => {

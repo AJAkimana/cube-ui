@@ -34,6 +34,9 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
     quoteAdd: { loading: adding, loaded: added },
     quoteEdit: { loading: updating, loaded: updated },
     projectsGet: { projects },
+    login: {
+      userInfo: { user },
+    },
   } = quoteState;
 
   useEffect(() => {
@@ -42,7 +45,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
     }
   }, [added, updated]);
   useEffect(() => {
-    getProjects({ status: "pending" });
+    getProjects({ status: "approved" });
   }, []);
   useEffect(() => {
     if (currentItem) {
@@ -77,118 +80,120 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
             : "Add a new quote"}
         </Typography>
         {(adding || updating) && <Loading />}
-        <form className={classes.form} onSubmit={submitHandler}>
-          <Grid container spacing={2}>
-            {action === "add" ? (
+        {(currentItem || (action === "add" && user.role === "Manager")) && (
+          <form className={classes.form} onSubmit={submitHandler}>
+            <Grid container spacing={2}>
+              {action === "add" ? (
+                <Grid item xs={12}>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel id="project">Project</InputLabel>
+                    <Select
+                      labelId="project"
+                      value={values.projectId}
+                      name="projectId"
+                      onChange={onHandleChange}
+                    >
+                      <MenuItem value="">---</MenuItem>
+                      {projects.map(({ _id, name }, choiceIdx) => (
+                        <MenuItem value={_id} key={choiceIdx}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              ) : null}
               <Grid item xs={12}>
                 <FormControl variant="outlined" fullWidth>
-                  <InputLabel id="project">Project</InputLabel>
+                  <InputLabel id="billing-cycle">Billing cycle</InputLabel>
                   <Select
-                    labelId="project"
-                    value={values.projectId}
-                    name="projectId"
+                    labelId="billing-cycle"
+                    value={values.billingCycle}
+                    name="billingCycle"
                     onChange={onHandleChange}
+                    disabled={action === "change"}
                   >
                     <MenuItem value="">---</MenuItem>
-                    {projects.map(({ _id, name }, choiceIdx) => (
-                      <MenuItem value={_id} key={choiceIdx}>
-                        {name}
+                    {quoteCycles.map((cyle, choiceIdx) => (
+                      <MenuItem value={cyle} key={choiceIdx}>
+                        {cyle.toUpperCase()}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               </Grid>
-            ) : null}
-            <Grid item xs={12}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel id="billing-cycle">Billing cycle</InputLabel>
-                <Select
-                  labelId="billing-cycle"
-                  value={values.billingCycle}
-                  name="billingCycle"
-                  onChange={onHandleChange}
-                  disabled={action === "change"}
-                >
-                  <MenuItem value="">---</MenuItem>
-                  {quoteCycles.map((cyle, choiceIdx) => (
-                    <MenuItem value={cyle} key={choiceIdx}>
-                      {cyle.toUpperCase()}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                className={classes.input}
-                variant="outlined"
-                fullWidth
-                name="amount"
-                label="Amount"
-                type="number"
-                value={values.amount}
-                onChange={onHandleChange}
-                disabled={action === "change"}
-              />
-            </Grid>
-            {action === "change" && (
-              <Grid item xs={12}>
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel id="project-status">Status</InputLabel>
-                  <Select
-                    labelId="project-status"
-                    value={values.status}
-                    name="status"
-                    onChange={onHandleChange}
-                  >
-                    <MenuItem value="">---</MenuItem>
-                    {["approved", "declined"].map((status, choiceIdx) => (
-                      <MenuItem value={status} key={choiceIdx}>
-                        {status.toUpperCase()}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-            )}
-            {values.status && action === "change" && (
               <Grid item xs={12}>
                 <TextField
                   className={classes.input}
                   variant="outlined"
                   fullWidth
-                  name="comment"
-                  label="Add comment"
-                  value={values.comment}
+                  name="amount"
+                  label="Amount"
+                  type="number"
+                  value={values.amount}
                   onChange={onHandleChange}
+                  disabled={action === "change"}
                 />
               </Grid>
-            )}
-          </Grid>
-          <CardActions>
-            {action === "add" ? (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                className={classes.submit}
-                disabled={adding}
-              >
-                Save
-              </Button>
-            ) : (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                className={classes.submit}
-                disabled={updating}
-              >
-                Update the quote
-              </Button>
-            )}
-          </CardActions>
-        </form>
+              {action === "change" && (
+                <Grid item xs={12}>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel id="project-status">Status</InputLabel>
+                    <Select
+                      labelId="project-status"
+                      value={values.status}
+                      name="status"
+                      onChange={onHandleChange}
+                    >
+                      <MenuItem value="">---</MenuItem>
+                      {["approved", "declined"].map((status, choiceIdx) => (
+                        <MenuItem value={status} key={choiceIdx}>
+                          {status.toUpperCase()}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              )}
+              {values.status && action === "change" && (
+                <Grid item xs={12}>
+                  <TextField
+                    className={classes.input}
+                    variant="outlined"
+                    fullWidth
+                    name="comment"
+                    label="Add comment"
+                    value={values.comment}
+                    onChange={onHandleChange}
+                  />
+                </Grid>
+              )}
+            </Grid>
+            <CardActions>
+              {action === "add" ? (
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  className={classes.submit}
+                  disabled={adding}
+                >
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  className={classes.submit}
+                  disabled={updating}
+                >
+                  Update the quote
+                </Button>
+              )}
+            </CardActions>
+          </form>
+        )}
       </div>
     </Card>
   );
