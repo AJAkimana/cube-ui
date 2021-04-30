@@ -9,16 +9,16 @@ import {
 import MoneyIcon from "@material-ui/icons/Money";
 import { red } from "@material-ui/core/colors";
 
-const Invoices = ({ counts }) => (
+const Subscriptions = ({ counts }) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textSecondary" gutterBottom variant="h6">
-            INVOICE's AMOUNT
+            Subscriptions
           </Typography>
           <Typography color="textPrimary" variant="h3">
-            Rwf{counts}
+            {counts}
           </Typography>
         </Grid>
         <Grid item>
@@ -44,4 +44,4 @@ const Invoices = ({ counts }) => (
   </Card>
 );
 
-export default Invoices;
+export default Subscriptions;

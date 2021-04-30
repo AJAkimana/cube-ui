@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { renderRoutes } from "react-router-config";
 import { Container, Divider, Grid } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import Invoices from "../components/dashboard/invoices.component";
+import Subscriptions from "../components/dashboard/subscriptions.component";
 import TotalCustomers from "../components/dashboard/customers.component";
 import TotalProjects from "../components/dashboard/count.projects.component";
 import TotalQuotes from "../components/dashboard/quotes.component";
@@ -91,7 +91,7 @@ export const DashboardLayout = ({ route, history }) => {
                 xl={countsSize(user.role).xl}
                 xs={countsSize(user.role).xs}
               >
-                <Invoices counts={counts.invoicesAmount || 0} />
+                <Subscriptions counts={counts.subscriptions || 0} />
               </Grid>
               {user.role === "Manager" && (
                 <Grid
