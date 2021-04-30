@@ -201,7 +201,8 @@ export default function Registration(props) {
                 >
                   <MenuItem value="">---</MenuItem>
                   {userRoles.map((role, roleIdx) => (
-                    <MenuItem value={role} key={roleIdx}>
+                    const rol = {(role === 'client') ? 'visitor : role;
+                    <MenuItem value={rol} } key={roleIdx}>
                       {role.toUpperCase()}
                     </MenuItem>
                   ))}
