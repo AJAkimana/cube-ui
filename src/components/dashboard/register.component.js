@@ -199,12 +199,10 @@ export default function Registration(props) {
                   name="role"
                   onChange={onHandleChange}
                 >
-                  <MenuItem>
-                    <MenuItem value='visitor' key='1'>
-                     Client
-                    </MenuItem>
-                    <MenuItem value='manager' key='2'>
-                     Manager
+                 <MenuItem value="">---</MenuItem>
+                  {userRoles.map((role, roleIdx) => (
+                    <MenuItem value={role} } key={roleIdx}>
+                      {role.toUpperCase()}
                     </MenuItem>
                 </Select>
               </FormControl>
