@@ -205,7 +205,7 @@ export default function Registration(props) {
                     </MenuItem>
                     <MenuItem value='manager' key='2'>
                      Manager
-                    </MenuItem>z
+                    </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
