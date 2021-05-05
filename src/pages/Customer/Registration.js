@@ -133,11 +133,32 @@ export const Registration = () => {
     const stepsContent = [
       {
         label: "Step 1: Fill customer information",
-        component: <CustomerInfo />,
+        component: (
+          <CustomerInfo userInfo={userInfo} onHandleChange={onHandleChange} />
+        ),
       },
-      { label: "Step 2: Customer contacts", component: <ContactInfo /> },
-      { label: "Step 3: Location", component: <LocationInfo /> },
-      { label: "Step 4: Customer role", component: <RoleInfo /> },
+      {
+        label: "Step 2: Customer contacts",
+        component: (
+          <ContactInfo
+            userInfo={userInfo}
+            onHandleChange={onHandleChange}
+            onPhoneChange={onPhoneChange}
+          />
+        ),
+      },
+      {
+        label: "Step 3: Location",
+        component: (
+          <LocationInfo userInfo={userInfo} onHandleChange={onHandleChange} />
+        ),
+      },
+      {
+        label: "Step 4: Customer role",
+        component: (
+          <RoleInfo userInfo={userInfo} onHandleChange={onHandleChange} />
+        ),
+      },
     ];
     return stepsContent[step];
   };
