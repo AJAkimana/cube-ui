@@ -2,13 +2,13 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { DashboardLayout } from "layouts/dashboard";
 import LoginPage from "pages/login.page";
-import HomePage from "pages/home.page";
 import SetPassword from "pages/set.password.page";
 import { ProjectPage } from "pages/Project";
 import { QuotePage } from "pages/Quote";
 import { InvoicePage } from "pages/Invoice";
-import { SubscriptionPage } from "./pages/Subscription";
+import { SubscriptionPage } from "pages/Subscription";
 import { store } from "redux/store";
+import { CustomerPage } from "pages/Customer";
 
 const routes = [
   {
@@ -41,7 +41,7 @@ const routes = [
       {
         path: "/dashboard/customers",
         exact: true,
-        component: HomePage,
+        component: CustomerPage,
       },
       {
         path: "/dashboard/projects",
