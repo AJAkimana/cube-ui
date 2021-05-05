@@ -13,7 +13,7 @@ export const CustomerPage = () => {
   const userList = useSelector((state) => state.userList);
   const { loading, users } = userList;
   useEffect(() => {
-    getUsersList();
+    // getUsersList();
   }, []);
   useEffect(() => {
     if (users.length > 0) {

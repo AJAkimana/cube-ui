@@ -27,9 +27,18 @@ export const useStyles = makeStyles((theme) => ({
     maxWidth: "100%",
     color: "white",
     fontSize: 16,
-    "&:hover": {
-      backgroundColor: "#8967fc",
-      color: "#FFFFFF",
-    },
+  },
+  button: {
+    marginRight: theme.spacing(1),
+  },
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  completed: {
+    display: "inline-block",
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
 }));

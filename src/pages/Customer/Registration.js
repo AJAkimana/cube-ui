@@ -4,45 +4,39 @@ import {
   Avatar,
   Button,
   CssBaseline,
-  TextField,
   Grid,
   Typography,
   Container,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
+  Stepper,
+  Step,
+  StepButton,
 } from "@material-ui/core";
-import PhoneInput from "material-ui-phone-number";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import LoadingBox from "components/loading.component";
 import { getUsersList, registerUser } from "redux/actions/user";
 import { useStyles } from "./styles";
+import {
+  CustomerInfo,
+  ContactInfo,
+  LocationInfo,
+  RoleInfo,
+} from "./RegistrationSteps";
 
 const initialState = {
-  fullName: "",
+  firstName: "",
+  lastName: "",
+  companyName: "",
+  companyUrl: "",
   email: "",
   phoneNumber: "",
-  role: "client",
-  companyName: "",
   address: "",
   country: "",
+  state: "",
   city: "",
+  role: "client",
 };
-const userRoles = ["Client", "Manager"];
-const steps = [
-  "Select campaign settings",
-  "Create an ad group",
-  "Create an ad",
-];
-const getStepContent = (step) => {
-  const stepsContent = [
-    "Step 1: Select campaign settings...",
-    "Step 2: What is an ad group anyways?",
-    "Step 3: This is the bit I really care about!",
-  ];
-  return stepsContent[step];
-};
+const steps = ["User information", "Contact", "Location", "Permission"];
+
 export const Registration = () => {
   const classes = useStyles();
   const [userInfo, setUserInfo] = useState(initialState);
@@ -89,6 +83,64 @@ export const Registration = () => {
       return newSkipped;
     });
   };
+
+  const skippedSteps = () => {
+    return skipped.size;
+  };
+
+  const completedSteps = () => {
+    return completed.size;
+  };
+
+  const allStepsCompleted = () => {
+    return completedSteps() === totalSteps() - skippedSteps();
+  };
+
+  const isLastStep = () => {
+    return activeStep === totalSteps() - 1;
+  };
+
+  const handleNext = () => {
+    const newActiveStep =
+      isLastStep() && !allStepsCompleted()
+        ? steps.findIndex((step, i) => !completed.has(i))
+        : activeStep + 1;
+
+    setActiveStep(newActiveStep);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleStep = (step) => () => {
+    setActiveStep(step);
+  };
+
+  const handleComplete = () => {
+    const newCompleted = new Set(completed);
+    newCompleted.add(activeStep);
+    setCompleted(newCompleted);
+    if (completed.size !== totalSteps() - skippedSteps()) {
+      handleNext();
+    }
+  };
+
+  const isStepSkipped = (step) => skipped.has(step);
+
+  const isStepComplete = (step) => completed.has(step);
+  const getStepContent = (step) => {
+    const stepsContent = [
+      {
+        label: "Step 1: Fill customer information",
+        component: <CustomerInfo />,
+      },
+      { label: "Step 2: Customer contacts", component: <ContactInfo /> },
+      { label: "Step 3: Location", component: <LocationInfo /> },
+      { label: "Step 4: Customer role", component: <RoleInfo /> },
+    ];
+    return stepsContent[step];
+  };
   return (
     <Container component="main">
       <CssBaseline />
@@ -99,141 +151,76 @@ export const Registration = () => {
         <Typography component="h1" variant="h4">
           REGISTER USER
         </Typography>
+        <Stepper alternativeLabel nonLinear activeStep={activeStep}>
+          {steps.map((label, index) => {
+            const stepProps = {};
+            if (isStepSkipped(index)) {
+              stepProps.completed = false;
+            }
+            return (
+              <Step key={index} {...stepProps}>
+                <StepButton
+                  onClick={handleStep(index)}
+                  completed={isStepComplete(index)}
+                >
+                  {label}
+                </StepButton>
+              </Step>
+            );
+          })}
+        </Stepper>
         {registering && <LoadingBox></LoadingBox>}
         <form className={classes.form} onSubmit={submitHandler}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <TextField
-                className={classes.input}
-                autoComplete="fname"
-                name="fullName"
-                variant="outlined"
-                fullWidth
-                id="fullName"
-                label="Full Name"
-                onChange={onHandleChange}
-                value={userInfo.fullName}
-                autoFocus
-              />
+          <div>
+            <Grid className={classes.instructions}>
+              {getStepContent(activeStep).component}
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={userInfo.email}
-                onChange={onHandleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Grid container spacing={1}>
-                <Grid item lg={6} md={6} xl={6} xs={12}>
-                  <PhoneInput
-                    variant="outlined"
-                    fullWidth
-                    autoComplete="phone number"
-                    label="Phone Number"
-                    defaultCountry="rw"
-                    countryCodeEditable={false}
-                    value={userInfo.phoneNumber}
-                    onChange={onPhoneChange}
-                  />
-                </Grid>
-                <Grid item lg={6} md={6} xl={6} xs={12}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    name="country"
-                    autoComplete="country"
-                    value={userInfo.country}
-                    disabled
-                    onChange={onHandleChange}
-                  />
-                </Grid>
-                <Grid item lg={6} md={6} xl={6} xs={12}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    label="City"
-                    name="city"
-                    autoComplete="city"
-                    value={userInfo.city}
-                    onChange={onHandleChange}
-                  />
-                </Grid>
-                <Grid item lg={6} md={6} xl={6} xs={12}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    label="State"
-                    name="state"
-                    autoComplete="state"
-                    value={userInfo.state}
-                    onChange={onHandleChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    label="Postal code"
-                    name="postalCode"
-                    autoComplete="postalCode"
-                    value={userInfo.postalCode}
-                    onChange={onHandleChange}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel id="user-role">Role</InputLabel>
-                <Select
-                  labelId="user-role"
-                  value={userInfo.role}
-                  name="role"
-                  onChange={onHandleChange}
+            <div>
+              <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                className={classes.button}
+              >
+                Back
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNext}
+                className={classes.button}
+              >
+                Next
+              </Button>
+              {isStepOptional(activeStep) && !completed.has(activeStep) && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSkip}
+                  className={classes.button}
                 >
-                  <MenuItem value="">---</MenuItem>
-                  {userRoles.map((role, roleIdx) => (
-                    <MenuItem value={role} key={roleIdx}>
-                      {role.toUpperCase()}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                name="companyName"
-                label="Company Name"
-                type="companyName"
-                id="companyName"
-                autoComplete="Company Name"
-                value={userInfo.companyName}
-                onChange={onHandleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                name="address"
-                label="Your Address"
-                type="address"
-                id="address"
-                autoComplete="address"
-                value={userInfo.address}
-                onChange={onHandleChange}
-              />
-            </Grid>
-          </Grid>
-          <Button
+                  Skip
+                </Button>
+              )}
+
+              {activeStep !== steps.length &&
+                (completed.has(activeStep) ? (
+                  <Typography variant="caption" className={classes.completed}>
+                    Step {activeStep + 1} already completed
+                  </Typography>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleComplete}
+                  >
+                    {completedSteps() === totalSteps() - 1
+                      ? "Finish"
+                      : "Complete Step"}
+                  </Button>
+                ))}
+            </div>
+          </div>
+          {/* <Button
             type="submit"
             fullWidth
             variant="contained"
@@ -241,7 +228,7 @@ export const Registration = () => {
             disabled={registering}
           >
             SUBMIT
-          </Button>
+          </Button> */}
         </form>
       </div>
     </Container>
