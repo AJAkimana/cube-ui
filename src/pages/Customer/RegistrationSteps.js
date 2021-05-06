@@ -8,16 +8,13 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import PhoneInput from "material-ui-phone-number";
-import { useStyles } from "./styles";
 
 const userRoles = ["Client", "Manager"];
 export const CustomerInfo = ({ userInfo = {}, onHandleChange }) => {
-  const classes = useStyles();
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
         <TextField
-          className={classes.input}
           name="firstName"
           variant="outlined"
           fullWidth
@@ -30,7 +27,6 @@ export const CustomerInfo = ({ userInfo = {}, onHandleChange }) => {
       </Grid>
       <Grid item xs={12}>
         <TextField
-          className={classes.input}
           name="lastName"
           variant="outlined"
           fullWidth
@@ -69,7 +65,6 @@ export const ContactInfo = ({
   onHandleChange,
   onPhoneChange,
 }) => {
-  const classes = useStyles();
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -100,7 +95,6 @@ export const ContactInfo = ({
   );
 };
 export const LocationInfo = ({ userInfo = {}, onHandleChange }) => {
-  const classes = useStyles();
   return (
     <Grid container spacing={1}>
       <Grid item lg={6} md={6} xl={6} xs={12}>
@@ -125,7 +119,7 @@ export const LocationInfo = ({ userInfo = {}, onHandleChange }) => {
           onChange={onHandleChange}
         />
       </Grid>
-      <Grid item lg={6} md={6} xl={6} xs={12}>
+      <Grid item xs={12}>
         <TextField
           variant="outlined"
           fullWidth
@@ -164,7 +158,6 @@ export const LocationInfo = ({ userInfo = {}, onHandleChange }) => {
   );
 };
 export const RoleInfo = ({ userInfo = {}, onHandleChange }) => {
-  const classes = useStyles();
   return (
     <Grid container spacing={1}>
       <FormControl variant="outlined" fullWidth>
