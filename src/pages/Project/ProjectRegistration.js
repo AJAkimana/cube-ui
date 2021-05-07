@@ -58,7 +58,9 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   }, []);
   useEffect(() => {
     if (added || updated) {
-      setValues(initialState);
+      let states = { ...initialState };
+      states.userId = user.role === "Client" ? user._id : "";
+      setValues(states);
     }
   }, [added, updated]);
   useEffect(() => {
