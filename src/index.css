@@ -89,10 +89,7 @@ ul {
 li {
 	margin-top: 0.5rem;
 }
-/* input,
-select,
-textarea,
-button {
+.login-input {
 	padding: 1rem;
 	border-radius: 0.5rem;
 	border: 0.1rem #c0c0c0 solid;
@@ -101,28 +98,24 @@ button {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-button {
+.btn-login {
 	cursor: pointer;
 	width: 40%;
 	outline: none !important;
 	color: white;
 }
-input:hover,
-select:hover,
-textarea:hover,
-button:hover {
+.login-input:hover {
 	border: 0.1rem #030202 solid;
 }
 
-button.primary {
+.btn-login.primary {
 	background-color: #8967fc;
 	border-radius: 30rem;
 	margin: auto;
 }
-button.block {
+.btn-login.block {
 	width: 100%;
 }
-
 .form {
 	max-width: 40rem;
 	margin: 4.5rem auto;
@@ -139,7 +132,7 @@ button.block {
 	margin: 1rem 0;
 	display: block;
 	font-size: 1.6rem;
-} */
+}
 
 .logo {
 	width: 30%;

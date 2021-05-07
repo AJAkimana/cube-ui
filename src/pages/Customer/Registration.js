@@ -188,15 +188,6 @@ export const Registration = () => {
               </Button>
             </div>
           </div>
-          {/* <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            className={classes.submit}
-            disabled={registering}
-          >
-            SUBMIT
-          </Button> */}
         </form>
       </div>
     </Container>
