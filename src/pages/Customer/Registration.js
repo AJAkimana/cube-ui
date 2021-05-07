@@ -33,6 +33,7 @@ const initialState = {
   country: "",
   state: "",
   city: "",
+  postalCode: "",
   role: "client",
 };
 const steps = ["User information", "Contact", "Location", "Permission"];

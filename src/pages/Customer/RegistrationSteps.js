@@ -136,7 +136,6 @@ export const LocationInfo = ({ userInfo = {}, onHandleChange }) => {
           fullWidth
           label="Postal code"
           name="postalCode"
-          autoComplete="postalCode"
           value={userInfo.postalCode}
           onChange={onHandleChange}
         />
