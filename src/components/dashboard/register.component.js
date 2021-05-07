@@ -64,9 +64,25 @@ const initialState = {
   city: "",
 };
 const userRoles = ["Client", "Manager"];
-export default function Registration(props) {
+const steps = [
+  "Select campaign settings",
+  "Create an ad group",
+  "Create an ad",
+];
+const getStepContent = (step) => {
+  const stepsContent = [
+    "Step 1: Select campaign settings...",
+    "Step 2: What is an ad group anyways?",
+    "Step 3: This is the bit I really care about!",
+  ];
+  return stepsContent[step];
+};
+const Registration = () => {
   const classes = useStyles();
   const [userInfo, setUserInfo] = useState(initialState);
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [completed, setCompleted] = React.useState(new Set());
+  const [skipped, setSkipped] = React.useState(new Set());
 
   const userRegister = useSelector((state) => state.register);
   const { loading: registering, loaded: registered } = userRegister;
@@ -90,6 +106,22 @@ export default function Registration(props) {
   };
   const onPhoneChange = (value, country) => {
     setUserInfo({ ...userInfo, phoneNumber: value, country: country.name });
+  };
+  const totalSteps = () => steps.length;
+
+  const isStepOptional = (step) => step === 1;
+
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
   };
   return (
     <Container component="main">
@@ -190,7 +222,7 @@ export default function Registration(props) {
                 </Grid>
               </Grid>
             </Grid>
-           <Grid item xs={12}>
+            <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth>
                 <InputLabel id="user-role">Role</InputLabel>
                 <Select
@@ -248,4 +280,5 @@ export default function Registration(props) {
       </div>
     </Container>
   );
-}
+};
+export default Registration;

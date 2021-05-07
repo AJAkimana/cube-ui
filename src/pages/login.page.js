@@ -45,29 +45,29 @@ export default function SigninScreen(props) {
           <label htmlFor="email">Email address</label>
           <input
             type="email"
-            id="email"
             name="email"
             placeholder="Enter email"
             required
             onChange={onHandleChange}
             value={logins.email}
+            className="login-input"
           ></input>
         </div>
         <div>
           <label htmlFor="password">Password</label>
           <input
             type="password"
-            id="password"
             name="password"
             placeholder="Enter password"
             required
             onChange={onHandleChange}
             value={logins.password}
+            className="login-input"
           ></input>
         </div>
         <div>
           <label />
-          <button className="primary" type="submit">
+          <button className="login-input btn-login primary" type="submit">
             Login
           </button>
         </div>
