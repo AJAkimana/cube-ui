@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
 import { CustomisedTable } from "components/CustomizedTable";
 import { useSelector } from "react-redux";
@@ -6,7 +6,6 @@ import { InvoiceRegistration } from "./InvoiceRegistration";
 import { getInvoices } from "redux/actions/invoice";
 import { invoiceColumns } from "components/columns";
 import { initialPaginate, paginate } from "utils/paginate";
-import { InvoicePrint } from "./InvoicePrint";
 
 export const InvoicePage = () => {
   const invoiceState = useSelector((state) => state);
@@ -14,7 +13,6 @@ export const InvoicePage = () => {
   const [paginator, setPaginator] = useState(initialPaginate());
   const [currentItem, setCurrentItem] = useState(null);
   const [action, setAction] = useState("add");
-  const invoicePrintRef = useRef();
   const {
     invoicesGet: { loading, invoices },
     invoiceEdit: { loaded: updated },
@@ -56,7 +54,6 @@ export const InvoicePage = () => {
         <InvoiceRegistration action={action} currentItem={currentItem} />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
-        <InvoicePrint invoice={currentItem} ref={invoicePrintRef} />
         <CustomisedTable
           tableTitle="List of invoices"
           columns={invoiceColumns(onInvoiceClick, userInfo.user)}

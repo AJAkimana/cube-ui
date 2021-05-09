@@ -11,6 +11,8 @@ import {
   PrintRounded as PrintRoundedIcon,
 } from "@material-ui/icons";
 
+const BASE_ROUTE = `${process.env.REACT_APP_API_URL}api/v1/invoice`;
+
 export const invoiceColumns = (onInvoiceClick, user = {}) => [
   {
     content: (item) => <Typography>{item?.user?.fullName}</Typography>,
@@ -49,9 +51,12 @@ export const invoiceColumns = (onInvoiceClick, user = {}) => [
           </Typography>
           <Tooltip title="Print invoice">
             <IconButton
+              component="a"
               aria-label="Print invoice"
               color="default"
-              onClick={() => onInvoiceClick(item, "print")}
+              rel="noreferrer"
+              href={`${BASE_ROUTE}/${item._id}`}
+              target="_blank"
             >
               <PrintRoundedIcon /> Print
             </IconButton>
