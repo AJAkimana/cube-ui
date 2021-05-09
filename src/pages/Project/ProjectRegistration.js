@@ -85,7 +85,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
       setValues(states);
       setEditorState(EditorState.createEmpty());
     }
-  }, [added, updated]);
+  }, [added, updated, user]);
   useEffect(() => {
     if (currentItem) {
       const {
