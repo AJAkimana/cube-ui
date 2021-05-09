@@ -6,7 +6,10 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
-import { Publish as PublishIcon } from "@material-ui/icons";
+import {
+  Publish as PublishIcon,
+  PrintRounded as PrintRoundedIcon,
+} from "@material-ui/icons";
 
 export const invoiceColumns = (onInvoiceClick, user = {}) => [
   {
@@ -40,9 +43,20 @@ export const invoiceColumns = (onInvoiceClick, user = {}) => [
           </Tooltip>
         </ButtonGroup>
       ) : (
-        <Typography variant="caption" color="error">
-          No action needed
-        </Typography>
+        <>
+          <Typography variant="caption" color="error">
+            No action needed
+          </Typography>
+          <Tooltip title="Print invoice">
+            <IconButton
+              aria-label="Print invoice"
+              color="default"
+              onClick={() => onInvoiceClick(item, "print")}
+            >
+              <PrintRoundedIcon /> Print
+            </IconButton>
+          </Tooltip>
+        </>
       ),
     label: "Actions",
   },
