@@ -13,6 +13,7 @@ import {
   Card,
   CardActions,
 } from "@material-ui/core";
+import moment from "moment";
 import { ComputerOutlined } from "@material-ui/icons";
 import { EditorState } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
@@ -104,8 +105,8 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
         status,
         type,
         nOfItems,
-        startDate,
-        dueDate,
+        startDate: moment(startDate).format("YYYY-MM-DD"),
+        dueDate: moment(dueDate).format("YYYY-MM-DD"),
         budget,
         userId: user,
       });
