@@ -13,30 +13,52 @@ import {
   Card,
   CardActions,
 } from "@material-ui/core";
+import moment from "moment";
 import { ComputerOutlined } from "@material-ui/icons";
+import { EditorState } from "draft-js";
+import { stateToHTML } from "draft-js-export-html";
+import { stateFromHTML } from "draft-js-import-html";
 import { addNewProject, updateProject } from "redux/actions/project";
 import { Loading } from "components/loading.component";
 import { useStyles } from "styles/formStyles";
 import { getUsersList } from "redux/actions/user";
+import { DraftEditor } from "components/DraftEditor";
 
 const initialState = {
   name: "",
   type: "",
+  nOfItems: "1",
+  startDate: moment().format("YYYY-MM-DD"),
+  dueDate: moment().format("YYYY-MM-DD"),
+  budget: "",
   status: "pending",
   description: "",
   userId: "",
 };
 const projectStatuses = ["pending", "approved", "canceled"];
 const projectTypes = [
-  "Cube Platform",
-  "3D modeling",
-  "3D Viewer",
-  "3D Configurator",
-  "AR",
+  {
+    name: "Cube Platform",
+    description: "I want to publish and manage my products in 3D and AR myself",
+  },
+  {
+    name: "3D modeling",
+    description: "I need help with creating my products in 3D",
+  },
+  {
+    name: "3D Viewer",
+    description: "I want to present my product in 3D on a website",
+  },
+  {
+    name: "3D Configurator",
+    description: "I want to showcase my products in specific configurations",
+  },
+  { name: "AR", description: "I want to showcase my products in AR" },
 ];
 export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const projectState = useSelector((state) => state);
 
   const {
@@ -58,13 +80,37 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   }, []);
   useEffect(() => {
     if (added || updated) {
-      setValues(initialState);
+      let states = { ...initialState };
+      states.userId = user.role === "Client" ? user._id : "";
+      setValues(states);
+      setEditorState(EditorState.createEmpty());
     }
-  }, [added, updated]);
+  }, [added, updated, user]);
   useEffect(() => {
     if (currentItem) {
-      const { status, name, description, type } = currentItem;
-      setValues({ name, status, description, type });
+      const {
+        status,
+        name,
+        description,
+        type,
+        nOfItems,
+        startDate,
+        dueDate,
+        budget,
+        user,
+      } = currentItem;
+      const contentState = stateFromHTML(description);
+      setValues({
+        name,
+        status,
+        type,
+        nOfItems,
+        startDate: moment(startDate).format("YYYY-MM-DD"),
+        dueDate: moment(dueDate).format("YYYY-MM-DD"),
+        budget,
+        userId: user,
+      });
+      setEditorState(EditorState.createWithContent(contentState));
     }
   }, [currentItem]);
   const onHandleChange = (e) => {
@@ -76,6 +122,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
+    values.description = stateToHTML(editorState.getCurrentContent());
     if (action !== "add" && currentItem) {
       updateProject(values, currentItem._id);
     } else {
@@ -139,8 +186,8 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                 >
                   <MenuItem value="">---</MenuItem>
                   {projectTypes.map((type, typeIdx) => (
-                    <MenuItem value={type} key={typeIdx}>
-                      {type.toUpperCase()}
+                    <MenuItem value={type.name} key={typeIdx}>
+                      {`${type.name} - ${type.description}`}
                     </MenuItem>
                   ))}
                 </Select>
@@ -165,16 +212,58 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item lg={6} md={6} xl={6} xs={12}>
               <TextField
                 className={classes.input}
                 variant="outlined"
                 fullWidth
-                name="description"
-                label="Project description"
-                id="description"
-                value={values.description}
+                type="date"
+                name="startDate"
+                label="Start date"
+                value={values.startDate}
                 onChange={onHandleChange}
+              />
+            </Grid>
+            <Grid item lg={6} md={6} xl={6} xs={12}>
+              <TextField
+                className={classes.input}
+                variant="outlined"
+                fullWidth
+                type="date"
+                name="dueDate"
+                label="Due date"
+                value={values.dueDate}
+                onChange={onHandleChange}
+              />
+            </Grid>
+            <Grid item lg={4} md={4} xl={4} xs={12}>
+              <TextField
+                className={classes.input}
+                variant="outlined"
+                fullWidth
+                type="number"
+                name="nOfItems"
+                label="Number of items"
+                value={values.nOfItems}
+                onChange={onHandleChange}
+              />
+            </Grid>
+            <Grid item lg={8} md={8} xl={8} xs={12}>
+              <TextField
+                className={classes.input}
+                variant="outlined"
+                fullWidth
+                type="number"
+                name="budget"
+                label="Budget"
+                value={values.budget}
+                onChange={onHandleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <DraftEditor
+                editorState={editorState}
+                setEditorState={setEditorState}
               />
             </Grid>
           </Grid>

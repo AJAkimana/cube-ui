@@ -24,10 +24,9 @@ export const getProjects = ({ status }) => {
   });
 };
 export const updateProject = (projectInfo, projectId) => {
-  const { name, type, ...rest } = projectInfo;
   store.dispatch({
     type: EDIT_PROJECT,
-    payload: http.patch(`/project/${projectId}`, rest),
+    payload: http.patch(`/project/${projectId}`, projectInfo),
   });
 };
 export const getDashboardCounts = () => {
