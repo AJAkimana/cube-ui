@@ -261,16 +261,6 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              {/* <TextField
-                className={classes.input}
-                variant="outlined"
-                fullWidth
-                name="description"
-                label="Project description"
-                id="description"
-                value={values.description}
-                onChange={onHandleChange}
-              /> */}
               <DraftEditor
                 editorState={editorState}
                 setEditorState={setEditorState}
