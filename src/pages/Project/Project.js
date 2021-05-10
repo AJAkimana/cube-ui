@@ -6,6 +6,7 @@ import { ProjectRegistration } from "./ProjectRegistration";
 import { getProjects } from "redux/actions/project";
 import { projectColumns } from "components/columns";
 import { initialPaginate, paginate } from "utils/paginate";
+import { ProjectCard } from "./ProjectCard";
 
 export const ProjectPage = () => {
   const projectState = useSelector((state) => state);
@@ -54,7 +55,7 @@ export const ProjectPage = () => {
         <ProjectRegistration action={action} currentItem={currentItem} />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
-        <CustomisedTable
+        {/* <CustomisedTable
           tableTitle="List of projects"
           columns={projectColumns(onProjectClick)}
           loading={loading}
@@ -64,7 +65,14 @@ export const ProjectPage = () => {
           pageCount={Math.ceil(projects.length / paginator.pageSize)}
           handlePageChange={onPageChange}
           page={paginator.pageNumber}
-        />
+        /> */}
+        <Grid container spacing={2}>
+          {paginatedData.map((project) => (
+            <Grid item xs={6}>
+              <ProjectCard />
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
     </Grid>
   );
