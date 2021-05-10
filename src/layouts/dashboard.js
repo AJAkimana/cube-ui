@@ -84,15 +84,6 @@ export const DashboardLayout = ({ route, history }) => {
             <Loading />
           ) : (
             <Grid container spacing={3}>
-              <Grid
-                item
-                lg={countsSize(user.role).lg}
-                sm={countsSize(user.role).sm}
-                xl={countsSize(user.role).xl}
-                xs={countsSize(user.role).xs}
-              >
-                <Subscriptions counts={counts.subscriptions || 0} />
-              </Grid>
               {user.role === "Manager" && (
                 <Grid
                   item
@@ -124,6 +115,15 @@ export const DashboardLayout = ({ route, history }) => {
                   sx={{ height: "100%" }}
                   counts={counts.quotes || 0}
                 />
+              </Grid>
+              <Grid
+                item
+                lg={countsSize(user.role).lg}
+                sm={countsSize(user.role).sm}
+                xl={countsSize(user.role).xl}
+                xs={countsSize(user.role).xs}
+              >
+                <Subscriptions counts={counts.subscriptions || 0} />
               </Grid>
             </Grid>
           )}

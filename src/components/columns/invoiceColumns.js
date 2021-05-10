@@ -58,7 +58,7 @@ export const invoiceColumns = (onInvoiceClick, user = {}) => [
               href={`${BASE_ROUTE}/${item._id}`}
               target="_blank"
             >
-              <PrintRoundedIcon /> Print
+              <PrintRoundedIcon /> Download
             </IconButton>
           </Tooltip>
         </>
