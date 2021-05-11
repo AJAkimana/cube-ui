@@ -70,13 +70,6 @@ export const ProjectPage = () => {
           handlePageChange={onPageChange}
           page={paginator.pageNumber}
         />
-        {/* <Grid container spacing={2}>
-          {paginatedData.map((project) => (
-            <Grid item xs={6}>
-              <ProjectCard />
-            </Grid>
-          ))}
-        </Grid> */}
       </Grid>
     </Grid>
   );
