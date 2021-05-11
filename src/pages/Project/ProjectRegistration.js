@@ -87,7 +87,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
     }
   }, [added, updated, user]);
   useEffect(() => {
-    if (currentItem) {
+    if (currentItem && action !== "view") {
       const {
         status,
         name,
@@ -112,7 +112,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
       });
       setEditorState(EditorState.createWithContent(contentState));
     }
-  }, [currentItem]);
+  }, [currentItem, action]);
   const onHandleChange = (e) => {
     e.preventDefault();
     const {
@@ -136,7 +136,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
           <ComputerOutlined />
         </Avatar>
         <Typography component="h1" variant="h4">
-          {currentItem
+          {currentItem && action !== "view"
             ? `Update "${currentItem?.name?.toUpperCase()}" project`
             : "Add a new project"}
         </Typography>

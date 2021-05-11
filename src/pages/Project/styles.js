@@ -55,4 +55,9 @@ export const useStyles = makeStyles(({ breakpoints, spacing }) => ({
     marginTop: 24,
     textTransform: "initial",
   },
+  logo: {
+    width: 48,
+    height: 48,
+    borderRadius: "0.75rem",
+  },
 }));

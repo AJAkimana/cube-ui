@@ -6,7 +6,7 @@ import { ProjectRegistration } from "./ProjectRegistration";
 import { getProjects } from "redux/actions/project";
 import { projectColumns } from "components/columns";
 import { initialPaginate, paginate } from "utils/paginate";
-import { ProjectCard } from "./ProjectCard";
+import { ProjectModel } from "./ProjectModal";
 
 export const ProjectPage = () => {
   const projectState = useSelector((state) => state);
@@ -14,6 +14,7 @@ export const ProjectPage = () => {
   const [paginator, setPaginator] = useState(initialPaginate());
   const [currentItem, setCurrentItem] = useState(null);
   const [action, setAction] = useState("add");
+  const [openView, setOpenView] = useState(false);
   const {
     projectsGet: { loading, projects },
     projectAdd: { loaded: added },
@@ -41,21 +42,24 @@ export const ProjectPage = () => {
   };
   const onProjectClick = (project = {}, action) => {
     setCurrentItem(project);
+    if (action === "view") {
+      setOpenView(true);
+      return;
+    }
     setAction(action);
   };
   return (
-    <Grid
-      container
-      spacing={2}
-      sx={{
-        py: 3,
-      }}
-    >
+    <Grid container spacing={2} sx={{ py: 3 }}>
+      <ProjectModel
+        open={openView}
+        setOpen={() => setOpenView(false)}
+        currentItem={currentItem}
+      />
       <Grid item xs={12} sm={4} md={4} lg={4}>
         <ProjectRegistration action={action} currentItem={currentItem} />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
-        {/* <CustomisedTable
+        <CustomisedTable
           tableTitle="List of projects"
           columns={projectColumns(onProjectClick)}
           loading={loading}
@@ -65,14 +69,14 @@ export const ProjectPage = () => {
           pageCount={Math.ceil(projects.length / paginator.pageSize)}
           handlePageChange={onPageChange}
           page={paginator.pageNumber}
-        /> */}
-        <Grid container spacing={2}>
+        />
+        {/* <Grid container spacing={2}>
           {paginatedData.map((project) => (
             <Grid item xs={6}>
               <ProjectCard />
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
       </Grid>
     </Grid>
   );
