@@ -1,10 +1,12 @@
 import { store } from "../store";
 import {
   SET_PASSWORD,
+  USER_DELETE,
   USER_LIST,
   USER_REGISTER,
   USER_SIGNIN,
   USER_SIGNOUT,
+  USER_UPDATE,
 } from "./actionTypes";
 import { http } from "utils/http";
 
@@ -34,5 +36,18 @@ export const setPassword = (credentials) => {
   store.dispatch({
     type: SET_PASSWORD,
     payload: http.patch("/auth/set-password", credentials),
+  });
+};
+export const updateUser = (userInfo) => {
+  const { _id: userId, ...rest } = userInfo;
+  store.dispatch({
+    type: USER_UPDATE,
+    payload: http.post(`/auth/users/${userId}`, rest),
+  });
+};
+export const deleteUser = (userId = "") => {
+  store.dispatch({
+    type: USER_DELETE,
+    payload: http.delete(`/auth/users/${userId}`),
   });
 };

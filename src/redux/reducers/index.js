@@ -16,6 +16,8 @@ import {
   loginReducer,
   registerReducer,
   setPasswordReducer,
+  userDeleteReducer,
+  userEditReducer,
   usersListReducer,
 } from "./user.reducer";
 
@@ -34,4 +36,6 @@ export default combineReducers({
   invoiceEdit: invoiceEditReducer,
   subscriptionsGet: subscriptionsGetReducer,
   dashboard: dashboardReducer,
+  userEdit: userEditReducer,
+  userRm: userDeleteReducer,
 });
