@@ -41,4 +41,21 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
+  root: {},
+  content: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    textAlgin: "center",
+  },
+  name: {
+    marginTop: theme.spacing(1),
+  },
+  avatar: {
+    height: 100,
+    width: 100,
+  },
+  removeBotton: {
+    width: "100%",
+  },
 }));
