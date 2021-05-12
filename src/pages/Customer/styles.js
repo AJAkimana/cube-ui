@@ -9,6 +9,8 @@ export const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: "#8967fc",
+    height: 100,
+    width: 100,
   },
   input: {
     fontSize: 16,
@@ -50,10 +52,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   name: {
     marginTop: theme.spacing(1),
-  },
-  avatar: {
-    height: 100,
-    width: 100,
   },
   removeBotton: {
     width: "100%",
