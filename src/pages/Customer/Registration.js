@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import LoadingBox from "components/loading.component";
-import { getUsersList, registerUser } from "redux/actions/user";
+import { getUsersList, registerUser, updateUser } from "redux/actions/user";
 import { useStyles } from "./styles";
 import {
   CustomerInfo,
@@ -38,21 +38,33 @@ const initialState = {
 };
 const steps = ["User information", "Contact", "Location", "Permission"];
 
-export const Registration = () => {
+export const Registration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [userInfo, setUserInfo] = useState(initialState);
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState(new Set([0]));
 
-  const userRegister = useSelector((state) => state.register);
-  const { loading: registering, loaded: registered } = userRegister;
+  const userRegisterState = useSelector((state) => state);
+  const {
+    register: { loading: registering, loaded: registered },
+    userEdit: { loading: updating, loaded: updated },
+  } = userRegisterState;
 
   useEffect(() => {
-    if (registered) {
+    if (registered || updated) {
       getUsersList();
       setUserInfo(initialState);
+      setActiveStep(0);
+      setCompleted(new Set([0]));
     }
-  }, [registered]);
+  }, [registered, updated]);
+  useEffect(() => {
+    if (currentItem && action === "edit") {
+      setUserInfo(currentItem);
+      setActiveStep(0);
+      setCompleted(new Set([0]));
+    }
+  }, [currentItem, action]);
   const onHandleChange = (e) => {
     e.preventDefault();
     const {
@@ -62,7 +74,12 @@ export const Registration = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    registerUser(userInfo);
+    if (action === "add") {
+      registerUser(userInfo);
+    }
+    if (action === "edit") {
+      updateUser(userInfo);
+    }
   };
   const onPhoneChange = (value, country) => {
     setUserInfo({ ...userInfo, phoneNumber: value, country: country.name });
@@ -141,7 +158,7 @@ export const Registration = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h4">
-          REGISTER USER
+          {currentItem ? `Update ${currentItem.firstName}` : "REGISTER USER"}
         </Typography>
         <Stepper alternativeLabel nonLinear activeStep={activeStep}>
           {steps.map((label, index) => (
@@ -177,16 +194,30 @@ export const Registration = () => {
               >
                 Next
               </Button>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                className={classes.submit}
-                disabled={registering}
-                onClick={submitHandler}
-              >
-                Save
-              </Button>
+              {action === "add" && (
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  className={classes.submit}
+                  disabled={registering}
+                  onClick={submitHandler}
+                >
+                  Save
+                </Button>
+              )}
+              {action === "edit" && (
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  className={classes.submit}
+                  disabled={updating}
+                  onClick={submitHandler}
+                >
+                  {currentItem ? `Update ${currentItem.firstName}` : "Update"}
+                </Button>
+              )}
             </div>
           </div>
         </form>
