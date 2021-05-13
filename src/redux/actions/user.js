@@ -42,7 +42,7 @@ export const updateUser = (userInfo) => {
   const { _id: userId, ...rest } = userInfo;
   store.dispatch({
     type: USER_UPDATE,
-    payload: http.post(`/auth/users/${userId}`, rest),
+    payload: http.patch(`/auth/users/${userId}`, rest),
   });
 };
 export const deleteUser = (userId = "") => {

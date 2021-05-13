@@ -28,6 +28,7 @@ export const CustomerPage = () => {
   useEffect(() => {
     if (deleted) {
       getUsersList();
+      setConfirmDel(false);
     }
   }, [deleted]);
   useEffect(() => {
