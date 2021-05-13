@@ -9,6 +9,7 @@ import { InvoicePage } from "pages/Invoice";
 import { SubscriptionPage } from "pages/Subscription";
 import { store } from "redux/store";
 import { CustomerPage } from "pages/Customer";
+import { UserProfile } from "./pages/UserProfile";
 
 const routes = [
   {
@@ -62,6 +63,11 @@ const routes = [
         path: "/dashboard/subscriptions",
         exact: true,
         component: SubscriptionPage,
+      },
+      {
+        path: "/dashboard/profile",
+        exact: true,
+        component: UserProfile,
       },
     ],
   },

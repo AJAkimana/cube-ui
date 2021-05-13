@@ -65,6 +65,9 @@ export const DashboardLayout = ({ route, history }) => {
                 <Link to="/dashboard/subscriptions">Subscriptions</Link>
               </li>
               <li>
+                <Link to="/dashboard/profile">My profile</Link>
+              </li>
+              <li>
                 <Divider />
               </li>
               <li>

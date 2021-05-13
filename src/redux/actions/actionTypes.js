@@ -5,6 +5,7 @@ export const USER_REGISTER = "USER_REGISTER";
 export const SET_PASSWORD = "SET_PASSWORD";
 export const USER_UPDATE = "USER_UPDATE";
 export const USER_DELETE = "USER_DELETE";
+export const UPDATE_PROFILE = "UPDATE_PROFILE";
 
 export const ADD_NEW_PROJECT = "ADD_NEW_PROJECT";
 export const EDIT_PROJECT = "EDIT_PROJECT";

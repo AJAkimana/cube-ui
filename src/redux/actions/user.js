@@ -1,6 +1,7 @@
 import { store } from "../store";
 import {
   SET_PASSWORD,
+  UPDATE_PROFILE,
   USER_DELETE,
   USER_LIST,
   USER_REGISTER,
@@ -49,5 +50,11 @@ export const deleteUser = (userId = "") => {
   store.dispatch({
     type: USER_DELETE,
     payload: http.delete(`/auth/users/${userId}`),
+  });
+};
+export const updateProfile = (userInfo) => {
+  store.dispatch({
+    type: UPDATE_PROFILE,
+    payload: http.patch(`/auth/edit-profile`, userInfo),
   });
 };

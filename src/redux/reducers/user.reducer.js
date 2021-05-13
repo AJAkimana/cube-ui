@@ -7,6 +7,7 @@ import {
   USER_SIGNOUT,
   USER_UPDATE,
   USER_DELETE,
+  UPDATE_PROFILE,
 } from "../actions/actionTypes";
 import { pending, fulfilled, rejected } from "../utils/actions";
 
@@ -163,6 +164,34 @@ export const userDeleteReducer = (state = baseState("message", ""), action) => {
       };
     }
     case rejected(USER_DELETE):
+    default:
+      return {
+        ...state,
+        loading: false,
+      };
+  }
+};
+export const profileEditReducer = (
+  state = baseState("message", ""),
+  action
+) => {
+  switch (action.type) {
+    case pending(UPDATE_PROFILE): {
+      return {
+        ...state,
+        loaded: false,
+        loading: true,
+      };
+    }
+    case fulfilled(UPDATE_PROFILE): {
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        message: action.payload.data.message,
+      };
+    }
+    case rejected(UPDATE_PROFILE):
     default:
       return {
         ...state,

@@ -14,6 +14,7 @@ import {
 import { subscriptionsGetReducer } from "./subscription.reducer";
 import {
   loginReducer,
+  profileEditReducer,
   registerReducer,
   setPasswordReducer,
   userDeleteReducer,
@@ -38,4 +39,5 @@ export default combineReducers({
   dashboard: dashboardReducer,
   userEdit: userEditReducer,
   userRm: userDeleteReducer,
+  profileEdit: profileEditReducer,
 });
