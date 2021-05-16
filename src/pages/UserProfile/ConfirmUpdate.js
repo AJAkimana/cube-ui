@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography,
 } from "@material-ui/core";
 
 export const ConfirmUpdate = ({
@@ -27,9 +28,11 @@ export const ConfirmUpdate = ({
       <DialogContent>
         <DialogContentText>
           To update your information to this website, please enter your password
-          address here. AFTER UPDATING YOUR INFORMATION THE SYSTEM WILL LOG YOU
-          OUT
+          address here.
         </DialogContentText>
+        <Typography color="error">
+          AFTER UPDATING YOUR INFORMATION THE SYSTEM WILL LOG YOU OUT
+        </Typography>
         <TextField
           autoFocus
           margin="dense"
