@@ -152,6 +152,7 @@ export const AccountDetails = ({ user, loading = false }) => {
                 value={userInfo.country}
                 disabled
                 onChange={handleChange}
+                onClick={() => updateProfile(userInfo)}
               />
             </Grid>
             <Grid item md={4} xs={12}>
@@ -209,7 +210,7 @@ export const AccountDetails = ({ user, loading = false }) => {
             color="primary"
             variant="contained"
             disabled={loading}
-            onClick={() => setOpenConfirm(true)}
+            onClick={() => updateProfile(userInfo)}
           >
             {loading ? "Updating" : "Save information"}
           </Button>
