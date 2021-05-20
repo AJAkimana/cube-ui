@@ -5,6 +5,8 @@ import {
   IconButton,
   Tooltip,
   Typography,
+  ListItem,
+  ListItemText,
 } from "@material-ui/core";
 import {
   Publish as PublishIcon,
@@ -14,6 +16,17 @@ import {
 const BASE_ROUTE = `${process.env.REACT_APP_API_URL}api/v1/invoice`;
 
 export const invoiceColumns = (onInvoiceClick, user = {}) => [
+  {
+    content: (item) => (
+      <ListItem>
+        <ListItemText
+          primary={item?.quote?.project?.name}
+          secondary={item?.quote?.project?.type}
+        />
+      </ListItem>
+    ),
+    label: "Project",
+  },
   {
     content: (item) => <Typography>{item?.user?.fullName}</Typography>,
     label: "Project owner",
