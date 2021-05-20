@@ -19,6 +19,9 @@ export const ProjectPage = () => {
     projectsGet: { loading, projects },
     projectAdd: { loaded: added },
     projectEdit: { loaded: updated },
+    login: {
+      userInfo: { user },
+    },
   } = projectState;
   useEffect(() => {
     if (projects.length > 0) {
@@ -61,7 +64,7 @@ export const ProjectPage = () => {
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable
           tableTitle="List of projects"
-          columns={projectColumns(onProjectClick)}
+          columns={projectColumns(onProjectClick, user)}
           loading={loading}
           data={paginatedData}
           withPagination

@@ -14,6 +14,7 @@ import Loading from "components/loading.component";
 
 const countsSize = (role) => {
   const sizes = {
+    Admin: { lg: 3, sm: 6, xl: 3, xs: 12 },
     Manager: { lg: 3, sm: 6, xl: 3, xs: 12 },
     Client: { lg: 4, sm: 6, xl: 4, xs: 12 },
   };
@@ -87,7 +88,7 @@ export const DashboardLayout = ({ route, history }) => {
             <Loading />
           ) : (
             <Grid container spacing={3}>
-              {user.role === "Manager" && (
+              {user.role !== "Client" && (
                 <Grid
                   item
                   lg={countsSize(user.role).lg}

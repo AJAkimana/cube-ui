@@ -27,10 +27,14 @@ export const signout = () => {
   store.dispatch({ type: USER_SIGNOUT });
 };
 
-export const getUsersList = () => {
+export const getUsersList = (userRoleType = "") => {
+  let userUrl = "/auth/users";
+  if (userRoleType) {
+    userUrl += `?role=${userRoleType}`;
+  }
   store.dispatch({
     type: USER_LIST,
-    payload: http.get("/auth/users"),
+    payload: http.get(userUrl),
   });
 };
 export const setPassword = (credentials) => {

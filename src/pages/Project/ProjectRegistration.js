@@ -34,6 +34,7 @@ const initialState = {
   status: "pending",
   description: "",
   userId: "",
+  managerId: "",
 };
 const projectStatuses = ["pending", "approved", "canceled"];
 const projectTypes = [
@@ -70,18 +71,11 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
     },
   } = projectState;
   useEffect(() => {
-    getUsersList();
-  }, []);
-  useEffect(() => {
-    if (user.role === "Client") {
-      setValues({ ...values, userId: user._id });
-    }
-    // eslint-disable-next-line
+    getUsersList("Manager");
   }, []);
   useEffect(() => {
     if (added || updated) {
       let states = { ...initialState };
-      states.userId = user.role === "Client" ? user._id : "";
       setValues(states);
       setEditorState(EditorState.createEmpty());
     }
@@ -97,7 +91,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
         startDate,
         dueDate,
         budget,
-        user,
+        manager,
       } = currentItem;
       const contentState = stateFromHTML(description);
       setValues({
@@ -108,7 +102,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
         startDate: moment(startDate).format("YYYY-MM-DD"),
         dueDate: moment(dueDate).format("YYYY-MM-DD"),
         budget,
-        userId: user,
+        managerId: manager,
       });
       setEditorState(EditorState.createWithContent(contentState));
     }
@@ -153,16 +147,17 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                 onChange={onHandleChange}
                 value={values.name}
                 autoFocus
+                disabled={user.role !== "Client"}
               />
             </Grid>
-            {user.role === "Manager" && (
+            {user.role === "Admin" && action === "changePm" && (
               <Grid item xs={12}>
                 <FormControl variant="outlined" fullWidth>
-                  <InputLabel id="project-owner">Project owner</InputLabel>
+                  <InputLabel id="project-manager">Project manager</InputLabel>
                   <Select
-                    labelId="project-owner"
-                    value={values.userId}
-                    name="userId"
+                    labelId="project-manager"
+                    value={values.managerId}
+                    name="managerId"
                     onChange={onHandleChange}
                   >
                     <MenuItem value="">---</MenuItem>
@@ -183,6 +178,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                   value={values.type}
                   name="type"
                   onChange={onHandleChange}
+                  disabled={user.role !== "Client"}
                 >
                   <MenuItem value="">---</MenuItem>
                   {projectTypes.map((type, typeIdx) => (
@@ -222,6 +218,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                 label="Start date"
                 value={values.startDate}
                 onChange={onHandleChange}
+                disabled={user.role !== "Client"}
               />
             </Grid>
             <Grid item lg={6} md={6} xl={6} xs={12}>
@@ -234,6 +231,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                 label="Due date"
                 value={values.dueDate}
                 onChange={onHandleChange}
+                disabled={user.role !== "Client"}
               />
             </Grid>
             <Grid item lg={4} md={4} xl={4} xs={12}>
@@ -246,6 +244,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                 label="Number of items"
                 value={values.nOfItems}
                 onChange={onHandleChange}
+                disabled={user.role !== "Client"}
               />
             </Grid>
             <Grid item lg={8} md={8} xl={8} xs={12}>
@@ -258,14 +257,17 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                 label="Budget"
                 value={values.budget}
                 onChange={onHandleChange}
+                disabled={user.role !== "Client"}
               />
             </Grid>
-            <Grid item xs={12}>
-              <DraftEditor
-                editorState={editorState}
-                setEditorState={setEditorState}
-              />
-            </Grid>
+            {user.role === "Client" && (
+              <Grid item xs={12}>
+                <DraftEditor
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+              </Grid>
+            )}
           </Grid>
           <CardActions>
             {action === "add" ? (
