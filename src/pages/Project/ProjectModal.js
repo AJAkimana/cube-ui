@@ -10,7 +10,8 @@ import {
   Slide,
   CardContent,
 } from "@material-ui/core";
-
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import TextInfoContent from "@mui-treasury/components/content/textInfo";
 import { useBlogTextInfoContentStyles } from "@mui-treasury/styles/textInfoContent/blog";
 
@@ -20,15 +21,22 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 export const ProjectModel = ({ open = false, setOpen, currentItem = null }) => {
   const [project, setProject] = useState({ name: "" });
+  const [events, setEvents] = useState([]);
   useEffect(() => {
     if (currentItem) {
       setProject(currentItem);
+      setEvents([
+        {
+          title: currentItem.name,
+          start: currentItem.startDate,
+          end: currentItem.dueDate,
+          allDay: true,
+        },
+      ]);
     }
   }, [currentItem]);
-  const {
-    button: buttonStyles,
-    ...contentStyles
-  } = useBlogTextInfoContentStyles();
+  const { button: buttonStyles, ...contentStyles } =
+    useBlogTextInfoContentStyles();
 
   return (
     <Dialog
@@ -58,6 +66,11 @@ export const ProjectModel = ({ open = false, setOpen, currentItem = null }) => {
           <Button className={buttonStyles}>
             Budget: ${project.budget || 0}
           </Button>
+          <Calendar
+            localizer={momentLocalizer(moment)}
+            events={events}
+            defaultView="week"
+          />
         </CardContent>
       </DialogContent>
       <DialogActions>
