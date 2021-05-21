@@ -9,6 +9,7 @@ import {
   Grid,
   Button,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import PhoneInput from "material-ui-phone-number";
 import { ConfirmUpdate } from "./ConfirmUpdate";
@@ -65,6 +66,9 @@ export const AccountDetails = ({ user, loading = false }) => {
           }}
         />
         <CardHeader subheader="The information can be edited" title="Profile" />
+        <Typography variant="h6" color="error" align="right">
+          You will be logged out after successful update profile
+        </Typography>
         <Divider />
         <CardContent>
           <Grid container spacing={2}>
@@ -142,20 +146,19 @@ export const AccountDetails = ({ user, loading = false }) => {
                 onChange={onPhoneChange}
               />
             </Grid>
-            <Grid item md={4} xs={12}>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 fullWidth
-                name="country"
+                name="address"
+                label="Your Address"
                 margin="dense"
-                autoComplete="country"
-                value={userInfo.country}
-                disabled
+                autoComplete="address"
+                value={userInfo.address}
                 onChange={handleChange}
-                onClick={() => updateProfile(userInfo)}
               />
             </Grid>
-            <Grid item md={4} xs={12}>
+            <Grid item md={3} xs={12}>
               <TextField
                 variant="outlined"
                 fullWidth
@@ -167,7 +170,7 @@ export const AccountDetails = ({ user, loading = false }) => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item md={4} xs={12}>
+            <Grid item md={3} xs={12}>
               <TextField
                 variant="outlined"
                 fullWidth
@@ -179,7 +182,7 @@ export const AccountDetails = ({ user, loading = false }) => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item md={3} xs={12}>
               <TextField
                 variant="outlined"
                 fullWidth
@@ -190,16 +193,17 @@ export const AccountDetails = ({ user, loading = false }) => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item md={3} xs={12}>
               <TextField
                 variant="outlined"
                 fullWidth
-                name="address"
-                label="Your Address"
+                name="country"
                 margin="dense"
-                autoComplete="address"
-                value={userInfo.address}
+                autoComplete="country"
+                value={userInfo.country}
+                disabled
                 onChange={handleChange}
+                onClick={() => updateProfile(userInfo)}
               />
             </Grid>
           </Grid>
