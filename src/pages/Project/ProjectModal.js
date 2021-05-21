@@ -64,7 +64,7 @@ export const ProjectModel = ({ open = false, setOpen, currentItem = null }) => {
           />
           {HtmlParser(project.description)}
           <Button className={buttonStyles}>
-            Budget: ${project.budget || 0}
+            Budget: ${project.budget?.toLocaleString("en-US") || 0}
           </Button>
           <Calendar
             localizer={momentLocalizer(moment)}

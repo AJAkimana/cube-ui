@@ -1,5 +1,10 @@
 import React from "react";
-import { ButtonGroup, IconButton, Tooltip } from "@material-ui/core";
+import {
+  ButtonGroup,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import {
   EditRounded as EditIcon,
   Publish as PublishIcon,
@@ -10,7 +15,12 @@ export const projectColumns = (onProjectClick, user = {}) => [
   { path: "name", label: "Project name" },
   { path: "type", label: "Type" },
   { path: "status", label: "Status" },
-  { path: "budget", label: "Budget" },
+  {
+    content: (item) => (
+      <Typography>$ {item.budget?.toLocaleString("en-US")}</Typography>
+    ),
+    label: "Budget",
+  },
   {
     content: (item) => (
       <ButtonGroup variant="outlined">
