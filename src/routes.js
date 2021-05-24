@@ -1,7 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { DashboardLayout } from "layouts/dashboard";
-import LoginPage from "pages/login.page";
 import SetPassword from "pages/set.password.page";
 import { ProjectPage } from "pages/Project";
 import { QuotePage } from "pages/Quote";
@@ -10,6 +9,7 @@ import { SubscriptionPage } from "pages/Subscription";
 import { store } from "redux/store";
 import { CustomerPage } from "pages/Customer";
 import { UserProfile } from "./pages/UserProfile";
+import { LoginPage } from "pages/Login";
 
 const routes = [
   {
@@ -19,6 +19,11 @@ const routes = [
   },
   {
     path: "/set-password/:token",
+    exact: true,
+    component: SetPassword,
+  },
+  {
+    path: "/set-password/:token/:action",
     exact: true,
     component: SetPassword,
   },
@@ -35,7 +40,7 @@ const routes = [
               userInfo: { user },
             },
           } = store.getState();
-          const route = user.role === "Manager" ? "customers" : "projects";
+          const route = user.role !== "Client" ? "customers" : "projects";
           return <Redirect to={`/dashboard/${route}`} />;
         },
       },

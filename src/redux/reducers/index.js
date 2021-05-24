@@ -16,6 +16,8 @@ import {
   loginReducer,
   profileEditReducer,
   registerReducer,
+  resetPasswordReducer,
+  sendLinkReducer,
   setPasswordReducer,
   userDeleteReducer,
   userEditReducer,
@@ -40,4 +42,6 @@ export default combineReducers({
   userEdit: userEditReducer,
   userRm: userDeleteReducer,
   profileEdit: profileEditReducer,
+  linkSend: sendLinkReducer,
+  pwdReset: resetPasswordReducer,
 });

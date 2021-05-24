@@ -1,5 +1,7 @@
 import { store } from "../store";
 import {
+  RESET_PASSWORD,
+  SEND_LINK,
   SET_PASSWORD,
   UPDATE_PROFILE,
   USER_DELETE,
@@ -60,5 +62,17 @@ export const updateProfile = (userInfo) => {
   store.dispatch({
     type: UPDATE_PROFILE,
     payload: http.patch(`/auth/edit-profile`, userInfo),
+  });
+};
+export const sendLink = (email = "") => {
+  store.dispatch({
+    type: SEND_LINK,
+    payload: http.post("/auth/send-reset-link", { email }),
+  });
+};
+export const resetPassword = (credentials) => {
+  store.dispatch({
+    type: RESET_PASSWORD,
+    payload: http.post("/auth/reset-password", credentials),
   });
 };

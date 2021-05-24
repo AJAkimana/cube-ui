@@ -8,6 +8,8 @@ import {
   USER_UPDATE,
   USER_DELETE,
   UPDATE_PROFILE,
+  RESET_PASSWORD,
+  SEND_LINK,
 } from "../actions/actionTypes";
 import { pending, fulfilled, rejected } from "../utils/actions";
 
@@ -192,6 +194,59 @@ export const profileEditReducer = (
       };
     }
     case rejected(UPDATE_PROFILE):
+    default:
+      return {
+        ...state,
+        loading: false,
+      };
+  }
+};
+export const sendLinkReducer = (state = baseState("message", ""), action) => {
+  switch (action.type) {
+    case pending(SEND_LINK): {
+      return {
+        ...state,
+        loading: true,
+        loaded: false,
+      };
+    }
+    case fulfilled(SEND_LINK): {
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        message: "Success",
+      };
+    }
+    case rejected(SEND_LINK):
+    default:
+      return {
+        ...state,
+        loading: false,
+      };
+  }
+};
+export const resetPasswordReducer = (
+  state = baseState("message", ""),
+  action
+) => {
+  switch (action.type) {
+    case pending(RESET_PASSWORD): {
+      return {
+        ...state,
+        loading: true,
+        loaded: false,
+      };
+    }
+    case fulfilled(RESET_PASSWORD): {
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        message: "Success",
+      };
+    }
+    case rejected(RESET_PASSWORD):
     default:
       return {
         ...state,

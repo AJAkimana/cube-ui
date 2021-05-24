@@ -1,25 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import LoadingBox from "../components/loading.component";
-import Logo from "../assets/ari_cube.png";
-import { signin } from "../redux/actions/user";
-import { USER_INFO } from "../utils/constants";
+import LoadingBox from "components/loading.component";
+import Logo from "assets/ari_cube.png";
+import { sendLink, signin } from "redux/actions/user";
+import { USER_INFO } from "utils/constants";
+import { Link } from "@material-ui/core";
+import { EmailDialog } from "./EmailDialog";
+import { notifier } from "utils/notifier";
 
 const initialState = { email: "", password: "" };
-export default function SigninScreen(props) {
+export const LoginPage = (props) => {
   const [logins, setLogins] = useState(initialState);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const redirect = props.location.search
     ? props.location.search.split("=")[1]
     : "dashboard/home";
-  const userSignin = useSelector((state) => state.login);
-  const { userInfo, loading } = userSignin;
+  const signState = useSelector((state) => state);
+  const {
+    login: { userInfo, loading },
+    linkSend: { loaded, loading: sending },
+  } = signState;
   useEffect(() => {
     if (userInfo.user.fullName) {
       localStorage.setItem(USER_INFO, JSON.stringify(userInfo));
       window.location.href = redirect;
+      setLogins(initialState);
     }
   }, [props.history, redirect, userInfo]);
+  useEffect(() => {
+    if (loaded) {
+      setOpenDialog(false);
+      notifier.success("Email was sent to your mail box");
+      setLogins(initialState);
+    }
+  }, [loaded]);
   const onHandleChange = (e) => {
     e.preventDefault();
     const {
@@ -33,6 +48,14 @@ export default function SigninScreen(props) {
   };
   return (
     <div>
+      <EmailDialog
+        open={openDialog}
+        setOpen={() => setOpenDialog(false)}
+        userInfo={logins}
+        onChange={onHandleChange}
+        onConfirm={() => sendLink(logins.email)}
+        loading={sending}
+      />
       <form className="form" onSubmit={submitHandler}>
         <div>
           <img src={Logo} alt="#" className="logo" />
@@ -66,12 +89,18 @@ export default function SigninScreen(props) {
           ></input>
         </div>
         <div>
-          <label />
           <button className="login-input btn-login primary" type="submit">
             Login
           </button>
+          <Link
+            component="button"
+            variant="body2"
+            onClick={() => setOpenDialog(true)}
+          >
+            Forget password?
+          </Link>
         </div>
       </form>
     </div>
   );
-}
+};
