@@ -31,7 +31,12 @@ export const invoiceColumns = (onInvoiceClick, user = {}) => [
     content: (item) => <Typography>{item?.user?.fullName}</Typography>,
     label: "Project owner",
   },
-  { path: "amount", label: "Amount" },
+  {
+    content: (item) => (
+      <Typography>$ {item.amount?.toLocaleString("en-US")}</Typography>
+    ),
+    label: "Amount",
+  },
   { path: "status", label: "Status" },
   {
     content: (item) => (
@@ -45,7 +50,7 @@ export const invoiceColumns = (onInvoiceClick, user = {}) => [
   },
   {
     content: (item) =>
-      item.status === "pending" && user.role === "Manager" ? (
+      item.status === "pending" && user.role !== "Client" ? (
         <ButtonGroup variant="outlined">
           <Tooltip title="Approve payment">
             <IconButton
