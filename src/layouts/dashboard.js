@@ -42,28 +42,45 @@ export const DashboardLayout = ({ route, history }) => {
     <div className="App">
       <header className="App-Header">
         <h2>Augmented Reality Innovations</h2>
-        {user.fullName ? (
+        {user?.fullName ? (
           <div className="dropdown">
             <Link to="#">
               {user.fullName} <i className="fa fa-caret-down"></i>{" "}
             </Link>
             <ul className="dropdown-content">
               {user.role === "Manager" && (
-                <li>
-                  <Link to="/dashboard/customers">Customers</Link>
-                </li>
+                <>
+                  <li>
+                    <Link to="/dashboard/customers">Customers</Link>
+                  </li>
+                  <li>
+                    <Divider />
+                  </li>
+                </>
               )}
               <li>
                 <Link to="/dashboard/projects">Projects</Link>
               </li>
               <li>
+                <Divider />
+              </li>
+              <li>
                 <Link to="/dashboard/quotes">Quotes</Link>
+              </li>
+              <li>
+                <Divider />
               </li>
               <li>
                 <Link to="/dashboard/invoices">Invoices</Link>
               </li>
               <li>
+                <Divider />
+              </li>
+              <li>
                 <Link to="/dashboard/subscriptions">Subscriptions</Link>
+              </li>
+              <li>
+                <Divider />
               </li>
               <li>
                 <Link to="/dashboard/profile">My profile</Link>
@@ -95,6 +112,8 @@ export const DashboardLayout = ({ route, history }) => {
                   sm={countsSize(user.role).sm}
                   xl={countsSize(user.role).xl}
                   xs={countsSize(user.role).xs}
+                  component={Link}
+                  to="/dashboard/customers"
                 >
                   <TotalCustomers counts={counts.users || 0} />
                 </Grid>
@@ -105,6 +124,8 @@ export const DashboardLayout = ({ route, history }) => {
                 sm={countsSize(user.role).sm}
                 xl={countsSize(user.role).xl}
                 xs={countsSize(user.role).xs}
+                component={Link}
+                to="/dashboard/projects"
               >
                 <TotalProjects counts={counts.projects || 0} />
               </Grid>
@@ -114,6 +135,8 @@ export const DashboardLayout = ({ route, history }) => {
                 sm={countsSize(user.role).sm}
                 xl={countsSize(user.role).xl}
                 xs={countsSize(user.role).xs}
+                component={Link}
+                to="/dashboard/quotes"
               >
                 <TotalQuotes
                   sx={{ height: "100%" }}
@@ -126,6 +149,8 @@ export const DashboardLayout = ({ route, history }) => {
                 sm={countsSize(user.role).sm}
                 xl={countsSize(user.role).xl}
                 xs={countsSize(user.role).xs}
+                component={Link}
+                to="/dashboard/subscriptions"
               >
                 <Subscriptions counts={counts.subscriptions || 0} />
               </Grid>
