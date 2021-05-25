@@ -16,7 +16,12 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
     label: "Project",
   },
   { path: "billingCycle", label: "Billing cycle" },
-  { path: "amount", label: "Amount" },
+  {
+    content: (item) => (
+      <Typography>$ {item.amount?.toLocaleString("en-US")}</Typography>
+    ),
+    label: "Amount",
+  },
   {
     content: (item) => <Typography>{item.status ?? "Pending"}</Typography>,
     label: "Status",
@@ -30,7 +35,7 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
         </Typography>
       ) : (
         <ButtonGroup variant="outlined">
-          {user.role === "Manager" && (
+          {user.role !== "Client" ? (
             <Tooltip title="Edit">
               <IconButton
                 aria-label="Edit"
@@ -41,8 +46,7 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
                 Edit
               </IconButton>
             </Tooltip>
-          )}
-          {user.role === "Client" && (
+          ) : (
             <Tooltip title="Change status">
               <IconButton
                 aria-label="Change status"

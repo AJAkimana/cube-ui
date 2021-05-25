@@ -24,7 +24,7 @@ const initialState = {
   billingCycle: "Monthly",
   amount: "",
 };
-const quoteCycles = ["Monthly", "Yearly"];
+const quoteCycles = ["Monthly", "Yearly", "OneTime"];
 export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
@@ -80,7 +80,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
             : "Add a new quote"}
         </Typography>
         {(adding || updating) && <Loading />}
-        {(currentItem || (action === "add" && user.role === "Manager")) && (
+        {(currentItem || (action === "add" && user.role !== "Client")) && (
           <form className={classes.form} onSubmit={submitHandler}>
             <Grid container spacing={2}>
               {action === "add" ? (
@@ -128,7 +128,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                   variant="outlined"
                   fullWidth
                   name="amount"
-                  label="Amount"
+                  label="Amount(in USD)"
                   type="number"
                   value={values.amount}
                   onChange={onHandleChange}

@@ -12,7 +12,9 @@ export const subscriptionColumns = () => [
     label: "Billing cycle",
   },
   {
-    content: (item) => <Typography>{item?.quote?.amount}</Typography>,
+    content: (item) => (
+      <Typography>$ {item.quote?.amount?.toLocaleString("en-US")}</Typography>
+    ),
     label: "Amount",
   },
   {
@@ -23,7 +25,11 @@ export const subscriptionColumns = () => [
   },
   {
     content: (item) => (
-      <Typography>{moment(item.expirationDate).fromNow()}</Typography>
+      <Typography>
+        {item.expirationDate
+          ? moment(item.expirationDate).fromNow()
+          : "One time pay"}
+      </Typography>
     ),
     label: "Expiration date",
   },
