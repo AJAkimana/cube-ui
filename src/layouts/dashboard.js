@@ -48,7 +48,7 @@ export const DashboardLayout = ({ route, history }) => {
               {user.fullName} <i className="fa fa-caret-down"></i>{" "}
             </Link>
             <ul className="dropdown-content">
-              {user.role === "Manager" && (
+              {user.role !== "Client" && (
                 <>
                   <li>
                     <Link to="/dashboard/customers">Customers</Link>
