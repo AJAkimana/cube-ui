@@ -174,7 +174,7 @@ export const userDeleteReducer = (state = baseState("message", ""), action) => {
   }
 };
 export const profileEditReducer = (
-  state = baseState("message", ""),
+  state = baseState("userInfo", { user: {} }),
   action
 ) => {
   switch (action.type) {
@@ -190,7 +190,7 @@ export const profileEditReducer = (
         ...state,
         loading: false,
         loaded: true,
-        message: action.payload.data.message,
+        userInfo: action.payload.data.data,
       };
     }
     case rejected(UPDATE_PROFILE):

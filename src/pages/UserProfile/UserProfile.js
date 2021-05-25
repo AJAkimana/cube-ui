@@ -17,20 +17,18 @@ export const UserProfile = () => {
   const classes = useStyles();
   const {
     login: { userInfo },
-    profileEdit: { loading, loaded },
+    profileEdit: { loading, loaded, userInfo: updatedInfo },
   } = useSelector((state) => state);
 
   useEffect(() => {
     if (loaded) {
-      notifier.success(
-        "Your account has been successfully updated. You gonna have to login again in 3 sec"
-      );
+      notifier.success("Your account has been successfully updated.");
+      localStorage.setItem(USER_INFO, JSON.stringify(updatedInfo));
       setTimeout(() => {
-        localStorage.removeItem(USER_INFO);
-        window.location.href = "/";
+        window.location.reload();
       }, 3000);
     }
-  }, [loaded]);
+  }, [loaded, updatedInfo]);
   return (
     <div className={classes.root}>
       <Grid container spacing={4}>

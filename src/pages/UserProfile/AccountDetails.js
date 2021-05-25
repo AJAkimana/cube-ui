@@ -9,7 +9,6 @@ import {
   Grid,
   Button,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import PhoneInput from "material-ui-phone-number";
 import { ConfirmUpdate } from "./ConfirmUpdate";
@@ -66,9 +65,9 @@ export const AccountDetails = ({ user, loading = false }) => {
           }}
         />
         <CardHeader subheader="The information can be edited" title="Profile" />
-        <Typography variant="h6" color="error" align="right">
+        {/* <Typography variant="h6" color="error" align="right">
           You will be logged out after successful update profile
-        </Typography>
+        </Typography> */}
         <Divider />
         <CardContent>
           <Grid container spacing={2}>
