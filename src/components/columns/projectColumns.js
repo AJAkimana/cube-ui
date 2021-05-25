@@ -45,7 +45,7 @@ export const projectColumns = (onProjectClick, user = {}) => [
             </IconButton>
           </Tooltip>
         )}
-        {user.role === "Manager" && (
+        {user.role !== "Client" && (
           <Tooltip title="Change status">
             <IconButton
               aria-label="Change status"

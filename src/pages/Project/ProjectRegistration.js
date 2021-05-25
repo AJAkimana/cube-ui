@@ -227,7 +227,7 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
                 fullWidth
                 type="number"
                 name="budget"
-                label="Budget"
+                label="Budget(in USD)"
                 value={values.budget}
                 onChange={onHandleChange}
                 disabled={user.role !== "Client"}
