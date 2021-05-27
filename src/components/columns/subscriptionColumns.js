@@ -1,12 +1,14 @@
 import React from "react";
 import moment from "moment";
 import { Typography } from "@material-ui/core";
+import { projectOwnerCol } from "./projectColumns";
 
-export const subscriptionColumns = () => [
+export const subscriptionColumns = (user = {}) => [
   {
-    content: (item) => <Typography>{item.user.fullName}</Typography>,
-    label: "User names",
+    content: (item) => <Typography>{item.quote?.project?.name}</Typography>,
+    label: "Project",
   },
+  ...projectOwnerCol(user),
   {
     content: (item) => <Typography>{item?.quote?.billingCycle}</Typography>,
     label: "Billing cycle",

@@ -9,12 +9,14 @@ import {
   EditRounded as EditIcon,
   Publish as PublishIcon,
 } from "@material-ui/icons";
+import { projectOwnerCol } from "./projectColumns";
 
 export const quoteColumns = (onQuoteClick, user = {}) => [
   {
     content: (item) => <Typography>{item?.project?.name}</Typography>,
     label: "Project",
   },
+  ...projectOwnerCol(user),
   { path: "billingCycle", label: "Billing cycle" },
   {
     content: (item) => (

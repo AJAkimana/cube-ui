@@ -9,9 +9,10 @@ import { initialPaginate, paginate } from "utils/paginate";
 export const SubscriptionPage = () => {
   const [paginatedData, setPaginatedData] = useState([]);
   const [paginator, setPaginator] = useState(initialPaginate());
-  const { loading, subscriptions } = useSelector(
-    ({ subscriptionsGet }) => subscriptionsGet
-  );
+  const {
+    subscriptionsGet: { loading, subscriptions },
+    login: { userInfo },
+  } = useSelector((state) => state);
   useEffect(() => {
     if (subscriptions.length > 0) {
       const { pageNumber, pageSize } = paginator;
@@ -36,7 +37,7 @@ export const SubscriptionPage = () => {
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable
           tableTitle="List of subscriptions"
-          columns={subscriptionColumns()}
+          columns={subscriptionColumns(userInfo.user)}
           loading={loading}
           data={paginatedData}
           withPagination

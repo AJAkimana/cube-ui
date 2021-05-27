@@ -45,7 +45,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
     }
   }, [added, updated]);
   useEffect(() => {
-    getProjects({ status: "approved" });
+    getProjects({});
   }, []);
   useEffect(() => {
     if (currentItem) {

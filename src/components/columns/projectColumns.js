@@ -11,8 +11,20 @@ import {
   ViewComfy as ViewComfyIcon,
 } from "@material-ui/icons";
 
+export const projectOwnerCol = (user = {}) => {
+  return user.role !== "Client"
+    ? [
+        {
+          content: (item) => <Typography>{item?.user?.fullName}</Typography>,
+          label: "Project Owner",
+        },
+      ]
+    : [];
+};
+
 export const projectColumns = (onProjectClick, user = {}) => [
   { path: "name", label: "Project name" },
+  ...projectOwnerCol(user),
   { path: "type", label: "Type" },
   { path: "status", label: "Status" },
   {
