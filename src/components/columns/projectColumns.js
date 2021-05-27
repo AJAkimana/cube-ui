@@ -2,6 +2,8 @@ import React from "react";
 import {
   ButtonGroup,
   IconButton,
+  ListItem,
+  ListItemText,
   Tooltip,
   Typography,
 } from "@material-ui/core";
@@ -23,7 +25,14 @@ export const projectOwnerCol = (user = {}) => {
 };
 
 export const projectColumns = (onProjectClick, user = {}) => [
-  { path: "name", label: "Project name" },
+  {
+    content: (item) => (
+      <ListItem>
+        <ListItemText primary={item.name} secondary={item.type} />
+      </ListItem>
+    ),
+    label: "Project",
+  },
   ...projectOwnerCol(user),
   { path: "type", label: "Type" },
   { path: "status", label: "Status" },

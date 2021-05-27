@@ -2,6 +2,8 @@ import React from "react";
 import {
   ButtonGroup,
   IconButton,
+  ListItem,
+  ListItemText,
   Tooltip,
   Typography,
 } from "@material-ui/core";
@@ -13,7 +15,14 @@ import { projectOwnerCol } from "./projectColumns";
 
 export const quoteColumns = (onQuoteClick, user = {}) => [
   {
-    content: (item) => <Typography>{item?.project?.name}</Typography>,
+    content: (item) => (
+      <ListItem>
+        <ListItemText
+          primary={item.project?.name}
+          secondary={item.project?.type}
+        />
+      </ListItem>
+    ),
     label: "Project",
   },
   ...projectOwnerCol(user),

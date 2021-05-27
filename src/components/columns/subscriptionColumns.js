@@ -1,11 +1,18 @@
 import React from "react";
 import moment from "moment";
-import { Typography } from "@material-ui/core";
+import { ListItem, ListItemText, Typography } from "@material-ui/core";
 import { projectOwnerCol } from "./projectColumns";
 
 export const subscriptionColumns = (user = {}) => [
   {
-    content: (item) => <Typography>{item.quote?.project?.name}</Typography>,
+    content: (item) => (
+      <ListItem>
+        <ListItemText
+          primary={item.quote?.project?.name}
+          secondary={item.quote?.project?.type}
+        />
+      </ListItem>
+    ),
     label: "Project",
   },
   ...projectOwnerCol(user),

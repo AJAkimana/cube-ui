@@ -20,8 +20,8 @@ export const invoiceColumns = (onInvoiceClick, user = {}) => [
     content: (item) => (
       <ListItem>
         <ListItemText
-          primary={item?.quote?.project?.name}
-          secondary={item?.quote?.project?.type}
+          primary={item.quote?.project?.name}
+          secondary={item.quote?.project?.type}
         />
       </ListItem>
     ),
