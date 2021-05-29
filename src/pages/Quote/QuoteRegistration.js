@@ -94,9 +94,9 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                       onChange={onHandleChange}
                     >
                       <MenuItem value="">---</MenuItem>
-                      {projects.map(({ _id, name }, choiceIdx) => (
+                      {projects.map(({ _id, name, user }, choiceIdx) => (
                         <MenuItem value={_id} key={choiceIdx}>
-                          {name}
+                          {`${name} ---> ${user?.fullName}`}
                         </MenuItem>
                       ))}
                     </Select>
