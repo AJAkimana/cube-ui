@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import NumberFormat from "react-number-format";
 import {
   Avatar,
   Button,
@@ -221,15 +222,18 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
               />
             </Grid>
             <Grid item lg={8} md={8} xl={8} xs={12}>
-              <TextField
+              <NumberFormat
                 className={classes.input}
-                variant="outlined"
-                fullWidth
-                type="number"
-                name="budget"
-                label="Budget(in USD)"
                 value={values.budget}
-                onChange={onHandleChange}
+                onValueChange={({ floatValue }) =>
+                  setValues({ ...values, budget: floatValue })
+                }
+                prefix="$"
+                thousandSeparator
+                customInput={TextField}
+                fullWidth
+                variant="outlined"
+                label="Budget(in USD)"
                 disabled={user.role !== "Client"}
               />
             </Grid>
