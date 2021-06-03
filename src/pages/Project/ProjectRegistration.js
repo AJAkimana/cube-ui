@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import DateFnsUtils from "@date-io/date-fns";
+import { 
+  KeyboardDatePicker, 
+  MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { useSelector } from "react-redux";
 import NumberFormat from "react-number-format";
 import {
@@ -35,7 +39,6 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   const [values, setValues] = useState(initialState);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const projectState = useSelector((state) => state);
-
   const {
     projectAdd: { loading: adding, loaded: added },
     projectEdit: { loading: updating, loaded: updated },
@@ -88,6 +91,15 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
     } = e;
     setValues({ ...values, [name]: value });
   };
+
+  const changeStartDate = (value) => {
+    setValues({...values, startDate: value})
+  }
+
+  const changeDueDate = (value) => {
+    setValues({...values, dueDate: value})
+  }
+
   const submitHandler = (e) => {
     e.preventDefault();
     values.description = stateToHTML(editorState.getCurrentContent());
@@ -183,30 +195,32 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
               </FormControl>
             </Grid>
             <Grid item lg={6} md={6} xl={6} xs={12}>
-              <TextField
-                className={classes.input}
-                variant="outlined"
-                fullWidth
-                type="date"
-                name="startDate"
-                label="Start date"
-                value={values.startDate}
-                onChange={onHandleChange}
-                disabled={user.role !== "Client"}
-              />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker 
+                  label= "Start Date"
+                  inputVariant="outlined"
+                  value={values.startDate}
+                  InputAdornmentProps={{ position: "start" }}
+                  format="yyyy-MM-dd"
+                  views={["year", "month", "date"]}
+                  onChange={changeStartDate}
+                  disabled={user.role !== "Client"}
+                />
+              </MuiPickersUtilsProvider>
             </Grid>
             <Grid item lg={6} md={6} xl={6} xs={12}>
-              <TextField
-                className={classes.input}
-                variant="outlined"
-                fullWidth
-                type="date"
-                name="dueDate"
-                label="Due date"
-                value={values.dueDate}
-                onChange={onHandleChange}
-                disabled={user.role !== "Client"}
-              />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker 
+                  label= "Due Date"
+                  inputVariant="outlined"
+                  value={values.dueDate} 
+                  InputAdornmentProps={{ position: "start" }}
+                  format="yyyy-MM-dd"
+                  views={["year", "month", "date"]}
+                  disabled={user.role !== "Client"}
+                  onChange={changeDueDate}
+                />
+              </MuiPickersUtilsProvider>
             </Grid>
             <Grid item lg={4} md={4} xl={4} xs={12}>
               <TextField
