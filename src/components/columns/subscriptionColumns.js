@@ -8,8 +8,8 @@ export const subscriptionColumns = (user = {}) => [
     content: (item) => (
       <ListItem>
         <ListItemText
-          primary={item.quote?.project?.name}
-          secondary={item.quote?.project?.type}
+          primary={item.project?.name}
+          secondary={item.project?.type}
         />
       </ListItem>
     ),
@@ -17,7 +17,7 @@ export const subscriptionColumns = (user = {}) => [
   },
   ...projectOwnerCol(user),
   {
-    content: (item) => <Typography>{item?.quote?.billingCycle}</Typography>,
+    content: (item) => <Typography>{item.billingCycle}</Typography>,
     label: "Billing cycle",
   },
   {
