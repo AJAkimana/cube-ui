@@ -1,6 +1,7 @@
 import React, { forwardRef, useState, useEffect } from "react";
 import moment from "moment";
 import HtmlParser from "react-html-parser";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
   Dialog,
@@ -11,33 +12,45 @@ import {
   CardContent,
   ListItemText,
   ListItem,
+  List,
   Typography,
+  IconButton,
+  Divider,
 } from "@material-ui/core";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import { CloudDownloadOutlined as DownloadIcon } from "@material-ui/icons";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import TextInfoContent from "@mui-treasury/components/content/textInfo";
 import { useBlogTextInfoContentStyles } from "@mui-treasury/styles/textInfoContent/blog";
 import { projectTypes } from "./projectConstants";
+import { getProjectHistories } from "redux/actions/project";
+import { useSelector } from "react-redux";
+import Loading from "components/loading.component";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    maxWidth: "36ch",
+    backgroundColor: theme.palette.background.paper,
+  },
+  inline: {
+    display: "inline",
+  },
+}));
 export const ProjectModel = ({ open = false, setOpen, currentItem = null }) => {
+  const classes = useStyles();
+
   const [project, setProject] = useState({ name: "" });
-  const [events, setEvents] = useState([]);
   const [projectType, setProjectType] = useState({});
+  const { loading, histories } = useSelector(
+    ({ historiesGet }) => historiesGet
+  );
   useEffect(() => {
     if (currentItem) {
       setProject(currentItem);
-      setEvents([
-        {
-          title: currentItem.name,
-          start: currentItem.startDate,
-          end: currentItem.dueDate,
-          allDay: true,
-        },
-      ]);
+      getProjectHistories(currentItem._id);
       const currentPType = projectTypes.find(
         (e) => e.name === currentItem.type
       );
@@ -87,11 +100,40 @@ export const ProjectModel = ({ open = false, setOpen, currentItem = null }) => {
           <Button className={buttonStyles}>
             Budget: ${project.budget?.toLocaleString("en-US") || 0}
           </Button>
-          <Calendar
-            localizer={momentLocalizer(moment)}
-            events={events}
-            defaultView="week"
-          />
+          {loading ? (
+            <Loading />
+          ) : (
+            <List>
+              {histories.map((history, historyIdx) => (
+                <>
+                  <ListItem alignItems="flex-start" key={historyIdx}>
+                    <ListItemText
+                      primary={history.description}
+                      secondary={
+                        <>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textPrimary"
+                          >
+                            {history.userRole}
+                          </Typography>
+                          {` — on ${moment(history.createdAt).format(
+                            "MMM DD, YYYY @ HH:mm"
+                          )}`}
+                        </>
+                      }
+                    />
+                    <IconButton edge="end" size="small">
+                      <DownloadIcon />
+                    </IconButton>
+                  </ListItem>
+                  <Divider variant="inset" component="li" />
+                </>
+              ))}
+            </List>
+          )}
         </CardContent>
       </DialogContent>
       <DialogActions>
