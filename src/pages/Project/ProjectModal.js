@@ -25,6 +25,7 @@ import { projectTypes } from "./projectConstants";
 import { getProjectHistories } from "redux/actions/project";
 import { useSelector } from "react-redux";
 import Loading from "components/loading.component";
+import { INVOICE_ROUTE } from "utils/constants";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -125,9 +126,19 @@ export const ProjectModel = ({ open = false, setOpen, currentItem = null }) => {
                         </>
                       }
                     />
-                    <IconButton edge="end" size="small">
-                      <DownloadIcon />
-                    </IconButton>
+                    {history.invoice !== null && (
+                      <IconButton
+                        edge="end"
+                        size="small"
+                        component="a"
+                        aria-label="Print invoice"
+                        rel="noreferrer"
+                        href={`${INVOICE_ROUTE}/${history.invoice}`}
+                        target="_blank"
+                      >
+                        <DownloadIcon />
+                      </IconButton>
+                    )}
                   </ListItem>
                   <Divider variant="inset" component="li" />
                 </>

@@ -12,16 +12,15 @@ import {
   Publish as PublishIcon,
   PrintRounded as PrintRoundedIcon,
 } from "@material-ui/icons";
-
-const BASE_ROUTE = `${process.env.REACT_APP_API_URL}api/v1/invoice`;
+import { INVOICE_ROUTE } from "utils/constants";
 
 export const invoiceColumns = (onInvoiceClick, user = {}) => [
   {
     content: (item) => (
       <ListItem>
         <ListItemText
-          primary={item.quote?.project?.name}
-          secondary={item.quote?.project?.type}
+          primary={item.project?.name}
+          secondary={item.project?.type}
         />
       </ListItem>
     ),
@@ -73,7 +72,7 @@ export const invoiceColumns = (onInvoiceClick, user = {}) => [
               aria-label="Print invoice"
               color="default"
               rel="noreferrer"
-              href={`${BASE_ROUTE}/${item._id}`}
+              href={`${INVOICE_ROUTE}/${item._id}`}
               target="_blank"
             >
               <PrintRoundedIcon /> Download
