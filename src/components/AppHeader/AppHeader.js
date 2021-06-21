@@ -6,28 +6,39 @@ import {
   Typography,
   InputBase,
   Badge,
-  MenuItem,
-  Menu,
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
   Search as SearchIcon,
   AccountCircle,
-  Mail as MailIcon,
   Notifications as NotificationsIcon,
   MoreVert as MoreIcon,
 } from "@material-ui/icons";
 import { useStyles } from "styles/headerStyles";
+import { menuId, NavigationMenu } from "./NavigationMenu";
+import { MobileMenu, mobileMenuId } from "./MobileMenu";
+import { useSelector } from "react-redux";
+import { NotificationsMenu, notificationsMenuId } from "./NotificationsMenu";
 
+const notifications = [1];
 export const AppHeader = ({ children }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [notifAnchorEl, setNotifAnchorEl] = React.useState(null);
+
+  const appState = useSelector((state) => state);
+  const {
+    login: {
+      userInfo: { user },
+    },
+  } = appState;
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event) => {
+  const handleNavMenuOpen = (event) => {
+    setMobileMoreAnchorEl(null);
     setAnchorEl(event.currentTarget);
   };
 
@@ -44,63 +55,6 @@ export const AppHeader = ({ children }) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
-
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -113,7 +67,7 @@ export const AppHeader = ({ children }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={classes.title} variant="h4" noWrap>
             Augmented Reality Innovations
           </Typography>
           <div className={classes.search}>
@@ -130,28 +84,31 @@ export const AppHeader = ({ children }) => {
             />
           </div>
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
+          {Boolean(user?.fullName) && (
+            <div className={classes.sectionDesktop}>
+              <IconButton
+                aria-label={`show ${notifications.length} new notifications`}
+                color="inherit"
+                aria-controls={notificationsMenuId}
+                aria-haspopup="true"
+                onClick={({ currentTarget }) => setNotifAnchorEl(currentTarget)}
+              >
+                <Badge badgeContent={notifications.length} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleNavMenuOpen}
+                color="inherit"
+              >
+                {user.fullName} <AccountCircle />
+              </IconButton>
+            </div>
+          )}
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -165,8 +122,24 @@ export const AppHeader = ({ children }) => {
           </div>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      <NavigationMenu
+        anchorEl={anchorEl}
+        isMenuOpen={isMenuOpen}
+        handleMenuClose={handleMenuClose}
+        user={user}
+      />
+      <MobileMenu
+        mobileMoreAnchorEl={mobileMoreAnchorEl}
+        isMobileMenuOpen={isMobileMenuOpen}
+        handleMobileMenuClose={handleMobileMenuClose}
+        handleNavMenuOpen={handleNavMenuOpen}
+        user={user}
+        notifications={notifications}
+      />
+      <NotificationsMenu
+        anchorEl={notifAnchorEl}
+        onClose={() => setNotifAnchorEl(null)}
+      />
       {children}
     </div>
   );

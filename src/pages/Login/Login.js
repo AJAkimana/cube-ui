@@ -47,7 +47,7 @@ export const LoginPage = (props) => {
     signin(logins);
   };
   return (
-    <div>
+    <div className="login-page">
       <EmailDialog
         open={openDialog}
         setOpen={() => setOpenDialog(false)}
@@ -74,7 +74,7 @@ export const LoginPage = (props) => {
             onChange={onHandleChange}
             value={logins.email}
             className="login-input"
-          ></input>
+          />
         </div>
         <div>
           <label htmlFor="password">Password</label>
@@ -86,7 +86,7 @@ export const LoginPage = (props) => {
             onChange={onHandleChange}
             value={logins.password}
             className="login-input"
-          ></input>
+          />
         </div>
         <div>
           <button className="login-input btn-login primary" type="submit">
