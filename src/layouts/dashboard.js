@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import { USER_INFO } from "../utils/constants";
 import { getDashboardCounts } from "redux/actions/project";
 import Loading from "components/loading.component";
-import { AppHeader } from "components/AppHeader";
 
 const countsSize = (role) => {
   const sizes = {
@@ -40,70 +39,8 @@ export const DashboardLayout = ({ route, history }) => {
     getDashboardCounts();
   }, []);
   return (
-    // <div className="App">
-    <AppHeader>
-      <Container maxWidth={false}>
-        {loading ? (
-          <Loading />
-        ) : (
-          <Grid container spacing={3}>
-            {user.role !== "Client" && (
-              <Grid
-                item
-                lg={countsSize(user.role).lg}
-                sm={countsSize(user.role).sm}
-                xl={countsSize(user.role).xl}
-                xs={countsSize(user.role).xs}
-                component={Link}
-                to="/dashboard/customers"
-              >
-                <TotalCustomers counts={counts.users || 0} />
-              </Grid>
-            )}
-            <Grid
-              item
-              lg={countsSize(user.role).lg}
-              sm={countsSize(user.role).sm}
-              xl={countsSize(user.role).xl}
-              xs={countsSize(user.role).xs}
-              component={Link}
-              to="/dashboard/projects"
-            >
-              <TotalProjects counts={counts.projects || 0} />
-            </Grid>
-            <Grid
-              item
-              lg={countsSize(user.role).lg}
-              sm={countsSize(user.role).sm}
-              xl={countsSize(user.role).xl}
-              xs={countsSize(user.role).xs}
-              component={Link}
-              to="/dashboard/quotes"
-            >
-              <TotalQuotes
-                sx={{ height: "100%" }}
-                counts={counts.quotes || 0}
-              />
-            </Grid>
-            <Grid
-              item
-              lg={countsSize(user.role).lg}
-              sm={countsSize(user.role).sm}
-              xl={countsSize(user.role).xl}
-              xs={countsSize(user.role).xs}
-              component={Link}
-              to="/dashboard/subscriptions"
-            >
-              <Subscriptions counts={counts.subscriptions || 0} />
-            </Grid>
-          </Grid>
-        )}
-        {renderRoutes(route.routes)}
-      </Container>
-    </AppHeader>
-  );
-  {
-    /* <header className="App-Header">
+    <div className="App">
+      <header className="App-Header">
         <h2>Augmented Reality Innovations</h2>
         {user?.fullName ? (
           <div className="dropdown">
@@ -161,10 +98,67 @@ export const DashboardLayout = ({ route, history }) => {
         ) : (
           <Link to="/">Home</Link>
         )}
-      </header> *
+      </header>
       <main>
-        
+        <Container maxWidth={false}>
+          {loading ? (
+            <Loading />
+          ) : (
+            <Grid container spacing={3}>
+              {user.role !== "Client" && (
+                <Grid
+                  item
+                  lg={countsSize(user.role).lg}
+                  sm={countsSize(user.role).sm}
+                  xl={countsSize(user.role).xl}
+                  xs={countsSize(user.role).xs}
+                  component={Link}
+                  to="/dashboard/customers"
+                >
+                  <TotalCustomers counts={counts.users || 0} />
+                </Grid>
+              )}
+              <Grid
+                item
+                lg={countsSize(user.role).lg}
+                sm={countsSize(user.role).sm}
+                xl={countsSize(user.role).xl}
+                xs={countsSize(user.role).xs}
+                component={Link}
+                to="/dashboard/projects"
+              >
+                <TotalProjects counts={counts.projects || 0} />
+              </Grid>
+              <Grid
+                item
+                lg={countsSize(user.role).lg}
+                sm={countsSize(user.role).sm}
+                xl={countsSize(user.role).xl}
+                xs={countsSize(user.role).xs}
+                component={Link}
+                to="/dashboard/quotes"
+              >
+                <TotalQuotes
+                  sx={{ height: "100%" }}
+                  counts={counts.quotes || 0}
+                />
+              </Grid>
+              <Grid
+                item
+                lg={countsSize(user.role).lg}
+                sm={countsSize(user.role).sm}
+                xl={countsSize(user.role).xl}
+                xs={countsSize(user.role).xs}
+                component={Link}
+                to="/dashboard/subscriptions"
+              >
+                <Subscriptions counts={counts.subscriptions || 0} />
+              </Grid>
+            </Grid>
+          )}
+          {renderRoutes(route.routes)}
+        </Container>
       </main>
-    </div> */
-  }
+    </div>
+  );
 };
