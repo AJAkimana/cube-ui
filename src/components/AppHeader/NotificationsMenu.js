@@ -6,6 +6,7 @@ import {
   MenuItem,
   Typography,
 } from "@material-ui/core";
+import moment from "moment";
 
 export const notificationsMenuId = "notifications-menu";
 export const NotificationsMenu = ({ anchorEl, onClose }) => {
@@ -37,7 +38,7 @@ export const NotificationsMenu = ({ anchorEl, onClose }) => {
                 >
                   Client
                 </Typography>
-                {` — on Tue 20, 2021`}
+                {` — ${moment().fromNow()}`}
               </>
             }
           />
