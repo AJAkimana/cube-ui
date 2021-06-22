@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -19,6 +19,7 @@ import { menuId, NavigationMenu } from "./NavigationMenu";
 import { MobileMenu, mobileMenuId } from "./MobileMenu";
 import { useSelector } from "react-redux";
 import { NotificationsMenu, notificationsMenuId } from "./NotificationsMenu";
+import { getNotifications } from "redux/actions/dashboard";
 
 const notifications = [1];
 export const AppHeader = ({ children }) => {
@@ -32,8 +33,12 @@ export const AppHeader = ({ children }) => {
     login: {
       userInfo: { user },
     },
+    notifsGet: { loading, notifs },
   } = appState;
 
+  useEffect(() => {
+    getNotifications();
+  }, []);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -87,13 +92,13 @@ export const AppHeader = ({ children }) => {
           {Boolean(user?.fullName) && (
             <div className={classes.sectionDesktop}>
               <IconButton
-                aria-label={`show ${notifications.length} new notifications`}
+                aria-label={`show ${notifs.length} new notifications`}
                 color="inherit"
                 aria-controls={notificationsMenuId}
                 aria-haspopup="true"
                 onClick={({ currentTarget }) => setNotifAnchorEl(currentTarget)}
               >
-                <Badge badgeContent={notifications.length} color="secondary">
+                <Badge badgeContent={notifs.length} color="secondary">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
@@ -134,11 +139,12 @@ export const AppHeader = ({ children }) => {
         handleMobileMenuClose={handleMobileMenuClose}
         handleNavMenuOpen={handleNavMenuOpen}
         user={user}
-        notifications={notifications}
+        notifications={notifs}
       />
       <NotificationsMenu
         anchorEl={notifAnchorEl}
         onClose={() => setNotifAnchorEl(null)}
+        notifications={notifs}
       />
       {children}
     </div>

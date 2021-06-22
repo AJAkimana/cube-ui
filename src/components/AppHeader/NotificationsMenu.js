@@ -9,7 +9,12 @@ import {
 import moment from "moment";
 
 export const notificationsMenuId = "notifications-menu";
-export const NotificationsMenu = ({ anchorEl, onClose }) => {
+export const NotificationsMenu = ({
+  anchorEl,
+  onClose,
+  notifications = [],
+  loading = false,
+}) => {
   return (
     <Menu
       id={notificationsMenuId}
@@ -17,33 +22,33 @@ export const NotificationsMenu = ({ anchorEl, onClose }) => {
       keepMounted
       open={Boolean(anchorEl)}
       onClose={onClose}
-      PaperProps={{
-        style: {
-          maxWidth: 400,
-          width: "30ch",
-        },
-      }}
     >
-      <MenuItem onClick={onClose}>
-        <ListItem alignItems="flex-start">
-          <ListItemText
-            primary="Some desciption"
-            secondary={
-              <>
-                <Typography
-                  component="span"
-                  variant="body2"
-                  style={{ display: "inline" }}
-                  color="textPrimary"
-                >
-                  Client
-                </Typography>
-                {` — ${moment().fromNow()}`}
-              </>
-            }
-          />
-        </ListItem>
-      </MenuItem>
+      {notifications.length ? (
+        notifications.map((notif, notifIdx) => (
+          <MenuItem onClick={onClose} key={notifIdx}>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                primary={notif.description}
+                secondary={
+                  <>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      style={{ display: "inline" }}
+                      color="textPrimary"
+                    >
+                      ({notif.userRole})
+                    </Typography>
+                    {` — ${moment(notif.createdAt).fromNow()}`}
+                  </>
+                }
+              />
+            </ListItem>
+          </MenuItem>
+        ))
+      ) : (
+        <MenuItem onClick={onClose}> No new notification</MenuItem>
+      )}
     </Menu>
   );
 };
