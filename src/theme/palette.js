@@ -36,6 +36,12 @@ const palette = {
     main: colors.orange[600],
     light: colors.orange[400],
   },
+  purple: {
+    contrastText: white,
+    dark: "#8967fc",
+    main: "#8967fc",
+    light: "#8967fc",
+  },
   error: {
     contrastText: white,
     dark: colors.red[900],

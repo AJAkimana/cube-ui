@@ -21,7 +21,6 @@ import { useSelector } from "react-redux";
 import { NotificationsMenu, notificationsMenuId } from "./NotificationsMenu";
 import { getNotifications } from "redux/actions/dashboard";
 
-const notifications = [1];
 export const AppHeader = ({ children }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -33,7 +32,7 @@ export const AppHeader = ({ children }) => {
     login: {
       userInfo: { user },
     },
-    notifsGet: { loading, notifs },
+    notifsGet: { notifs },
   } = appState;
 
   useEffect(() => {
@@ -62,7 +61,7 @@ export const AppHeader = ({ children }) => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -72,7 +71,12 @@ export const AppHeader = ({ children }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h4" noWrap>
+          <Typography
+            className={classes.title}
+            variant="h4"
+            color="inherit"
+            noWrap
+          >
             Augmented Reality Innovations
           </Typography>
           <div className={classes.search}>
