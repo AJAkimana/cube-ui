@@ -1,5 +1,8 @@
 import { baseState } from "../utils/baseStates";
-import { GET_NOTIFICATIONS } from "../actions/actionTypes";
+import {
+  GET_NOTIFICATIONS,
+  GET_NOTIFICATIONS_COUNT,
+} from "../actions/actionTypes";
 import { pending, fulfilled, rejected } from "../utils/actions";
 
 export const notifsGetReducer = (state = baseState("notifs", []), action) => {
@@ -19,6 +22,30 @@ export const notifsGetReducer = (state = baseState("notifs", []), action) => {
       };
     }
     case rejected(GET_NOTIFICATIONS):
+    default:
+      return {
+        ...state,
+        loading: false,
+      };
+  }
+};
+export const notifsCountReducer = (state = baseState("count", 0), action) => {
+  switch (action.type) {
+    case pending(GET_NOTIFICATIONS_COUNT): {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case fulfilled(GET_NOTIFICATIONS_COUNT): {
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        count: action.payload.data.data,
+      };
+    }
+    case rejected(GET_NOTIFICATIONS_COUNT):
     default:
       return {
         ...state,

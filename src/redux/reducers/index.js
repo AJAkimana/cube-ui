@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { notifsGetReducer } from "./dashboard.reducer";
+import { notifsCountReducer, notifsGetReducer } from "./dashboard.reducer";
 import { invoiceEditReducer, invoicesGetReducer } from "./invoice.reducer";
 import {
   dashboardReducer,
@@ -48,4 +48,5 @@ export default combineReducers({
   pwdReset: resetPasswordReducer,
   historiesGet: historiesGetReducer,
   notifsGet: notifsGetReducer,
+  notifsCount: notifsCountReducer,
 });
