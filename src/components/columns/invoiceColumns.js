@@ -74,6 +74,7 @@ export const invoiceColumns = (onInvoiceClick, user = {}) => [
               rel="noreferrer"
               href={`${INVOICE_ROUTE}/${item._id}`}
               target="_blank"
+              size="small"
             >
               <PrintRoundedIcon /> Download
             </IconButton>
