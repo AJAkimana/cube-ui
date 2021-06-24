@@ -7,10 +7,10 @@ import {
   Badge,
 } from "@material-ui/core";
 import {
-  Menu as MenuIcon,
   AccountCircle,
   Notifications as NotificationsIcon,
   MoreVert as MoreIcon,
+  ExpandMore as ExpandMoreIcon,
 } from "@material-ui/icons";
 import { useStyles } from "styles/headerStyles";
 import { menuId, NavigationMenu } from "./NavigationMenu";
@@ -64,14 +64,14 @@ export const AppHeader = ({ children }) => {
     <div className={classes.grow}>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
           <Typography
             className={classes.title}
             variant="h4"
@@ -93,6 +93,7 @@ export const AppHeader = ({ children }) => {
                 <Badge badgeContent={count} color="secondary">
                   <NotificationsIcon />
                 </Badge>
+                Notifications
               </IconButton>
               <IconButton
                 edge="end"
@@ -102,7 +103,9 @@ export const AppHeader = ({ children }) => {
                 onClick={handleNavMenuOpen}
                 color="inherit"
               >
-                {user.fullName} <AccountCircle />
+                <AccountCircle />
+                {user.firstName}
+                <ExpandMoreIcon />
               </IconButton>
             </div>
           )}
