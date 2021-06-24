@@ -15,9 +15,14 @@ import {
   List,
   Typography,
   IconButton,
-  Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@material-ui/core";
-import { CloudDownloadOutlined as DownloadIcon } from "@material-ui/icons";
+import {
+  CloudDownloadOutlined as DownloadIcon,
+  ExpandMore as ExpandMoreIcon,
+} from "@material-ui/icons";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import TextInfoContent from "@mui-treasury/components/content/textInfo";
 import { useBlogTextInfoContentStyles } from "@mui-treasury/styles/textInfoContent/blog";
@@ -87,8 +92,8 @@ export const ProjectModel = ({ open = false, setOpen, currentItem = null }) => {
               "YYYY-MM-DD"
             )}, Due date: ${moment(project.dueDate).format("YYYY-MM-DD")}`}
           />
+          <Typography variant="h4">Project type:</Typography>
           <ListItem>
-            <Typography variant="h4">Project type:</Typography>
             <ListItemText
               primary={projectType?.name}
               secondary={projectType?.description}
@@ -106,42 +111,52 @@ export const ProjectModel = ({ open = false, setOpen, currentItem = null }) => {
           ) : (
             <List>
               {histories.map((history, historyIdx) => (
-                <>
-                  <ListItem alignItems="flex-start" key={historyIdx}>
-                    <ListItemText
-                      primary={history.description}
-                      secondary={
-                        <>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {history.userRole}
-                          </Typography>
-                          {` — on ${moment(history.createdAt).format(
-                            "MMM DD, YYYY @ HH:mm"
-                          )}`}
-                        </>
-                      }
-                    />
-                    {history.invoice !== null && (
-                      <IconButton
-                        edge="end"
-                        size="small"
-                        component="a"
-                        aria-label="Print invoice"
-                        rel="noreferrer"
-                        href={`${INVOICE_ROUTE}/${history.invoice}`}
-                        target="_blank"
-                      >
-                        <DownloadIcon />
-                      </IconButton>
-                    )}
-                  </ListItem>
-                  <Divider variant="inset" component="li" />
-                </>
+                <Accordion key={historyIdx}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`panel${historyIdx}a-content`}
+                    id={`panel${historyIdx}a-header`}
+                  >
+                    <ListItem alignItems="flex-start">
+                      <ListItemText
+                        primary={history.description}
+                        secondary={
+                          <>
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              className={classes.inline}
+                              color="textPrimary"
+                            >
+                              {history.userRole}
+                            </Typography>
+                            {` — on ${moment(history.createdAt).format(
+                              "MMM DD, YYYY @ HH:mm"
+                            )}`}
+                          </>
+                        }
+                      />
+                      {history.invoice !== null && (
+                        <IconButton
+                          edge="end"
+                          size="small"
+                          component="a"
+                          aria-label="Print invoice"
+                          rel="noreferrer"
+                          href={`${INVOICE_ROUTE}/${history.invoice}`}
+                          target="_blank"
+                        >
+                          <DownloadIcon />
+                        </IconButton>
+                      )}
+                    </ListItem>
+                  </AccordionSummary>
+                  {Boolean(history.content) && (
+                    <AccordionDetails>
+                      {HtmlParser(history.content)}
+                    </AccordionDetails>
+                  )}
+                </Accordion>
               ))}
             </List>
           )}
