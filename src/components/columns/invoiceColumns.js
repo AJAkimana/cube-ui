@@ -50,7 +50,7 @@ export const invoiceColumns = (onInvoiceClick, user = {}) => [
   {
     content: (item) =>
       item.status === "pending" && user.role !== "Client" ? (
-        <ButtonGroup variant="outlined">
+        <ButtonGroup variant="outlined" size="small">
           <Tooltip title="Approve payment">
             <IconButton
               aria-label="Approve payment"

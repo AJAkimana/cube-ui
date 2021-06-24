@@ -44,7 +44,7 @@ export const projectColumns = (onProjectClick, user = {}) => [
   },
   {
     content: (item) => (
-      <ButtonGroup variant="outlined">
+      <ButtonGroup variant="outlined" size="small">
         <Tooltip title="View">
           <IconButton
             aria-label="View"

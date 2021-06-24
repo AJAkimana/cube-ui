@@ -45,7 +45,7 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
           No action needed
         </Typography>
       ) : (
-        <ButtonGroup variant="outlined">
+        <ButtonGroup variant="outlined" size="small">
           {user.role !== "Client" ? (
             <Tooltip title="Edit">
               <IconButton
