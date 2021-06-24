@@ -49,7 +49,7 @@ export const CustomisedTable = ({
   loading = false,
   withPagination = true,
   handlePageChange,
-  size = "medium",
+  size = "small",
 }) => {
   const classes = useTableStyles();
   const renderCell = (item, column) => {
