@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   ListItem,
   ListItemText,
@@ -8,7 +8,6 @@ import {
 } from "@material-ui/core";
 import moment from "moment";
 import { useSelector } from "react-redux";
-import { getNotifications } from "redux/actions/dashboard";
 import Loading from "components/loading.component";
 
 export const notificationsMenuId = "notifications-menu";
