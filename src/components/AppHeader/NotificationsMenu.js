@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ListItem,
   ListItemText,
@@ -7,14 +7,16 @@ import {
   Typography,
 } from "@material-ui/core";
 import moment from "moment";
+import { useSelector } from "react-redux";
+import { getNotifications } from "redux/actions/dashboard";
+import Loading from "components/loading.component";
 
 export const notificationsMenuId = "notifications-menu";
-export const NotificationsMenu = ({
-  anchorEl,
-  onClose,
-  notifications = [],
-  loading = false,
-}) => {
+export const NotificationsMenu = ({ anchorEl, onClose }) => {
+  const appState = useSelector((state) => state);
+  const {
+    notifsGet: { notifs, loading },
+  } = appState;
   return (
     <Menu
       id={notificationsMenuId}
@@ -23,8 +25,10 @@ export const NotificationsMenu = ({
       open={Boolean(anchorEl)}
       onClose={onClose}
     >
-      {notifications.length ? (
-        notifications.map((notif, notifIdx) => (
+      {loading ? (
+        <Loading />
+      ) : notifs.length ? (
+        notifs.map((notif, notifIdx) => (
           <MenuItem onClick={onClose} key={notifIdx}>
             <ListItem alignItems="flex-start">
               <ListItemText

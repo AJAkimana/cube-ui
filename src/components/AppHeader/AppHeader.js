@@ -4,12 +4,10 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  InputBase,
   Badge,
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
-  Search as SearchIcon,
   AccountCircle,
   Notifications as NotificationsIcon,
   MoreVert as MoreIcon,
@@ -32,11 +30,11 @@ export const AppHeader = ({ children }) => {
     login: {
       userInfo: { user },
     },
-    notifsGet: { notifs },
+    notifsCount: { count },
   } = appState;
 
   useEffect(() => {
-    getNotifications();
+    getNotifications("count");
   }, []);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -58,7 +56,10 @@ export const AppHeader = ({ children }) => {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+  const showNotifications = ({ currentTarget }) => {
+    setNotifAnchorEl(currentTarget);
+    getNotifications();
+  };
   return (
     <div className={classes.grow}>
       <AppBar position="static" className={classes.appBar}>
@@ -79,30 +80,17 @@ export const AppHeader = ({ children }) => {
           >
             Augmented Reality Innovations
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
           <div className={classes.grow} />
           {Boolean(user?.fullName) && (
             <div className={classes.sectionDesktop}>
               <IconButton
-                aria-label={`show ${notifs.length} new notifications`}
+                aria-label={`show ${count} new notifications`}
                 color="inherit"
                 aria-controls={notificationsMenuId}
                 aria-haspopup="true"
-                onClick={({ currentTarget }) => setNotifAnchorEl(currentTarget)}
+                onClick={showNotifications}
               >
-                <Badge badgeContent={notifs.length} color="secondary">
+                <Badge badgeContent={count} color="secondary">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
@@ -143,12 +131,11 @@ export const AppHeader = ({ children }) => {
         handleMobileMenuClose={handleMobileMenuClose}
         handleNavMenuOpen={handleNavMenuOpen}
         user={user}
-        notifications={notifs}
+        notificationsCount={count}
       />
       <NotificationsMenu
         anchorEl={notifAnchorEl}
         onClose={() => setNotifAnchorEl(null)}
-        notifications={notifs}
       />
       {children}
     </div>

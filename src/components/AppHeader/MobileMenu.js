@@ -12,7 +12,7 @@ export const MobileMenu = ({
   handleMobileMenuClose,
   handleNavMenuOpen,
   user,
-  notifications = [],
+  notificationsCount = 0,
 }) => (
   <Menu
     anchorEl={mobileMoreAnchorEl}
@@ -25,12 +25,12 @@ export const MobileMenu = ({
   >
     <MenuItem>
       <IconButton
-        aria-label={`show ${notifications.length} new notifications`}
+        aria-label={`show ${notificationsCount} new notifications`}
         color="inherit"
         aria-controls="notifications-menu"
         aria-haspopup="true"
       >
-        <Badge badgeContent={notifications.length} color="secondary">
+        <Badge badgeContent={notificationsCount} color="secondary">
           <NotificationsIcon />
         </Badge>
       </IconButton>
