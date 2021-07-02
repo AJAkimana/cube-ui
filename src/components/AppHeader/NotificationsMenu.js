@@ -9,6 +9,7 @@ import {
 import moment from "moment";
 import { useSelector } from "react-redux";
 import Loading from "components/loading.component";
+import { Link } from "react-router-dom";
 
 export const notificationsMenuId = "notifications-menu";
 export const NotificationsMenu = ({ anchorEl, onClose }) => {
@@ -28,7 +29,12 @@ export const NotificationsMenu = ({ anchorEl, onClose }) => {
         <Loading />
       ) : notifs.length ? (
         notifs.map((notif, notifIdx) => (
-          <MenuItem onClick={onClose} key={notifIdx}>
+          <MenuItem
+            onClick={onClose}
+            key={notifIdx}
+            component={Link}
+            to={`/dashboard/projects/${notif.project}`}
+          >
             <ListItem alignItems="flex-start">
               <ListItemText
                 primary={notif.description}

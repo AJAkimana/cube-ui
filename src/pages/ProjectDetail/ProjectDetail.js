@@ -151,7 +151,7 @@ export const ProjectDetailPage = ({ match }) => {
                                     className={classes.inline}
                                     color="textPrimary"
                                   >
-                                    {history.userRole}
+                                    {history.createdBy?.fullName}
                                   </Typography>
                                   {` — on ${moment(history.createdAt).format(
                                     "MMM DD, YYYY @ HH:mm"
