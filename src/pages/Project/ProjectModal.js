@@ -65,7 +65,13 @@ export const ProjectModel = ({ open = false, setOpen, currentItem = null }) => {
   }, [currentItem]);
   const { button: buttonStyles, ...contentStyles } =
     useBlogTextInfoContentStyles();
-
+  const toDowloadUrl = (projectHistory = {}) => {
+    let url = projectHistory.invoice;
+    if (projectHistory.quote) {
+      url = `${projectHistory.quote}?downloadType=quote`;
+    }
+    return url;
+  };
   return (
     <Dialog
       open={open}
@@ -136,14 +142,14 @@ export const ProjectModel = ({ open = false, setOpen, currentItem = null }) => {
                           </>
                         }
                       />
-                      {history.invoice !== null && (
+                      {(history.invoice || history.quote) && (
                         <IconButton
                           edge="end"
                           size="small"
                           component="a"
                           aria-label="Print invoice"
                           rel="noreferrer"
-                          href={`${INVOICE_ROUTE}/${history.invoice}`}
+                          href={`${INVOICE_ROUTE}/${toDowloadUrl(history)}`}
                           target="_blank"
                         >
                           <DownloadIcon />
