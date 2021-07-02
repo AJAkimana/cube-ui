@@ -7,6 +7,7 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import {
   EditRounded as EditIcon,
   Publish as PublishIcon,
@@ -49,7 +50,8 @@ export const projectColumns = (onProjectClick, user = {}) => [
           <IconButton
             aria-label="View"
             color="secondary"
-            onClick={() => onProjectClick(item, "view")}
+            component={Link}
+            to={`/dashboard/projects/${item._id}`}
           >
             <ViewComfyIcon /> View
           </IconButton>

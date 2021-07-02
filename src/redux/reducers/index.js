@@ -6,6 +6,7 @@ import {
   historiesGetReducer,
   projectAddReducer,
   projectEditReducer,
+  projectGetReducer,
   projectsGetReducer,
 } from "./project.reducer";
 import {
@@ -49,4 +50,5 @@ export default combineReducers({
   historiesGet: historiesGetReducer,
   notifsGet: notifsGetReducer,
   notifsCount: notifsCountReducer,
+  projectGet: projectGetReducer,
 });

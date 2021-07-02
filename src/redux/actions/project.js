@@ -5,6 +5,7 @@ import {
   GET_DASHBOARD_COUNTS,
   GET_PROJECT_HISTORIES,
   GET_PROJECTS,
+  GET_PROJECT_DETAILS,
 } from "./actionTypes";
 import { http } from "utils/http";
 
@@ -40,5 +41,11 @@ export const getProjectHistories = (projectId = "") => {
   store.dispatch({
     type: GET_PROJECT_HISTORIES,
     payload: http.get(`/project/${projectId}/histories`),
+  });
+};
+export const getProjectDetails = (projectId = "") => {
+  store.dispatch({
+    type: GET_PROJECT_DETAILS,
+    payload: http.get(`/project/${projectId}`),
   });
 };

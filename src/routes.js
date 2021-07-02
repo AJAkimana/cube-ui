@@ -10,6 +10,7 @@ import { store } from "redux/store";
 import { CustomerPage } from "pages/Customer";
 import { UserProfile } from "./pages/UserProfile";
 import { LoginPage } from "pages/Login";
+import { ProjectDetailPage } from "pages/ProjectDetail";
 
 const routes = [
   {
@@ -53,6 +54,11 @@ const routes = [
         path: "/dashboard/projects",
         exact: true,
         component: ProjectPage,
+      },
+      {
+        path: "/dashboard/projects/:projectId",
+        exact: true,
+        component: ProjectDetailPage,
       },
       {
         path: "/dashboard/quotes",

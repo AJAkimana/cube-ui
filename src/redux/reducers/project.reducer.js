@@ -4,6 +4,7 @@ import {
   EDIT_PROJECT,
   GET_DASHBOARD_COUNTS,
   GET_PROJECTS,
+  GET_PROJECT_DETAILS,
   GET_PROJECT_HISTORIES,
 } from "../actions/actionTypes";
 import { pending, fulfilled, rejected } from "../utils/actions";
@@ -132,6 +133,31 @@ export const historiesGetReducer = (
       };
     }
     case rejected(GET_PROJECT_HISTORIES):
+    default:
+      return {
+        ...state,
+        loading: false,
+      };
+  }
+};
+export const projectGetReducer = (state = baseState("project", {}), action) => {
+  switch (action.type) {
+    case pending(GET_PROJECT_DETAILS): {
+      return {
+        ...state,
+        loaded: false,
+        loading: true,
+      };
+    }
+    case fulfilled(GET_PROJECT_DETAILS): {
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        project: action.payload.data.data,
+      };
+    }
+    case rejected(GET_PROJECT_DETAILS):
     default:
       return {
         ...state,

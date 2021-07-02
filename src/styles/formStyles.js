@@ -35,4 +35,7 @@ export const useStyles = makeStyles((theme) => ({
       color: "#FFFFFF",
     },
   },
+  inline: {
+    display: "inline",
+  },
 }));
