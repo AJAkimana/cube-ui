@@ -17,6 +17,7 @@ import {
   AccordionDetails,
   CardActions,
   CardHeader,
+  TextField,
 } from "@material-ui/core";
 import {
   CloudDownloadOutlined as DownloadIcon,
@@ -26,7 +27,11 @@ import {
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import TextInfoContent from "@mui-treasury/components/content/textInfo";
 import { useBlogTextInfoContentStyles } from "@mui-treasury/styles/textInfoContent/blog";
-import { getProjectDetails, getProjectHistories } from "redux/actions/project";
+import {
+  addNewLog,
+  getProjectDetails,
+  getProjectHistories,
+} from "redux/actions/project";
 import { useSelector } from "react-redux";
 import Loading from "components/loading.component";
 import { INVOICE_ROUTE } from "utils/constants";
@@ -37,7 +42,7 @@ export const ProjectDetailPage = ({ match }) => {
   const classes = useStyles();
 
   const [projectType, setProjectType] = useState({});
-
+  const [newLog, setNewLog] = useState("");
   const { projectId } = match.params;
 
   const appState = useSelector((state) => state);
@@ -132,58 +137,73 @@ export const ProjectDetailPage = ({ match }) => {
                 {loading ? (
                   <Loading />
                 ) : (
-                  <List>
-                    {histories.map((history, historyIdx) => (
-                      <Accordion key={historyIdx}>
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls={`panel${historyIdx}a-content`}
-                          id={`panel${historyIdx}a-header`}
-                        >
-                          <ListItem alignItems="flex-start">
-                            <ListItemText
-                              primary={history.description}
-                              secondary={
-                                <>
-                                  <Typography
-                                    component="span"
-                                    variant="body2"
-                                    className={classes.inline}
-                                    color="textPrimary"
-                                  >
-                                    {history.createdBy?.fullName}
-                                  </Typography>
-                                  {` — on ${moment(history.createdAt).format(
-                                    "MMM DD, YYYY @ HH:mm"
+                  <CardContent>
+                    <TextField
+                      id="standard-read-only-input"
+                      label="Add a new project log"
+                      placeholder="Type here"
+                      onChange={({ target }) => setNewLog(target.value)}
+                    />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => addNewLog(projectId, { log: newLog })}
+                    >
+                      Send
+                    </Button>
+                    <List>
+                      {histories.map((history, historyIdx) => (
+                        <Accordion key={historyIdx}>
+                          <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls={`panel${historyIdx}a-content`}
+                            id={`panel${historyIdx}a-header`}
+                          >
+                            <ListItem alignItems="flex-start">
+                              <ListItemText
+                                primary={history.description}
+                                secondary={
+                                  <>
+                                    <Typography
+                                      component="span"
+                                      variant="body2"
+                                      className={classes.inline}
+                                      color="textPrimary"
+                                    >
+                                      {history.createdBy?.fullName}
+                                    </Typography>
+                                    {` — on ${moment(history.createdAt).format(
+                                      "MMM DD, YYYY @ HH:mm"
+                                    )}`}
+                                  </>
+                                }
+                              />
+                              {(history.invoice || history.quote) && (
+                                <IconButton
+                                  edge="end"
+                                  size="small"
+                                  component="a"
+                                  aria-label="Print invoice"
+                                  rel="noreferrer"
+                                  href={`${INVOICE_ROUTE}/${toDowloadUrl(
+                                    history
                                   )}`}
-                                </>
-                              }
-                            />
-                            {(history.invoice || history.quote) && (
-                              <IconButton
-                                edge="end"
-                                size="small"
-                                component="a"
-                                aria-label="Print invoice"
-                                rel="noreferrer"
-                                href={`${INVOICE_ROUTE}/${toDowloadUrl(
-                                  history
-                                )}`}
-                                target="_blank"
-                              >
-                                <DownloadIcon />
-                              </IconButton>
-                            )}
-                          </ListItem>
-                        </AccordionSummary>
-                        {Boolean(history.content) && (
-                          <AccordionDetails>
-                            {HtmlParser(history.content)}
-                          </AccordionDetails>
-                        )}
-                      </Accordion>
-                    ))}
-                  </List>
+                                  target="_blank"
+                                >
+                                  <DownloadIcon />
+                                </IconButton>
+                              )}
+                            </ListItem>
+                          </AccordionSummary>
+                          {Boolean(history.content) && (
+                            <AccordionDetails>
+                              {HtmlParser(history.content)}
+                            </AccordionDetails>
+                          )}
+                        </Accordion>
+                      ))}
+                    </List>
+                  </CardContent>
                 )}
               </>
             )}

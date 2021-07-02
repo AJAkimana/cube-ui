@@ -6,6 +6,7 @@ import {
   GET_PROJECT_HISTORIES,
   GET_PROJECTS,
   GET_PROJECT_DETAILS,
+  ADD_NEW_LOG,
 } from "./actionTypes";
 import { http } from "utils/http";
 
@@ -47,5 +48,11 @@ export const getProjectDetails = (projectId = "") => {
   store.dispatch({
     type: GET_PROJECT_DETAILS,
     payload: http.get(`/project/${projectId}`),
+  });
+};
+export const addNewLog = (projectId = "", logBody = {}) => {
+  store.dispatch({
+    type: ADD_NEW_LOG,
+    payload: http.post(`/project/${projectId}/histories`, logBody),
   });
 };

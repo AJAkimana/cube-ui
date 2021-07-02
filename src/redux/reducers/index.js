@@ -4,6 +4,7 @@ import { invoiceEditReducer, invoicesGetReducer } from "./invoice.reducer";
 import {
   dashboardReducer,
   historiesGetReducer,
+  logAddReducer,
   projectAddReducer,
   projectEditReducer,
   projectGetReducer,
@@ -51,4 +52,5 @@ export default combineReducers({
   notifsGet: notifsGetReducer,
   notifsCount: notifsCountReducer,
   projectGet: projectGetReducer,
+  logAdd: logAddReducer,
 });

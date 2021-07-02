@@ -1,5 +1,6 @@
 import { baseState } from "../utils/baseStates";
 import {
+  ADD_NEW_LOG,
   ADD_NEW_PROJECT,
   EDIT_PROJECT,
   GET_DASHBOARD_COUNTS,
@@ -158,6 +159,31 @@ export const projectGetReducer = (state = baseState("project", {}), action) => {
       };
     }
     case rejected(GET_PROJECT_DETAILS):
+    default:
+      return {
+        ...state,
+        loading: false,
+      };
+  }
+};
+export const logAddReducer = (state = baseState("log", {}), action) => {
+  switch (action.type) {
+    case pending(ADD_NEW_LOG): {
+      return {
+        ...state,
+        loaded: false,
+        loading: true,
+      };
+    }
+    case fulfilled(ADD_NEW_LOG): {
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        log: action.payload.data.data,
+      };
+    }
+    case rejected(ADD_NEW_LOG):
     default:
       return {
         ...state,
