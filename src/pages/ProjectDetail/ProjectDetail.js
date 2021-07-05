@@ -42,13 +42,14 @@ export const ProjectDetailPage = ({ match }) => {
   const classes = useStyles();
 
   const [projectType, setProjectType] = useState({});
-  const [newLog, setNewLog] = useState("");
+  const [newLog, setNewLog] = useState({ title: "", description: "" });
   const { projectId } = match.params;
 
   const appState = useSelector((state) => state);
   const {
     historiesGet: { loading, histories },
     projectGet: { loading: projectFetching, loaded, project },
+    logAdd: { loading: adding, loaded: done },
   } = appState;
   useEffect(() => {
     if (projectId) {
@@ -63,6 +64,12 @@ export const ProjectDetailPage = ({ match }) => {
       setProjectType(currentPType);
     }
   }, [projectId, loaded, project.type]);
+  useEffect(() => {
+    if (done) {
+      getProjectHistories(projectId);
+      setNewLog({ title: "", description: "" });
+    }
+  }, [done, projectId]);
   const { button: buttonStyles, ...contentStyles } =
     useBlogTextInfoContentStyles();
   const toDowloadUrl = (projectHistory = {}) => {
@@ -71,6 +78,9 @@ export const ProjectDetailPage = ({ match }) => {
       url = `${projectHistory.quote}?downloadType=quote`;
     }
     return url;
+  };
+  const onChangeInput = ({ target: { name, value } }) => {
+    setNewLog({ ...newLog, [name]: value });
   };
   return (
     <Grid
@@ -134,23 +144,47 @@ export const ProjectDetailPage = ({ match }) => {
                 <Button className={buttonStyles}>
                   Budget: ${project.budget?.toLocaleString("en-US") || 0}
                 </Button>
-                {loading ? (
+                {loading && !histories.length ? (
                   <Loading />
                 ) : (
                   <CardContent>
-                    <TextField
-                      id="standard-read-only-input"
-                      label="Add a new project log"
-                      placeholder="Type here"
-                      onChange={({ target }) => setNewLog(target.value)}
-                    />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => addNewLog(projectId, { log: newLog })}
-                    >
-                      Send
-                    </Button>
+                    <Card>
+                      <CardHeader title="Add custom log" />
+                      <CardContent>
+                        <Grid container spacing={2}>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <TextField
+                              label="Log title"
+                              placeholder="Type here"
+                              name="title"
+                              fullWidth
+                              value={newLog.title}
+                              onChange={onChangeInput}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={12} md={6} lg={6}>
+                            <TextField
+                              label="Log description"
+                              placeholder="Type here"
+                              name="description"
+                              fullWidth
+                              value={newLog.description}
+                              onChange={onChangeInput}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={12} md={2} lg={2}>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              disabled={adding}
+                              onClick={() => addNewLog(projectId, newLog)}
+                            >
+                              Send
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      </CardContent>
+                    </Card>
                     <List>
                       {histories.map((history, historyIdx) => (
                         <Accordion key={historyIdx}>
