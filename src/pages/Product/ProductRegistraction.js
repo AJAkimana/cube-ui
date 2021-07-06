@@ -17,6 +17,8 @@ import NumberFormat from "react-number-format";
 import { ComputerOutlined } from "@material-ui/icons";
 import { useStyles } from "styles/formStyles";
 import { initialState, productStatuses } from "./productConstants";
+import { notifier } from "utils/notifier";
+import { uploadProductImages } from "redux/actions/product";
 
 export const ProductRegistration = () => {
   const classes = useStyles();
@@ -31,6 +33,17 @@ export const ProductRegistration = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
+  };
+  const onUploadImages = (files) => {
+    if (files.length !== 2) {
+      notifier.error("Sorry only two files are needed");
+      return;
+    }
+    const formData = new FormData();
+    for (const key of Object.keys(files)) {
+      formData.append("productFiles", files[key]);
+    }
+    uploadProductImages(formData);
   };
   return (
     <Card component="main" className={classes.root}>
@@ -137,7 +150,7 @@ export const ProductRegistration = () => {
               </Button>
               <DropzoneDialog
                 open={openDz}
-                onSave={() => {}}
+                onSave={onUploadImages}
                 acceptedFiles={[".glb", ".usdz"]}
                 showPreviews={true}
                 maxFileSize={5000000}
