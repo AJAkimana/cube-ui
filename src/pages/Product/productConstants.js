@@ -6,5 +6,6 @@ export const initialState = {
   bgColor: "#7D2ADC",
   customer: "",
   description: "",
+  image: "",
 };
 export const productStatuses = ["QA", "COMPLETED"];

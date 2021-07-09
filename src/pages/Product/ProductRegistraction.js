@@ -3,6 +3,7 @@ import {
   Avatar,
   Button,
   Card,
+  CardActions,
   FormControl,
   Grid,
   InputLabel,
@@ -18,12 +19,23 @@ import { ComputerOutlined } from "@material-ui/icons";
 import { useStyles } from "styles/formStyles";
 import { initialState, productStatuses } from "./productConstants";
 import { notifier } from "utils/notifier";
-import { uploadProductImages } from "redux/actions/product";
+import {
+  addNewProduct,
+  getProducts,
+  uploadProductImages,
+} from "redux/actions/product";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export const ProductRegistration = () => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
   const [openDz, setOpenDz] = useState(false);
+  const appState = useSelector((state) => state);
+  const {
+    fileUpload: { loaded: uploaded, filePath },
+    productAdd: { loading: adding, loaded: added },
+  } = appState;
   const onHandleChange = (e) => {
     e.preventDefault();
     const {
@@ -31,8 +43,21 @@ export const ProductRegistration = () => {
     } = e;
     setValues({ ...values, [name]: value });
   };
+  useEffect(() => {
+    if (uploaded) {
+      setValues({ ...values, image: filePath });
+    }
+    // eslint-disable-next-line
+  }, [uploaded, filePath]);
+  useEffect(() => {
+    if (added) {
+      setValues(initialState);
+      getProducts();
+    }
+  }, [added]);
   const submitHandler = (e) => {
     e.preventDefault();
+    addNewProduct(values);
   };
   const onUploadImages = (files) => {
     if (files.length !== 2) {
@@ -156,9 +181,21 @@ export const ProductRegistration = () => {
                 maxFileSize={5000000}
                 filesLimit={2}
                 onClose={() => setOpenDz(false)}
+                clearOnUnmount={uploaded}
               />
             </Grid>
           </Grid>
+          <CardActions>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              className={classes.submit}
+              disabled={adding}
+            >
+              Save
+            </Button>
+          </CardActions>
         </form>
       </div>
     </Card>
