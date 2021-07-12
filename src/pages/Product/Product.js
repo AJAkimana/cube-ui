@@ -6,10 +6,13 @@ import { useSelector } from "react-redux";
 import { initialPaginate, paginate } from "utils/paginate";
 import { productColumns } from "components/columns/productColumns";
 import { getProducts } from "redux/actions/product";
+import { ImagePreview } from "./ImagePreview";
 
 export const ProductPage = () => {
   const [paginator, setPaginator] = useState(initialPaginate());
   const [paginatedData, setPaginatedData] = useState([]);
+  const [openImgView, setOpenImgView] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
 
   const appState = useSelector((state) => state);
   const {
@@ -29,15 +32,28 @@ export const ProductPage = () => {
   const onPageChange = ({ selected }) => {
     setPaginator({ ...paginator, pageNumber: selected + 1 });
   };
+  const onProductClick = (product = {}, action) => {
+    setCurrentItem(product);
+    console.log("product", product);
+    if (action === "preview") {
+      setOpenImgView(true);
+      return;
+    }
+  };
   return (
     <Grid container spacing={2} sx={{ py: 3 }}>
+      <ImagePreview
+        open={openImgView}
+        setOpen={() => setOpenImgView(false)}
+        productInfo={currentItem}
+      />
       <Grid item xs={12} sm={4} md={4} lg={4}>
         <ProductRegistration />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable
           tableTitle="List of products"
-          columns={productColumns}
+          columns={productColumns(onProductClick)}
           loading={fetching}
           data={paginatedData}
           withPagination

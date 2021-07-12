@@ -2,6 +2,7 @@ import { store } from "../store";
 import {
   ADD_NEW_PRODUCT,
   GET_PRODUCTS,
+  GET_PRODUCT_IMAGES,
   UPLOAD_PRODUCT_IMAGES,
 } from "./actionTypes";
 import { http } from "utils/http";
@@ -27,5 +28,11 @@ export const getProducts = () => {
   store.dispatch({
     type: GET_PRODUCTS,
     payload: http.get(BASE_URL),
+  });
+};
+export const getProductImages = (productId = "") => {
+  store.dispatch({
+    type: GET_PRODUCT_IMAGES,
+    payload: http.get(`${BASE_URL}/files/${productId}`),
   });
 };

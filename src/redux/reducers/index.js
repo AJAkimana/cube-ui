@@ -31,6 +31,7 @@ import {
 import {
   ADD_NEW_PRODUCT,
   GET_PRODUCTS,
+  GET_PRODUCT_IMAGES,
   UPLOAD_PRODUCT_IMAGES,
 } from "redux/actions/actionTypes";
 
@@ -62,4 +63,5 @@ export default combineReducers({
   fileUpload: reducer(UPLOAD_PRODUCT_IMAGES, "filePath", "string"),
   productAdd: reducer(ADD_NEW_PRODUCT, "product", "object"),
   productsGet: reducer(GET_PRODUCTS, "products", "array"),
+  productImg: reducer(GET_PRODUCT_IMAGES, "image", "object"),
 });
