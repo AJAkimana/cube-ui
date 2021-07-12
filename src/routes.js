@@ -11,6 +11,7 @@ import { CustomerPage } from "pages/Customer";
 import { UserProfile } from "./pages/UserProfile";
 import { LoginPage } from "pages/Login";
 import { ProjectDetailPage } from "pages/ProjectDetail";
+import { ProductPage } from "pages/Product";
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
         path: "/dashboard/projects",
         exact: true,
         component: ProjectPage,
+      },
+      {
+        path: "/dashboard/products",
+        exact: true,
+        component: ProductPage,
       },
       {
         path: "/dashboard/projects/:projectId",

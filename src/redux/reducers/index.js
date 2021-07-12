@@ -16,6 +16,7 @@ import {
   quotesGetReducer,
 } from "./quote.reducer";
 import { subscriptionsGetReducer } from "./subscription.reducer";
+import { reducer } from "../utils/reducer";
 import {
   loginReducer,
   profileEditReducer,
@@ -27,6 +28,11 @@ import {
   userEditReducer,
   usersListReducer,
 } from "./user.reducer";
+import {
+  ADD_NEW_PRODUCT,
+  GET_PRODUCTS,
+  UPLOAD_PRODUCT_IMAGES,
+} from "redux/actions/actionTypes";
 
 export default combineReducers({
   login: loginReducer,
@@ -53,4 +59,7 @@ export default combineReducers({
   notifsCount: notifsCountReducer,
   projectGet: projectGetReducer,
   logAdd: logAddReducer,
+  fileUpload: reducer(UPLOAD_PRODUCT_IMAGES, "filePath", "string"),
+  productAdd: reducer(ADD_NEW_PRODUCT, "product", "object"),
+  productsGet: reducer(GET_PRODUCTS, "products", "array"),
 });
