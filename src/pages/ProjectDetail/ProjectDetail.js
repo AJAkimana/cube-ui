@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import HtmlParser from "react-html-parser";
+import { DraftEditor } from "components/DraftEditor";
+import { EditorState } from "draft-js";
+import { stateToHTML } from "draft-js-export-html";
 import {
   Avatar,
   Button,
@@ -43,6 +46,7 @@ export const ProjectDetailPage = ({ match }) => {
 
   const [projectType, setProjectType] = useState({});
   const [newLog, setNewLog] = useState({ title: "", description: "" });
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const { projectId } = match.params;
 
   const appState = useSelector((state) => state);
@@ -68,6 +72,7 @@ export const ProjectDetailPage = ({ match }) => {
     if (done) {
       getProjectHistories(projectId);
       setNewLog({ title: "", description: "" });
+      setEditorState(EditorState.createEmpty());
     }
   }, [done, projectId]);
   const { button: buttonStyles, ...contentStyles } =
@@ -151,8 +156,8 @@ export const ProjectDetailPage = ({ match }) => {
                     <Card>
                       <CardHeader title="Add custom log" />
                       <CardContent>
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                        <Grid item xs={12} sm={12} md={8} lg={8}>
+                          <Grid container spacing={2}>
                             <TextField
                               label="Log title"
                               placeholder="Type here"
@@ -161,27 +166,25 @@ export const ProjectDetailPage = ({ match }) => {
                               value={newLog.title}
                               onChange={onChangeInput}
                             />
-                          </Grid>
-                          <Grid item xs={12} sm={12} md={6} lg={6}>
-                            <TextField
-                              label="Log description"
-                              placeholder="Type here"
-                              name="description"
-                              fullWidth
-                              value={newLog.description}
-                              onChange={onChangeInput}
+                            <DraftEditor
+                              editorState={editorState}
+                              setEditorState={setEditorState}
                             />
                           </Grid>
-                          <Grid item xs={12} sm={12} md={2} lg={2}>
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              disabled={adding}
-                              onClick={() => addNewLog(projectId, newLog)}
-                            >
-                              Send
-                            </Button>
-                          </Grid>
+                          <Grid item xs={12} sm={12} md={2} lg={2}></Grid>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            disabled={adding}
+                            onClick={() => {
+                              newLog.description = stateToHTML(
+                                editorState.getCurrentContent()
+                              );
+                              addNewLog(projectId, newLog);
+                            }}
+                          >
+                            Send
+                          </Button>
                         </Grid>
                       </CardContent>
                     </Card>
