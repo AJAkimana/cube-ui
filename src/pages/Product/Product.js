@@ -13,6 +13,7 @@ export const ProductPage = () => {
   const [paginatedData, setPaginatedData] = useState([]);
   const [openImgView, setOpenImgView] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
+  const [action, setAction] = useState("add");
 
   const appState = useSelector((state) => state);
   const {
@@ -34,11 +35,11 @@ export const ProductPage = () => {
   };
   const onProductClick = (product = {}, action) => {
     setCurrentItem(product);
-    console.log("product", product);
     if (action === "preview") {
       setOpenImgView(true);
       return;
     }
+    setAction(action);
   };
   return (
     <Grid container spacing={2} sx={{ py: 3 }}>
@@ -48,7 +49,7 @@ export const ProductPage = () => {
         productInfo={currentItem}
       />
       <Grid item xs={12} sm={4} md={4} lg={4}>
-        <ProductRegistration />
+        <ProductRegistration action={action} currentItem={currentItem} />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable

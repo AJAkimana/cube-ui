@@ -21,13 +21,14 @@ import { initialState, productStatuses } from "./productConstants";
 import { notifier } from "utils/notifier";
 import {
   addNewProduct,
+  editProduct,
   getProducts,
   uploadProductImages,
 } from "redux/actions/product";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-export const ProductRegistration = () => {
+export const ProductRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
   const [openDz, setOpenDz] = useState(false);
@@ -35,6 +36,7 @@ export const ProductRegistration = () => {
   const {
     fileUpload: { loaded: uploaded, filePath },
     productAdd: { loading: adding, loaded: added },
+    productEdit: { loading: editing, loaded: edited },
   } = appState;
   const onHandleChange = (e) => {
     e.preventDefault();
@@ -50,14 +52,25 @@ export const ProductRegistration = () => {
     // eslint-disable-next-line
   }, [uploaded, filePath]);
   useEffect(() => {
-    if (added) {
+    if (added || edited) {
       setValues(initialState);
       getProducts();
     }
-  }, [added]);
+  }, [added, edited]);
+  useEffect(() => {
+    if (currentItem && action === "edit") {
+      const { createdAt, updatedAt, image, itemNumber, ...rest } = currentItem;
+      setValues(rest);
+    }
+  }, [action, currentItem]);
   const submitHandler = (e) => {
     e.preventDefault();
-    addNewProduct(values);
+    if (action === "add") {
+      addNewProduct(values);
+    }
+    if (action === "edit") {
+      editProduct(values);
+    }
   };
   const onUploadImages = (files) => {
     if (files.length !== 2) {
@@ -68,7 +81,7 @@ export const ProductRegistration = () => {
     for (const key of Object.keys(files)) {
       formData.append("productFiles", files[key]);
     }
-    uploadProductImages(formData);
+    uploadProductImages(formData, currentItem?.image.src);
   };
   return (
     <Card component="main" className={classes.root}>
@@ -77,7 +90,9 @@ export const ProductRegistration = () => {
           <ComputerOutlined />
         </Avatar>
         <Typography component="h1" variant="h4">
-          Add a new product
+          {action === "edit"
+            ? `Update ${currentItem?.name.toUpperCase()}`
+            : "Add a new product"}
         </Typography>
         <form className={classes.form} onSubmit={submitHandler}>
           <Grid container spacing={2}>
@@ -169,32 +184,46 @@ export const ProductRegistration = () => {
                 onChange={onHandleChange}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Button onClick={() => setOpenDz(true)}>
-                Add Product Images
-              </Button>
-              <DropzoneDialog
-                open={openDz}
-                onSave={onUploadImages}
-                acceptedFiles={[".glb", ".usdz"]}
-                showPreviews={true}
-                maxFileSize={5000000}
-                filesLimit={2}
-                onClose={() => setOpenDz(false)}
-                clearOnUnmount={uploaded}
-              />
-            </Grid>
+            {action === "add" && (
+              <Grid item xs={12}>
+                <Button onClick={() => setOpenDz(true)}>
+                  Add Product Images
+                </Button>
+                <DropzoneDialog
+                  open={openDz}
+                  onSave={onUploadImages}
+                  acceptedFiles={[".glb", ".usdz"]}
+                  showPreviews={true}
+                  maxFileSize={5000000}
+                  filesLimit={2}
+                  onClose={() => setOpenDz(false)}
+                  clearOnUnmount={uploaded}
+                />
+              </Grid>
+            )}
           </Grid>
           <CardActions>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              className={classes.submit}
-              disabled={adding}
-            >
-              Save
-            </Button>
+            {action === "add" ? (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                className={classes.submit}
+                disabled={adding}
+              >
+                Save
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                className={classes.submit}
+                disabled={editing}
+              >
+                Update the product
+              </Button>
+            )}
           </CardActions>
         </form>
       </div>

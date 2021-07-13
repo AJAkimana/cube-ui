@@ -32,6 +32,7 @@ import {
   ADD_NEW_PRODUCT,
   GET_PRODUCTS,
   GET_PRODUCT_IMAGES,
+  UPDATE_PRODUCT,
   UPLOAD_PRODUCT_IMAGES,
 } from "redux/actions/actionTypes";
 
@@ -64,4 +65,5 @@ export default combineReducers({
   productAdd: reducer(ADD_NEW_PRODUCT, "product", "object"),
   productsGet: reducer(GET_PRODUCTS, "products", "array"),
   productImg: reducer(GET_PRODUCT_IMAGES, "image", "object"),
+  productEdit: reducer(UPDATE_PRODUCT, "message", "string"),
 });
