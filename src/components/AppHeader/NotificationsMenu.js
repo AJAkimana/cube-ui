@@ -10,9 +10,11 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import Loading from "components/loading.component";
 import { Link } from "react-router-dom";
+import { notifUser } from "utils/helper";
 
 export const notificationsMenuId = "notifications-menu";
-export const NotificationsMenu = ({ anchorEl, onClose }) => {
+
+export const NotificationsMenu = ({ anchorEl, onClose, user }) => {
   const appState = useSelector((state) => state);
   const {
     notifsGet: { notifs, loading },
@@ -46,7 +48,7 @@ export const NotificationsMenu = ({ anchorEl, onClose }) => {
                       style={{ display: "inline" }}
                       color="textPrimary"
                     >
-                      ({notif.userRole})
+                      ({notifUser(user, notif)})
                     </Typography>
                     {` — ${moment(notif.createdAt).fromNow()}`}
                   </>

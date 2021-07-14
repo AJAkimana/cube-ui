@@ -40,6 +40,7 @@ import Loading from "components/loading.component";
 import { INVOICE_ROUTE } from "utils/constants";
 import { projectTypes } from "pages/Project/projectConstants";
 import { useStyles } from "styles/formStyles";
+import { notifUser } from "utils/helper";
 
 export const ProjectDetailPage = ({ match }) => {
   const classes = useStyles();
@@ -54,6 +55,9 @@ export const ProjectDetailPage = ({ match }) => {
     historiesGet: { loading, histories },
     projectGet: { loading: projectFetching, loaded, project },
     logAdd: { loading: adding, loaded: done },
+    login: {
+      userInfo: { user },
+    },
   } = appState;
   useEffect(() => {
     if (projectId) {
@@ -207,7 +211,7 @@ export const ProjectDetailPage = ({ match }) => {
                                       className={classes.inline}
                                       color="textPrimary"
                                     >
-                                      {history.createdBy?.fullName}
+                                      {notifUser(user, history)}
                                     </Typography>
                                     {` — on ${moment(history.createdAt).format(
                                       "MMM DD, YYYY @ HH:mm"

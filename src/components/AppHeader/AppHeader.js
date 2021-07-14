@@ -139,6 +139,7 @@ export const AppHeader = ({ children }) => {
       <NotificationsMenu
         anchorEl={notifAnchorEl}
         onClose={() => setNotifAnchorEl(null)}
+        user={user}
       />
       {children}
     </div>
