@@ -5,11 +5,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid,
 } from "@material-ui/core";
 import { getProductImages } from "redux/actions/product";
 import { useSelector } from "react-redux";
 import { IMAGES_PATH } from "utils/constants";
 import Loading from "components/loading.component";
+import { AttributeEditor } from "./AttributeEditor";
 
 export const ImagePreview = ({ open, setOpen, productInfo = null }) => {
   const appState = useSelector((state) => state);
@@ -38,30 +40,37 @@ export const ImagePreview = ({ open, setOpen, productInfo = null }) => {
         {loading && !image.glb ? (
           <Loading />
         ) : (
-          <model-viewer
-            src={`${IMAGES_PATH}/${image.glb}`}
-            ios-src={`${IMAGES_PATH}/${image.usdz}`}
-            disable-zoom={String(product.image?.disableZoom)}
-            auto-rotate={String(product.image?.autoRotate)}
-            auto-rotate-delay={String(product.image?.autoRotateDelay)}
-            background-color={product.image?.backgroundColor}
-            camera-orbit={product.image?.cameraOrbit}
-            min-camera-orbit={String(product.image?.minCameraOrbit)}
-            max-camera-orbit={product.image?.maxCameraOrbit}
-            camera-target={product.image?.cameraTarget}
-            field-of-view={product.image?.fieldOfView}
-            exposure={product.image?.exposure}
-            shadow-intensity={product.image?.shadowIntensity}
-            shadow-softness={product.image?.shadowSoftness}
-            alt={product.image?.alt}
-            ar-scale={product.image?.scale}
-            placement={product.image?.placement}
-            ar
-            ar-modes="webxr scene-viewer quick-look"
-            camera-controls
-            autoplay
-            quick-look-browsers="safari chrome firefox"
-          ></model-viewer>
+          <Grid container spacing={2}>
+            <Grid item md={5} lg={5}>
+              <AttributeEditor />
+            </Grid>
+            <Grid item md={7} lg={7}>
+              <model-viewer
+                src={`${IMAGES_PATH}/${image.glb}`}
+                ios-src={`${IMAGES_PATH}/${image.usdz}`}
+                disable-zoom={String(product.image?.disableZoom)}
+                auto-rotate={String(product.image?.autoRotate)}
+                auto-rotate-delay={String(product.image?.autoRotateDelay)}
+                background-color={product.image?.backgroundColor}
+                camera-orbit={product.image?.cameraOrbit}
+                min-camera-orbit={String(product.image?.minCameraOrbit)}
+                max-camera-orbit={product.image?.maxCameraOrbit}
+                camera-target={product.image?.cameraTarget}
+                field-of-view={product.image?.fieldOfView}
+                exposure={product.image?.exposure}
+                shadow-intensity={product.image?.shadowIntensity}
+                shadow-softness={product.image?.shadowSoftness}
+                alt={product.image?.alt}
+                ar-scale={product.image?.scale}
+                placement={product.image?.placement}
+                ar
+                ar-modes="webxr scene-viewer quick-look"
+                camera-controls
+                autoplay
+                quick-look-browsers="safari chrome firefox"
+              ></model-viewer>
+            </Grid>
+          </Grid>
         )}
       </DialogContent>
       <DialogActions>
