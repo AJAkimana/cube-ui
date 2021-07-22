@@ -14,12 +14,13 @@ import { useStyles } from "../productStyles";
 
 export const Scene = ({
   attributes = {},
-  onSetAttributes,
   attName,
   onInputChange,
   onSetCounterValue,
   onSliderChange,
   onChangeColor,
+  onChangeSwitch,
+  onChangeCheckbox,
 }) => {
   const classes = useStyles();
   return (
@@ -28,9 +29,9 @@ export const Scene = ({
         <FormControlLabel
           control={
             <Switch
-              checked={attributes.zoom}
-              onChange={onSetAttributes}
-              name="zoom"
+              checked={attributes.disableZoom}
+              onChange={onChangeSwitch}
+              name="disableZoom"
               color="primary"
             />
           }
@@ -39,9 +40,9 @@ export const Scene = ({
         <FormControlLabel
           control={
             <Switch
-              checked={attributes.rotate}
-              onChange={onSetAttributes}
-              name="rotate"
+              checked={attributes.autoRotate}
+              onChange={onChangeSwitch}
+              name="autoRotate"
               color="primary"
             />
           }
@@ -65,18 +66,21 @@ export const Scene = ({
           cardTitle="Camera orbit"
           onSetCounterValue={onSetCounterValue}
           counterValues={attributes.cameraOrbit}
+          onChangeCheckbox={onChangeCheckbox}
           attribute="cameraOrbit"
         />
         <CameraOrbit
           cardTitle="Min Camera orbit"
           onSetCounterValue={onSetCounterValue}
           counterValues={attributes.minCameraOrbit}
+          onChangeCheckbox={onChangeCheckbox}
           attribute="minCameraOrbit"
         />
         <CameraOrbit
           cardTitle="Max Camera orbit"
           onSetCounterValue={onSetCounterValue}
           counterValues={attributes.maxCameraOrbit}
+          onChangeCheckbox={onChangeCheckbox}
           attribute="maxCameraOrbit"
         />
         <Typography variant="h4" id="field-of-view" gutterBottom>

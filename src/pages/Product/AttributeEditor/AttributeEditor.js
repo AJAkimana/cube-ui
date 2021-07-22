@@ -27,6 +27,17 @@ export const AttributeEditor = () => {
   const onChangeColor = (color) => {
     setAttributes({ ...attributes, backgroundColor: color });
   };
+  const onChangeSwitch = ({ target: { name, checked } }) => {
+    setAttributes({ ...attributes, [name]: checked });
+  };
+  const onChangeCheckbox = ({ checked }, attribute) => {
+    const attributeValues = { ...attributes[attribute] };
+    attributeValues.useCustom = checked;
+    if (!checked) {
+      attributeValues.custom = initialStates[attribute].custom;
+    }
+    setAttributes({ ...attributes, [attribute]: attributeValues });
+  };
   return (
     <Grid container spacing={2} className={classes.editor}>
       <Grid item sm={4} md={4}>
@@ -76,6 +87,8 @@ export const AttributeEditor = () => {
           onSetCounterValue={onSetCounterValue}
           onSliderChange={onSliderChange}
           onChangeColor={onChangeColor}
+          onChangeSwitch={onChangeSwitch}
+          onChangeCheckbox={onChangeCheckbox}
         />
         <Lighting
           attName={activeBtn}

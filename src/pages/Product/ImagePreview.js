@@ -23,7 +23,6 @@ export const ImagePreview = ({ open, setOpen, productInfo = null }) => {
     if (productInfo) {
       getProductImages(productInfo?._id);
       setProduct(productInfo);
-      // console.log("productInfo", productInfo);
     }
   }, [productInfo]);
   return (
@@ -36,11 +35,15 @@ export const ImagePreview = ({ open, setOpen, productInfo = null }) => {
       aria-describedby="product-dialog-description"
     >
       <DialogTitle id="product-dialog-title">{product?.name}</DialogTitle>
-      <DialogContent>
+      <DialogContent id="product-dialog-description">
         {loading && !image.glb ? (
           <Loading />
         ) : (
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            style={{ backgroundColor: product.image?.backgroundColor }}
+          >
             <Grid item md={5} lg={5}>
               <AttributeEditor />
             </Grid>
@@ -48,6 +51,7 @@ export const ImagePreview = ({ open, setOpen, productInfo = null }) => {
               <model-viewer
                 src={`${IMAGES_PATH}/${image.glb}`}
                 ios-src={`${IMAGES_PATH}/${image.usdz}`}
+                style={{ width: "100%", height: "70vh", border: "none" }}
                 disable-zoom={String(product.image?.disableZoom)}
                 auto-rotate={String(product.image?.autoRotate)}
                 auto-rotate-delay={String(product.image?.autoRotateDelay)}
