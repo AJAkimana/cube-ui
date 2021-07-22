@@ -3,7 +3,7 @@ export const initialStates = {
   disableZoom: false,
   autoRotate: true,
   autoRotateDelay: 3000,
-  backgroundColor: "#ffffff",
+  backgroundColor: "#abab34",
   cameraOrbit: { default: "0deg 75deg 105deg", custom: orbits },
   minCameraOrbit: { default: "Infinity 22.5deg auto", custom: orbits },
   maxCameraOrbit: { default: "Infinity 157.5deg auto", custom: orbits },
@@ -15,4 +15,6 @@ export const initialStates = {
   alt: "",
   scale: "auto",
   placement: "floor",
+  metalness: 0,
+  roughness: 0,
 };

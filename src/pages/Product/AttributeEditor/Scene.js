@@ -16,10 +16,12 @@ export const Scene = ({
   attributes = {},
   onSetAttributes,
   attName,
+  onInputChange,
   onSetCounterValue,
+  onSliderChange,
+  onChangeColor,
 }) => {
   const classes = useStyles();
-  const valueText = (txt) => `${txt}deg`;
   return (
     <Collapse in={attName === "scene"}>
       <Card className={classes.root}>
@@ -49,15 +51,15 @@ export const Scene = ({
           label="Auto rotate delay"
           type="number"
           name="autoRotateDelay"
+          value={attributes.autoRotateDelay}
+          onChange={onInputChange}
         />
         <ColorPicker
           defaultValue="Color"
-          name="bgColor"
+          name="backgroundColor"
           floatingLabelText="Background color"
-          onChange={(color) =>
-            onSetAttributes({ ...attributes, bgColor: color })
-          }
-          value={attributes.bgColor}
+          onChange={onChangeColor}
+          value={attributes.backgroundColor}
         />
         <CameraOrbit
           cardTitle="Camera orbit"
@@ -81,14 +83,14 @@ export const Scene = ({
           Field of view
         </Typography>
         <Slider
-          defaultValue={15}
-          getAriaValueText={valueText}
           aria-labelledby="field-of-view"
           min={0}
           step={5}
           max={50}
-          marks={[{ value: 15, label: "15deg" }]}
           valueLabelDisplay="on"
+          name="fieldOfView"
+          value={attributes.fieldOfView}
+          onChange={(e, value) => onSliderChange("fieldOfView", value)}
         />
       </Card>
     </Collapse>

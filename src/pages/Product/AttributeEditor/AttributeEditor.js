@@ -21,8 +21,11 @@ export const AttributeEditor = () => {
   const onInputChange = ({ target: { name, value } }) => {
     setAttributes({ ...attributes, [name]: value });
   };
-  const onSliderChange = ({ target }, newValue) => {
-    setAttributes({ ...attributes, [target.name]: newValue });
+  const onSliderChange = (name, newValue) => {
+    setAttributes({ ...attributes, [name]: newValue });
+  };
+  const onChangeColor = (color) => {
+    setAttributes({ ...attributes, backgroundColor: color });
   };
   return (
     <Grid container spacing={2} className={classes.editor}>
@@ -69,10 +72,21 @@ export const AttributeEditor = () => {
         <Scene
           attName={activeBtn}
           attributes={attributes}
+          onInputChange={onInputChange}
           onSetCounterValue={onSetCounterValue}
+          onSliderChange={onSliderChange}
+          onChangeColor={onChangeColor}
         />
-        <Lighting attName={activeBtn} />
-        <Material attName={activeBtn} />
+        <Lighting
+          attName={activeBtn}
+          attributes={attributes}
+          onSliderChange={onSliderChange}
+        />
+        <Material
+          attName={activeBtn}
+          attributes={attributes}
+          onSliderChange={onSliderChange}
+        />
         <Annotation
           attName={activeBtn}
           attributes={attributes}
