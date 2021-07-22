@@ -12,7 +12,12 @@ import ColorPicker from "material-ui-color-picker";
 import { CameraOrbit } from "components/CameraOrbit";
 import { useStyles } from "../productStyles";
 
-export const Scene = ({ attributes = {}, onSetAttributes, attName }) => {
+export const Scene = ({
+  attributes = {},
+  onSetAttributes,
+  attName,
+  onSetCounterValue,
+}) => {
   const classes = useStyles();
   const valueText = (txt) => `${txt}deg`;
   return (
@@ -54,9 +59,24 @@ export const Scene = ({ attributes = {}, onSetAttributes, attName }) => {
           }
           value={attributes.bgColor}
         />
-        <CameraOrbit cardTitle="Camera orbit" />
-        <CameraOrbit cardTitle="Min Camera orbit" />
-        <CameraOrbit cardTitle="Max Camera orbit" />
+        <CameraOrbit
+          cardTitle="Camera orbit"
+          onSetCounterValue={onSetCounterValue}
+          counterValues={attributes.cameraOrbit}
+          attribute="cameraOrbit"
+        />
+        <CameraOrbit
+          cardTitle="Min Camera orbit"
+          onSetCounterValue={onSetCounterValue}
+          counterValues={attributes.minCameraOrbit}
+          attribute="minCameraOrbit"
+        />
+        <CameraOrbit
+          cardTitle="Max Camera orbit"
+          onSetCounterValue={onSetCounterValue}
+          counterValues={attributes.maxCameraOrbit}
+          attribute="maxCameraOrbit"
+        />
         <Typography variant="h4" id="field-of-view" gutterBottom>
           Field of view
         </Typography>

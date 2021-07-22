@@ -5,11 +5,27 @@ import { Lighting } from "./Lighting";
 import { Material } from "./Material";
 import { Annotation } from "./Annotation";
 import { AREditor } from "./AREditor";
+import { useStyles } from "../productStyles";
+import { initialStates } from "./initialStates";
 
 export const AttributeEditor = () => {
   const [activeBtn, setActiveBtn] = useState("scene");
+  const [attributes, setAttributes] = useState(initialStates);
+  const classes = useStyles();
+  const onSetCounterValue = (attribute, name, currentValue) => {
+    const customValues = { ...attributes[attribute].custom };
+    customValues[name] += currentValue;
+    attributes[attribute].custom = customValues;
+    setAttributes({ ...attributes, [attribute]: attributes[attribute] });
+  };
+  const onInputChange = ({ target: { name, value } }) => {
+    setAttributes({ ...attributes, [name]: value });
+  };
+  const onSliderChange = ({ target }, newValue) => {
+    setAttributes({ ...attributes, [target.name]: newValue });
+  };
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} className={classes.editor}>
       <Grid item sm={4} md={4}>
         <ButtonGroup
           orientation="vertical"
@@ -50,11 +66,23 @@ export const AttributeEditor = () => {
         </ButtonGroup>
       </Grid>
       <Grid item sm={8} md={8}>
-        <Scene attName={activeBtn} />
+        <Scene
+          attName={activeBtn}
+          attributes={attributes}
+          onSetCounterValue={onSetCounterValue}
+        />
         <Lighting attName={activeBtn} />
         <Material attName={activeBtn} />
-        <Annotation attName={activeBtn} />
-        <AREditor attName={activeBtn} />
+        <Annotation
+          attName={activeBtn}
+          attributes={attributes}
+          onInputChange={onInputChange}
+        />
+        <AREditor
+          attName={activeBtn}
+          attributes={attributes}
+          onInputChange={onInputChange}
+        />
       </Grid>
     </Grid>
   );

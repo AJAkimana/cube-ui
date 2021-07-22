@@ -10,42 +10,42 @@ import {
   Select,
 } from "@material-ui/core";
 
-export const AREditor = ({ attName }) => {
+const scales = ["auto", "fixed"];
+const placements = ["floor", "wall"];
+export const AREditor = ({ attName, attributes = {}, onInputChange }) => {
   return (
     <Collapse in={attName === "ar"}>
       <Card>
         <CardHeader title="AR Editor" />
         <CardContent>
           <FormControl fullWidth>
-            <InputLabel shrink id="">
+            <InputLabel shrink id="select-scale">
               AR scale
             </InputLabel>
             <Select
-              labelId=""
-              id="demo-simple-select-placeholder-label"
-              displayEmpty
+              labelId="select-scale"
+              name="scale"
+              value={attributes.scale}
+              onChange={onInputChange}
             >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Fixed</MenuItem>
-              <MenuItem value={20}>Auto</MenuItem>
+              {scales.map((scale) => (
+                <MenuItem value={scale}>{scale.toUpperCase()}</MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel shrink id="">
+            <InputLabel shrink id="select-placement">
               AR placement
             </InputLabel>
             <Select
-              labelId=""
-              id="demo-simple-select-placeholder-label"
-              displayEmpty
+              labelId="select-placement"
+              name="placement"
+              value={attributes.placement}
+              onChange={onInputChange}
             >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Floor</MenuItem>
-              <MenuItem value={20}>Wall</MenuItem>
+              {placements.map((pl) => (
+                <MenuItem value={pl}>{pl.toUpperCase()}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </CardContent>
