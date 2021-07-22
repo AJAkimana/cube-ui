@@ -15,7 +15,7 @@ export const initialStates = {
     custom: orbits,
     useCustom: false,
   },
-  cameraTarget: { default: "auto auto auto", custom: "" },
+  cameraTarget: { default: "auto auto auto", custom: "", useCustom: false },
   fieldOfView: 10,
   exposure: 1,
   shadowIntensity: 0,
