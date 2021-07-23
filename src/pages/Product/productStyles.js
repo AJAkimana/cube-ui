@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme) => ({
     // flexGrow: 1,
     // backgroundColor: theme.palette.background.paper,
     // display: "flex",
-    height: 300,
+    height: 450,
     overflowY: "auto",
   },
   tabs: {
@@ -13,5 +13,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   editor: {
     backgroundColor: theme.palette.background.default,
+    height: 500,
   },
 }));
