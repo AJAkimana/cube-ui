@@ -1,8 +1,10 @@
 import { store } from "../store";
 import {
   ADD_NEW_PRODUCT,
+  GET_PRODUCT,
   GET_PRODUCTS,
   GET_PRODUCT_IMAGES,
+  UPDATE_ATTRIBUTES,
   UPDATE_PRODUCT,
   UPLOAD_PRODUCT_IMAGES,
 } from "./actionTypes";
@@ -45,5 +47,17 @@ export const editProduct = (productBody) => {
   store.dispatch({
     type: UPDATE_PRODUCT,
     payload: http.patch(`${BASE_URL}/${_id}`, rest),
+  });
+};
+export const updateAttributes = (attributesBody = {}, productId = "") => {
+  store.dispatch({
+    type: UPDATE_ATTRIBUTES,
+    payload: http.patch(`${BASE_URL}/attributes/${productId}`, attributesBody),
+  });
+};
+export const getProduct = (productId) => {
+  store.dispatch({
+    type: GET_PRODUCT,
+    payload: http.get(`${BASE_URL}/${productId}`),
   });
 };
