@@ -46,8 +46,10 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
     setValues({ ...values, [name]: value });
   };
   useEffect(() => {
-    if (uploaded) {
+    if (uploaded && filePath) {
       setValues({ ...values, image: filePath });
+      setOpenDz(false);
+      notifier.success("Images uploaded");
     }
     // eslint-disable-next-line
   }, [uploaded, filePath]);

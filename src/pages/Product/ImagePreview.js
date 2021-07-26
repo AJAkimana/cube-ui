@@ -25,7 +25,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
     if (productId && open) {
       getProduct(productId);
     }
-  }, [productId]);
+  }, [productId, open]);
   useEffect(() => {
     if (loaded) {
       getProduct(productId);
@@ -34,10 +34,10 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   }, [loaded, message, productId]);
   const booleanAttributes = (imageProp) => {
     let attribs = {};
-    if (imageProp.disableZoom) {
+    if (imageProp?.disableZoom) {
       attribs["disable-zoom"] = "true";
     }
-    if (imageProp.autoRotate) {
+    if (imageProp?.autoRotate) {
       attribs["auto-rotate"] = "true";
     }
     return attribs;
