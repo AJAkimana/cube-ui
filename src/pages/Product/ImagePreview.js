@@ -22,7 +22,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
     attrUpdate: { loaded, message },
   } = appState;
   useEffect(() => {
-    if (productId) {
+    if (productId && open) {
       getProduct(productId);
     }
   }, [productId]);
