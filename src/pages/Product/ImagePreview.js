@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -7,28 +7,36 @@ import {
   DialogTitle,
   Grid,
 } from "@material-ui/core";
-import { getProductImages } from "redux/actions/product";
+import { getProduct } from "redux/actions/product";
 import { useSelector } from "react-redux";
 import { IMAGES_PATH } from "utils/constants";
 import Loading from "components/loading.component";
 import { AttributeEditor } from "./AttributeEditor";
+import { toOrbitProp } from "./productConstants";
+import { notifier } from "utils/notifier";
 
-export const ImagePreview = ({ open, setOpen, productInfo = null }) => {
+export const ImagePreview = ({ open, setOpen, productId = null }) => {
   const appState = useSelector((state) => state);
-  const [product, setProduct] = useState({});
   const {
-    productImg: { loading, image },
+    productGet: { loading, product },
+    attrUpdate: { loaded, message },
   } = appState;
   useEffect(() => {
-    if (productInfo) {
-      getProductImages(productInfo?._id);
-      setProduct(productInfo);
+    if (productId) {
+      getProduct(productId);
     }
-  }, [productInfo]);
+  }, [productId]);
+  useEffect(() => {
+    if (loaded) {
+      getProduct(productId);
+      notifier.success(message);
+    }
+  }, [loaded, message, productId]);
+  const booleanAttributes = () => ({});
   return (
     <Dialog
       open={open}
-      maxWidth="md"
+      maxWidth="lg"
       fullWidth
       onClose={setOpen}
       aria-labelledby="product-dialog-title"
@@ -36,7 +44,7 @@ export const ImagePreview = ({ open, setOpen, productInfo = null }) => {
     >
       <DialogTitle id="product-dialog-title">{product?.name}</DialogTitle>
       <DialogContent id="product-dialog-description">
-        {loading && !image.glb ? (
+        {loading && !Boolean(product.image) ? (
           <Loading />
         ) : (
           <Grid
@@ -45,20 +53,20 @@ export const ImagePreview = ({ open, setOpen, productInfo = null }) => {
             style={{ backgroundColor: product.image?.backgroundColor }}
           >
             <Grid item md={5} lg={5}>
-              <AttributeEditor />
+              <AttributeEditor productId={productId} />
             </Grid>
             <Grid item md={7} lg={7}>
               <model-viewer
-                src={`${IMAGES_PATH}/${image.glb}`}
-                ios-src={`${IMAGES_PATH}/${image.usdz}`}
+                src={`${IMAGES_PATH}/${product.imagesSrc?.glb}`}
+                ios-src={`${IMAGES_PATH}/${product.imagesSrc?.usdz}`}
                 style={{ width: "100%", height: "70vh", border: "none" }}
-                disable-zoom={String(product.image?.disableZoom)}
-                auto-rotate={String(product.image?.autoRotate)}
-                auto-rotate-delay={String(product.image?.autoRotateDelay)}
+                disable-zoom={product.image?.disableZoom}
+                auto-rotate={product.image?.autoRotate}
+                auto-rotate-delay={product.image?.autoRotateDelay}
                 background-color={product.image?.backgroundColor}
-                camera-orbit={product.image?.cameraOrbit}
-                min-camera-orbit={String(product.image?.minCameraOrbit)}
-                max-camera-orbit={product.image?.maxCameraOrbit}
+                camera-orbit={toOrbitProp("cameraOrbit", product.image)}
+                min-camera-orbit={toOrbitProp("minCameraOrbit", product.image)}
+                max-camera-orbit={toOrbitProp("maxCameraOrbit", product.image)}
                 camera-target={product.image?.cameraTarget}
                 field-of-view={product.image?.fieldOfView}
                 exposure={product.image?.exposure}
@@ -72,6 +80,8 @@ export const ImagePreview = ({ open, setOpen, productInfo = null }) => {
                 camera-controls
                 autoplay
                 quick-look-browsers="safari chrome firefox"
+                loading="eager"
+                {...booleanAttributes()}
               ></model-viewer>
             </Grid>
           </Grid>

@@ -23,13 +23,13 @@ export const CameraOrbit = ({
         <FormControlLabel
           control={
             <Checkbox
-              checked={counterValues.useCustom}
+              checked={counterValues.useDefault}
               onChange={({ target }) => onChangeCheckbox(target, attribute)}
             />
           }
           label="Default value"
         />
-        <Collapse in={!counterValues.useCustom}>
+        <Collapse in={!counterValues.useDefault}>
           <ButtonCounter
             label="Side to side"
             onSetValue={onSetCounterValue}

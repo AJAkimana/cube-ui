@@ -7,11 +7,19 @@ import { Annotation } from "./Annotation";
 import { AREditor } from "./AREditor";
 import { useStyles } from "../productStyles";
 import { initialStates } from "./initialStates";
+import { updateAttributes } from "redux/actions/product";
+import { useSelector } from "react-redux";
 
-export const AttributeEditor = () => {
+export const AttributeEditor = ({ productId }) => {
+  const classes = useStyles();
   const [activeBtn, setActiveBtn] = useState("scene");
   const [attributes, setAttributes] = useState(initialStates);
-  const classes = useStyles();
+
+  const appState = useSelector((state) => state);
+  const {
+    attrUpdate: { loading },
+  } = appState;
+
   const onSetCounterValue = (attribute, name, currentValue) => {
     const customValues = { ...attributes[attribute].custom };
     customValues[name] += currentValue;
@@ -32,8 +40,8 @@ export const AttributeEditor = () => {
   };
   const onChangeCheckbox = ({ checked }, attribute) => {
     const attributeValues = { ...attributes[attribute] };
-    attributeValues.useCustom = checked;
-    if (!checked) {
+    attributeValues.useDefault = checked;
+    if (checked) {
       attributeValues.custom = initialStates[attribute].custom;
     }
     setAttributes({ ...attributes, [attribute]: attributeValues });
@@ -48,36 +56,44 @@ export const AttributeEditor = () => {
           variant="text"
         >
           <Button
-            color={activeBtn === "scene" ? "primary" : ""}
+            color={activeBtn === "scene" ? "primary" : "success"}
             onClick={() => setActiveBtn("scene")}
           >
             Scene
           </Button>
           <Button
-            color={activeBtn === "lighting" ? "primary" : ""}
+            color={activeBtn === "lighting" ? "primary" : "success"}
             onClick={() => setActiveBtn("lighting")}
           >
             Lighting
           </Button>
           <Button
-            color={activeBtn === "material" ? "primary" : ""}
+            color={activeBtn === "material" ? "primary" : "success"}
             onClick={() => setActiveBtn("material")}
           >
             Material
           </Button>
           <Button
-            color={activeBtn === "annotation" ? "primary" : ""}
+            color={activeBtn === "annotation" ? "primary" : "success"}
             onClick={() => setActiveBtn("annotation")}
           >
             Annotations
           </Button>
           <Button
-            color={activeBtn === "ar" ? "primary" : ""}
+            color={activeBtn === "ar" ? "primary" : "success"}
             onClick={() => setActiveBtn("ar")}
           >
             AR
           </Button>
         </ButtonGroup>
+        <Button
+          color="secondary"
+          variant="contained"
+          disabled={loading}
+          onClick={() => updateAttributes(attributes, productId)}
+        >
+          Save Changes
+        </Button>
       </Grid>
       <Grid item sm={8} md={8}>
         <Scene
