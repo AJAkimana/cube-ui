@@ -32,7 +32,16 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
       notifier.success(message);
     }
   }, [loaded, message, productId]);
-  const booleanAttributes = () => ({});
+  const booleanAttributes = (imageProp) => {
+    let attribs = {};
+    if (imageProp.disableZoom) {
+      attribs["disable-zoom"] = "true";
+    }
+    if (imageProp.autoRotate) {
+      attribs["auto-rotate"] = "true";
+    }
+    return attribs;
+  };
   return (
     <Dialog
       open={open}
@@ -60,8 +69,6 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 src={`${IMAGES_PATH}/${product.imagesSrc?.glb}`}
                 ios-src={`${IMAGES_PATH}/${product.imagesSrc?.usdz}`}
                 style={{ width: "100%", height: "70vh", border: "none" }}
-                disable-zoom={product.image?.disableZoom}
-                auto-rotate={product.image?.autoRotate}
                 auto-rotate-delay={product.image?.autoRotateDelay}
                 background-color={product.image?.backgroundColor}
                 camera-orbit={toOrbitProp("cameraOrbit", product.image)}
@@ -81,7 +88,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 autoplay
                 quick-look-browsers="safari chrome firefox"
                 loading="eager"
-                {...booleanAttributes()}
+                {...booleanAttributes(product.image)}
               ></model-viewer>
             </Grid>
           </Grid>
