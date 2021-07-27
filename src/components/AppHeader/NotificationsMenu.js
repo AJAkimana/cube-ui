@@ -19,6 +19,13 @@ export const NotificationsMenu = ({ anchorEl, onClose, user }) => {
   const {
     notifsGet: { notifs, loading },
   } = appState;
+  const toLink = (notif = {}) => {
+    let url = `/dashboard/projects/${notif.project}`;
+    if (notif.quote) {
+      url = "/dashboard/quotes";
+    }
+    return url;
+  };
   return (
     <Menu
       id={notificationsMenuId}
@@ -35,7 +42,7 @@ export const NotificationsMenu = ({ anchorEl, onClose, user }) => {
             onClick={onClose}
             key={notifIdx}
             component={Link}
-            to={`/dashboard/projects/${notif.project}`}
+            to={toLink(notif)}
           >
             <ListItem alignItems="flex-start">
               <ListItemText
