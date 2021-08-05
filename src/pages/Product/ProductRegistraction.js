@@ -27,6 +27,7 @@ import {
 } from "redux/actions/product";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { getUsersList } from "redux/actions/user";
 
 export const ProductRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
@@ -37,7 +38,11 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
     fileUpload: { loaded: uploaded, filePath },
     productAdd: { loading: adding, loaded: added },
     productEdit: { loading: editing, loaded: edited },
+    userList: { users },
   } = appState;
+  useEffect(() => {
+    getUsersList("Client");
+  }, []);
   const onHandleChange = (e) => {
     e.preventDefault();
     const {
@@ -163,15 +168,24 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                className={classes.input}
-                variant="outlined"
-                fullWidth
-                name="customer"
-                label="Customer or company"
-                value={values.customer}
-                onChange={onHandleChange}
-              />
+              <FormControl variant="outlined" fullWidth>
+                <InputLabel id="customer-or-comp">
+                  Customer or company
+                </InputLabel>
+                <Select
+                  labelId="customer-or-comp"
+                  value={values.customer}
+                  name="customer"
+                  onChange={onHandleChange}
+                >
+                  <MenuItem value="">---</MenuItem>
+                  {users.map((user, userIdx) => (
+                    <MenuItem value={user._id} key={userIdx}>
+                      {user.fullName}, {user.companyName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <TextField

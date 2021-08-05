@@ -20,7 +20,14 @@ export const productColumns = (onProductClick) => [
     ),
     label: "Product name",
   },
-  { path: "customer", label: "Customer" },
+  {
+    content: (item) => (
+      <Typography>
+        {item.customer.fullName}, {item.customer.companyName}
+      </Typography>
+    ),
+    label: "Customer",
+  },
   { path: "sku", label: "SKU" },
   {
     content: (item) => (
