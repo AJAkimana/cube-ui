@@ -31,7 +31,9 @@ export const productColumns = (onProductClick) => [
   { path: "sku", label: "SKU" },
   {
     content: (item) => (
-      <Typography>$ {item.price?.toLocaleString("en-US")}</Typography>
+      <Typography>
+        {item.price ? `$ ${item.price?.toLocaleString("en-US")}` : ""}
+      </Typography>
     ),
     label: "Price",
   },

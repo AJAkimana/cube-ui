@@ -1,7 +1,7 @@
 export const initialState = {
   name: "",
   price: "",
-  status: "QA",
+  status: "",
   sku: "",
   bgColor: "#7D2ADC",
   customer: "",
