@@ -12,7 +12,6 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import ColorPicker from "material-ui-color-picker";
 import { DropzoneDialog } from "material-ui-dropzone";
 import NumberFormat from "react-number-format";
 import { ComputerOutlined } from "@material-ui/icons";
@@ -35,7 +34,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
   const [openDz, setOpenDz] = useState(false);
   const appState = useSelector((state) => state);
   const {
-    fileUpload: { loaded: uploaded, filePath },
+    fileUpload: { loaded: uploaded, loading: uploading, filePath },
     productAdd: { loading: adding, loaded: added },
     productEdit: { loading: editing, loaded: edited },
     userList: { users },
@@ -114,6 +113,26 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                 value={values.name}
               />
             </Grid>
+            <Grid item xs={12}>
+              <FormControl variant="outlined" fullWidth>
+                <InputLabel id="customer-or-comp">
+                  Customer or company
+                </InputLabel>
+                <Select
+                  labelId="customer-or-comp"
+                  value={values.customer}
+                  name="customer"
+                  onChange={onHandleChange}
+                >
+                  <MenuItem value="">---</MenuItem>
+                  {users.map((user, userIdx) => (
+                    <MenuItem value={user._id} key={userIdx}>
+                      {user.fullName}, {user.companyName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
             <Grid item lg={6} md={6} sm={6} xs={12}>
               <TextField
                 className={classes.input}
@@ -125,7 +144,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                 value={values.sku}
               />
             </Grid>
-            <Grid item lg={6} md={6} sm={6} xs={12}>
+            {/* <Grid item lg={6} md={6} sm={6} xs={12}>
               <ColorPicker
                 defaultValue="Color"
                 name="bgColor"
@@ -133,8 +152,8 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                 onChange={(color) => setValues({ ...values, bgColor: color })}
                 value={values.bgColor}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid> */}
+            <Grid item lg={6} md={6} sm={6} xs={12}>
               <NumberFormat
                 className={classes.input}
                 value={values.price}
@@ -168,26 +187,6 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel id="customer-or-comp">
-                  Customer or company
-                </InputLabel>
-                <Select
-                  labelId="customer-or-comp"
-                  value={values.customer}
-                  name="customer"
-                  onChange={onHandleChange}
-                >
-                  <MenuItem value="">---</MenuItem>
-                  {users.map((user, userIdx) => (
-                    <MenuItem value={user._id} key={userIdx}>
-                      {user.fullName}, {user.companyName}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
               <TextField
                 className={classes.input}
                 variant="outlined"
@@ -214,6 +213,11 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                   filesLimit={2}
                   onClose={() => setOpenDz(false)}
                   clearOnUnmount={uploaded}
+                  submitButtonText={
+                    uploading
+                      ? "Uploading files, please wait,..."
+                      : "Save files"
+                  }
                 />
               </Grid>
             )}

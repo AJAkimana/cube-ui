@@ -1,10 +1,10 @@
 export const initialState = {
   name: "",
+  customer: "",
   price: "",
   status: "",
   sku: "",
-  bgColor: "#7D2ADC",
-  customer: "",
+  bgColor: "#FAFAFA",
   description: "",
   image: "",
 };
