@@ -25,4 +25,5 @@ export const initialStates = {
   placement: "floor",
   metalness: 0,
   roughness: 0,
+  imageFiles: [],
 };

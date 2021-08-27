@@ -4,8 +4,10 @@ import {
   GET_PRODUCT,
   GET_PRODUCTS,
   GET_PRODUCT_IMAGES,
+  RESET_UPLOAD_A_IMAGE,
   UPDATE_ATTRIBUTES,
   UPDATE_PRODUCT,
+  UPLOAD_ATTR_IMAGE,
   UPLOAD_PRODUCT_IMAGES,
 } from "./actionTypes";
 import { http } from "utils/http";
@@ -59,5 +61,21 @@ export const getProduct = (productId) => {
   store.dispatch({
     type: GET_PRODUCT,
     payload: http.get(`${BASE_URL}/${productId}`),
+  });
+};
+export const uploadAttrImage = (formData, imageType = "", productId = {}) => {
+  const config = {
+    headers: { "Content-Type": "multipart/form-data" },
+  };
+  let uploadUrl = `${BASE_URL}/upload/${imageType}`;
+  uploadUrl += `/${productId}`;
+  store.dispatch({
+    type: UPLOAD_ATTR_IMAGE,
+    payload: http.post(uploadUrl, formData, config),
+  });
+};
+export const resetUploadAttrImg = () => {
+  store.dispatch({
+    type: RESET_UPLOAD_A_IMAGE,
   });
 };

@@ -6,14 +6,14 @@ import { Material } from "./Material";
 import { Annotation } from "./Annotation";
 import { AREditor } from "./AREditor";
 import { useStyles } from "../productStyles";
-import { initialStates } from "./initialStates";
 import { updateAttributes } from "redux/actions/product";
 import { useSelector } from "react-redux";
+import { ManageImages } from "./ManageImages";
+import { initialStates } from "./initialStates";
 
-export const AttributeEditor = ({ productId }) => {
+export const AttributeEditor = ({ productId, attributes, setAttributes }) => {
   const classes = useStyles();
   const [activeBtn, setActiveBtn] = useState("scene");
-  const [attributes, setAttributes] = useState(initialStates);
 
   const appState = useSelector((state) => state);
   const {
@@ -85,6 +85,12 @@ export const AttributeEditor = ({ productId }) => {
           >
             AR
           </Button>
+          <Button
+            color={activeBtn === "manage_images" ? "primary" : "success"}
+            onClick={() => setActiveBtn("manage_images")}
+          >
+            Manage images
+          </Button>
         </ButtonGroup>
         <Button
           color="secondary"
@@ -125,6 +131,12 @@ export const AttributeEditor = ({ productId }) => {
           attName={activeBtn}
           attributes={attributes}
           onInputChange={onInputChange}
+        />
+        <ManageImages
+          attName={activeBtn}
+          attributes={attributes}
+          setAttributes={setAttributes}
+          productId={productId}
         />
       </Grid>
     </Grid>

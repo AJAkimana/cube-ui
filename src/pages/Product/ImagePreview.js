@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -13,13 +13,13 @@ import { IMAGES_PATH } from "utils/constants";
 import Loading from "components/loading.component";
 import { AttributeEditor } from "./AttributeEditor";
 import { toOrbitProp } from "./productConstants";
-import { notifier } from "utils/notifier";
+import { initialStates } from "./AttributeEditor/initialStates";
 
 export const ImagePreview = ({ open, setOpen, productId = null }) => {
+  const [attributes, setAttributes] = useState(initialStates);
   const appState = useSelector((state) => state);
   const {
-    productGet: { loading, product },
-    attrUpdate: { loaded, message },
+    productGet: { loading, product, loaded },
   } = appState;
   useEffect(() => {
     if (productId && open) {
@@ -28,10 +28,10 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   }, [productId, open]);
   useEffect(() => {
     if (loaded) {
-      getProduct(productId);
-      notifier.success(message);
+      const { src, ...otherProps } = product.image;
+      setAttributes(otherProps);
     }
-  }, [loaded, message, productId]);
+  }, [loaded, product]);
   const booleanAttributes = (imageProp) => {
     let attribs = {};
     if (imageProp?.disableZoom) {
@@ -59,36 +59,40 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
           <Grid
             container
             spacing={2}
-            style={{ backgroundColor: product.image?.backgroundColor }}
+            style={{ backgroundColor: attributes.backgroundColor }}
           >
             <Grid item md={5} lg={5}>
-              <AttributeEditor productId={productId} />
+              <AttributeEditor
+                productId={productId}
+                attributes={attributes}
+                setAttributes={setAttributes}
+              />
             </Grid>
             <Grid item md={7} lg={7}>
               <model-viewer
                 src={`${IMAGES_PATH}/${product.imagesSrc?.glb}`}
                 ios-src={`${IMAGES_PATH}/${product.imagesSrc?.usdz}`}
                 style={{ width: "100%", height: "70vh", border: "none" }}
-                auto-rotate-delay={product.image?.autoRotateDelay}
-                background-color={product.image?.backgroundColor}
-                camera-orbit={toOrbitProp("cameraOrbit", product.image)}
-                min-camera-orbit={toOrbitProp("minCameraOrbit", product.image)}
-                max-camera-orbit={toOrbitProp("maxCameraOrbit", product.image)}
-                camera-target={product.image?.cameraTarget}
-                field-of-view={product.image?.fieldOfView}
-                exposure={product.image?.exposure}
-                shadow-intensity={product.image?.shadowIntensity}
-                shadow-softness={product.image?.shadowSoftness}
-                alt={product.image?.alt}
-                ar-scale={product.image?.scale}
-                placement={product.image?.placement}
+                auto-rotate-delay={attributes.autoRotateDelay}
+                background-color={attributes.backgroundColor}
+                camera-orbit={toOrbitProp("cameraOrbit", attributes)}
+                min-camera-orbit={toOrbitProp("minCameraOrbit", attributes)}
+                max-camera-orbit={toOrbitProp("maxCameraOrbit", attributes)}
+                camera-target={attributes.cameraTarget}
+                field-of-view={attributes.fieldOfView}
+                exposure={attributes.exposure}
+                shadow-intensity={attributes.shadowIntensity}
+                shadow-softness={attributes.shadowSoftness}
+                alt={attributes.alt}
+                ar-scale={attributes.scale}
+                placement={attributes.placement}
                 ar
                 ar-modes="webxr scene-viewer quick-look"
                 camera-controls
                 autoplay
                 quick-look-browsers="safari chrome firefox"
                 loading="eager"
-                {...booleanAttributes(product.image)}
+                {...booleanAttributes(attributes)}
               ></model-viewer>
             </Grid>
           </Grid>

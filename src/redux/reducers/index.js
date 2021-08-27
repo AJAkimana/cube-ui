@@ -37,6 +37,7 @@ import {
   UPDATE_PRODUCT,
   UPLOAD_PRODUCT_IMAGES,
 } from "redux/actions/actionTypes";
+import { attrImageReducer } from "./file.reducer";
 
 export default combineReducers({
   login: loginReducer,
@@ -70,4 +71,5 @@ export default combineReducers({
   productEdit: reducer(UPDATE_PRODUCT, "message", "string"),
   attrUpdate: reducer(UPDATE_ATTRIBUTES, "message", "string"),
   productGet: reducer(GET_PRODUCT, "product", "object"),
+  attrImg: attrImageReducer,
 });
