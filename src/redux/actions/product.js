@@ -13,16 +13,29 @@ import {
 import { http } from "utils/http";
 
 const BASE_URL = "/products";
-export const uploadProductImages = (formData, currentImage = null) => {
+export const uploadProductImages = (
+  files,
+  imageType = "image3d",
+  otherAttribs = {}
+) => {
+  const formData = new FormData();
+  for (const key of Object.keys(files)) {
+    formData.append("productFiles", files[key]);
+  }
+  const { productId, imgType } = otherAttribs;
   const config = {
     headers: { "Content-Type": "multipart/form-data" },
   };
-  let uploadUrl = `${BASE_URL}/upload/image`;
-  if (currentImage) {
-    uploadUrl += `?prevFile=${currentImage}`;
+  let uploadUrl = `${BASE_URL}/upload/${imageType}`;
+  let actionType = UPLOAD_PRODUCT_IMAGES;
+  if (productId && imgType) {
+    uploadUrl += `?productId=${productId}&imgType=${imgType}`;
+  }
+  if (imageType === "attr-image") {
+    actionType = UPLOAD_ATTR_IMAGE;
   }
   store.dispatch({
-    type: UPLOAD_PRODUCT_IMAGES,
+    type: actionType,
     payload: http.post(uploadUrl, formData, config),
   });
 };
