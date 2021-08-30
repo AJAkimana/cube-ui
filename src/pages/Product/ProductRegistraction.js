@@ -83,11 +83,8 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
       notifier.error("Sorry only two files are needed");
       return;
     }
-    const formData = new FormData();
-    for (const key of Object.keys(files)) {
-      formData.append("productFiles", files[key]);
-    }
-    uploadProductImages(formData, currentItem?.image.src);
+
+    uploadProductImages(files);
   };
   return (
     <Card component="main" className={classes.root}>

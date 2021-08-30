@@ -18,7 +18,7 @@ import {
 import { Delete as DeleteIcon } from "@material-ui/icons";
 import { DropzoneDialog } from "material-ui-dropzone";
 import { useSelector } from "react-redux";
-import { resetUploadAttrImg, uploadAttrImage } from "redux/actions/product";
+import { resetUploadAttrImg, uploadProductImages } from "redux/actions/product";
 
 const imageTypes = [
   { id: "skybox", name: "Skybox & environment" },
@@ -40,7 +40,10 @@ export const ManageImages = ({
   useEffect(() => {
     if (loaded) {
       const newAttribs = { ...attributes };
-      newAttribs.imageFiles?.push({ [imgType]: fileName });
+      newAttribs.imageFiles?.push({
+        imageType: imgType,
+        imageFileName: fileName,
+      });
       setAttributes(newAttribs);
       setOpen(false);
       resetUploadAttrImg();
@@ -51,9 +54,8 @@ export const ManageImages = ({
     setImgType(target.value);
   };
   const onUploadImage = (files) => {
-    let formData = new FormData();
-    formData.append("image", files[0]);
-    uploadAttrImage(formData, imgType, productId);
+    const attrs = { productId, imgType };
+    uploadProductImages(files, "attr-image", attrs);
   };
   return (
     <Collapse in={attName === "manage_images"}>
@@ -94,9 +96,9 @@ export const ManageImages = ({
           <List dense>
             {attributes?.imageFiles
               ?.filter((img) => img.imageType === imgType)
-              .map(() => (
-                <ListItem>
-                  <ListItemText primary="Single-line item" />
+              .map((img, imgIdx) => (
+                <ListItem key={imgIdx}>
+                  <ListItemText primary={img.imageFileName} />
                   <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="delete">
                       <DeleteIcon />
