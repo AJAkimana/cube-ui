@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { getProduct } from "redux/actions/product";
 import { useSelector } from "react-redux";
-import { IMAGES_PATH } from "utils/constants";
+import { IMAGES_3D_PATH } from "utils/constants";
 import Loading from "components/loading.component";
 import { AttributeEditor } from "./AttributeEditor";
 import { toOrbitProp } from "./productConstants";
@@ -70,8 +70,8 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
             </Grid>
             <Grid item md={7} lg={7}>
               <model-viewer
-                src={`${IMAGES_PATH}/${product.imagesSrc?.glb}`}
-                ios-src={`${IMAGES_PATH}/${product.imagesSrc?.usdz}`}
+                src={`${IMAGES_3D_PATH}/${product.imagesSrc?.glb}`}
+                ios-src={`${IMAGES_3D_PATH}/${product.imagesSrc?.usdz}`}
                 style={{ width: "100%", height: "70vh", border: "none" }}
                 auto-rotate-delay={attributes.autoRotateDelay}
                 background-color={attributes.backgroundColor}
