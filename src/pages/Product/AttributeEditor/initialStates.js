@@ -25,5 +25,13 @@ export const initialStates = {
   placement: "floor",
   metalness: 0,
   roughness: 0,
+  skyboxImage: {
+    active: false,
+    image: "",
+  },
+  environmentImage: {
+    active: false,
+    image: "",
+  },
   imageFiles: [],
 };

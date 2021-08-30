@@ -46,6 +46,19 @@ export const AttributeEditor = ({ productId, attributes, setAttributes }) => {
     }
     setAttributes({ ...attributes, [attribute]: attributeValues });
   };
+  const onLightningCheck = ({ checked }, attribute) => {
+    const attributeValues = { ...attributes[attribute] };
+    attributeValues.active = checked;
+    if (!checked) {
+      attributeValues.image = "";
+    }
+    setAttributes({ ...attributes, [attribute]: attributeValues });
+  };
+  const onLighteningSelect = ({ value }, attribute) => {
+    const attributeValues = { ...attributes[attribute] };
+    attributeValues.image = value;
+    setAttributes({ ...attributes, [attribute]: attributeValues });
+  };
   return (
     <Grid container spacing={2} className={classes.editor}>
       <Grid item sm={4} md={4}>
@@ -116,6 +129,8 @@ export const AttributeEditor = ({ productId, attributes, setAttributes }) => {
           attName={activeBtn}
           attributes={attributes}
           onSliderChange={onSliderChange}
+          onLightningCheck={onLightningCheck}
+          onLighteningSelect={onLighteningSelect}
         />
         <Material
           attName={activeBtn}
