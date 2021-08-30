@@ -1,6 +1,7 @@
 import { store } from "../store";
 import {
   ADD_NEW_PRODUCT,
+  DELETE_ATTR_IMAGE,
   GET_PRODUCT,
   GET_PRODUCTS,
   GET_PRODUCT_IMAGES,
@@ -90,5 +91,12 @@ export const uploadAttrImage = (formData, imageType = "", productId = {}) => {
 export const resetUploadAttrImg = () => {
   store.dispatch({
     type: RESET_UPLOAD_A_IMAGE,
+  });
+};
+export const deleteAttrImg = (productId = "", imgFile = "") => {
+  const url = `${BASE_URL}/${productId}/image/${imgFile}`;
+  store.dispatch({
+    type: DELETE_ATTR_IMAGE,
+    payload: http.delete(url),
   });
 };

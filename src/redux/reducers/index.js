@@ -30,6 +30,7 @@ import {
 } from "./user.reducer";
 import {
   ADD_NEW_PRODUCT,
+  DELETE_ATTR_IMAGE,
   GET_PRODUCT,
   GET_PRODUCTS,
   GET_PRODUCT_IMAGES,
@@ -72,4 +73,5 @@ export default combineReducers({
   attrUpdate: reducer(UPDATE_ATTRIBUTES, "message", "string"),
   productGet: reducer(GET_PRODUCT, "product", "object"),
   attrImg: attrImageReducer,
+  imgAttrDel: reducer(DELETE_ATTR_IMAGE, "deletedFile", "string"),
 });
