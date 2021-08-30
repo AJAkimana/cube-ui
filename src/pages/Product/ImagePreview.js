@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { IMAGES_3D_PATH } from "utils/constants";
 import Loading from "components/loading.component";
 import { AttributeEditor } from "./AttributeEditor";
-import { toOrbitProp } from "./productConstants";
+import { toOrbitProp, toAttributes } from "./productConstants";
 import { initialStates } from "./AttributeEditor/initialStates";
 
 export const ImagePreview = ({ open, setOpen, productId = null }) => {
@@ -32,16 +32,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
       setAttributes(otherProps);
     }
   }, [loaded, product]);
-  const booleanAttributes = (imageProp) => {
-    let attribs = {};
-    if (imageProp?.disableZoom) {
-      attribs["disable-zoom"] = "true";
-    }
-    if (imageProp?.autoRotate) {
-      attribs["auto-rotate"] = "true";
-    }
-    return attribs;
-  };
+
   return (
     <Dialog
       open={open}
@@ -92,7 +83,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 autoplay
                 quick-look-browsers="safari chrome firefox"
                 loading="eager"
-                {...booleanAttributes(attributes)}
+                {...toAttributes(attributes)}
               ></model-viewer>
             </Grid>
           </Grid>

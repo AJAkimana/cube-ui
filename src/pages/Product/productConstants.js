@@ -1,3 +1,5 @@
+import { IMAGES_PATH } from "utils/constants";
+
 export const initialState = {
   name: "",
   customer: "",
@@ -22,4 +24,21 @@ export const toOrbitProp = (type = "cameraOrbit", imageProp = {}) => {
     orbitProp += ` ${customAttr?.side}%`;
   }
   return orbitProp;
+};
+export const toAttributes = (imageProp) => {
+  const { skyboxImage, environmentImage } = imageProp;
+  let attribs = {};
+  if (imageProp.disableZoom) {
+    attribs["disable-zoom"] = "true";
+  }
+  if (imageProp.autoRotate) {
+    attribs["auto-rotate"] = "true";
+  }
+  if (skyboxImage?.active && skyboxImage?.image) {
+    attribs["skybox-image"] = IMAGES_PATH + skyboxImage?.image;
+  }
+  if (environmentImage?.active && environmentImage?.image) {
+    attribs["environment-image"] = IMAGES_PATH + environmentImage?.image;
+  }
+  return attribs;
 };
