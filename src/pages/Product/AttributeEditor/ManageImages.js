@@ -18,7 +18,11 @@ import {
 import { Delete as DeleteIcon } from "@material-ui/icons";
 import { DropzoneDialog } from "material-ui-dropzone";
 import { useSelector } from "react-redux";
-import { resetUploadAttrImg, uploadProductImages } from "redux/actions/product";
+import {
+  deleteAttrImg,
+  resetUploadAttrImg,
+  uploadProductImages,
+} from "redux/actions/product";
 
 const imageTypes = [
   { id: "skybox", name: "Skybox & environment" },
@@ -35,6 +39,7 @@ export const ManageImages = ({
 
   const {
     attrImg: { loading, loaded, fileName },
+    imgAttrDel: { loaded: deleted, deletedFile },
   } = useSelector((state) => state);
 
   useEffect(() => {
@@ -50,6 +55,16 @@ export const ManageImages = ({
     }
     // eslint-disable-next-line
   }, [loaded, fileName]);
+  useEffect(() => {
+    if (deleted) {
+      const newAttribs = { ...attributes };
+      const idx = newAttribs.imageFiles?.findIndex(
+        (img) => img.imageFileName === deletedFile
+      );
+      newAttribs.imageFiles?.splice(idx, 1);
+      setAttributes(newAttribs);
+    }
+  }, [deleted, deletedFile]);
   const onSelectChange = ({ target }) => {
     setImgType(target.value);
   };
@@ -100,7 +115,13 @@ export const ManageImages = ({
                 <ListItem key={imgIdx}>
                   <ListItemText primary={img.imageFileName} />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
+                    <IconButton
+                      onClick={() =>
+                        deleteAttrImg(productId, img.imageFileName)
+                      }
+                      edge="end"
+                      aria-label="delete"
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
