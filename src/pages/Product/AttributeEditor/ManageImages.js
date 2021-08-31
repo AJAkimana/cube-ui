@@ -64,6 +64,7 @@ export const ManageImages = ({
       newAttribs.imageFiles?.splice(idx, 1);
       setAttributes(newAttribs);
     }
+    // eslint-disable-next-line
   }, [deleted, deletedFile]);
   const onSelectChange = ({ target }) => {
     setImgType(target.value);

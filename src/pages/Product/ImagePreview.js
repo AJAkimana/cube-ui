@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { getProduct } from "redux/actions/product";
 import { useSelector } from "react-redux";
-import { IMAGES_3D_PATH } from "utils/constants";
+import { IMAGES_3D_PATH, IMAGES_PATH } from "utils/constants";
 import Loading from "components/loading.component";
 import { AttributeEditor } from "./AttributeEditor";
 import { toOrbitProp, toAttributes } from "./productConstants";
@@ -84,7 +84,27 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 quick-look-browsers="safari chrome firefox"
                 loading="eager"
                 {...toAttributes(attributes)}
-              ></model-viewer>
+              >
+                <input
+                  type="image"
+                  src={IMAGES_PATH + attributes.arButtonImage}
+                  id="ar-button"
+                  style={{ width: "50%" }}
+                  slot="ar-button"
+                  alt={attributes.alt}
+                />
+                <button
+                  slot="hotspot-foot"
+                  data-visibility-attribute="visible"
+                  id="hotspot"
+                  className="hotspot"
+                  data-position="-0.5817108238276109m 1.2278369371543665m 0.74690684793254m"
+                  data-normal="0.1736633601318935m -2.3333211432002816e-8m 0.9848050758133305m"
+                  data-visible=""
+                >
+                  <div id="annotation">Some text </div>
+                </button>
+              </model-viewer>
             </Grid>
           </Grid>
         )}
