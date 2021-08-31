@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Button,
   Dialog,
@@ -16,6 +16,7 @@ import { toOrbitProp, toAttributes } from "./productConstants";
 import { initialStates } from "./AttributeEditor/initialStates";
 
 export const ImagePreview = ({ open, setOpen, productId = null }) => {
+  const modelViewRef = useRef(null);
   const [attributes, setAttributes] = useState(initialStates);
   const appState = useSelector((state) => state);
   const {
@@ -57,11 +58,13 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 productId={productId}
                 attributes={attributes}
                 setAttributes={setAttributes}
+                modelViewRef={modelViewRef}
               />
             </Grid>
             <Grid item md={7} lg={7}>
               <model-viewer
                 id="image3d-viewer"
+                ref={modelViewRef}
                 src={`${IMAGES_3D_PATH}/${product.imagesSrc?.glb}`}
                 ios-src={`${IMAGES_3D_PATH}/${product.imagesSrc?.usdz}`}
                 style={{ width: "100%", height: "70vh", border: "none" }}
@@ -86,25 +89,27 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 loading="eager"
                 {...toAttributes(attributes)}
               >
-                <input
-                  type="image"
-                  src={IMAGES_PATH + attributes.arButtonImage}
-                  id="ar-button"
-                  style={{ width: "50%" }}
-                  slot="ar-button"
-                  alt={attributes.alt}
-                />
-                <button
-                  slot="hotspot-foot"
-                  data-visibility-attribute="visible"
-                  id="hotspot"
-                  className="hotspot"
-                  data-position="-0.5817108238276109m 1.2278369371543665m 0.74690684793254m"
-                  data-normal="0.1736633601318935m -2.3333211432002816e-8m 0.9848050758133305m"
-                  data-visible=""
-                >
-                  <div id="annotation">Some text </div>
-                </button>
+                {Boolean(attributes.arButtonImage) && (
+                  <input
+                    type="image"
+                    src={IMAGES_PATH + attributes.arButtonImage}
+                    id="ar-button"
+                    style={{ width: "50%" }}
+                    slot="ar-button"
+                    alt={attributes.alt}
+                  />
+                )}
+                {attributes.hotspots.map((hs, hsIdx) => (
+                  <button
+                    key={hsIdx}
+                    slot={`hotspot-${hsIdx}`}
+                    className="hotspot"
+                    data-position={hs.dataPosition}
+                    data-normal={hs.dataNormal}
+                  >
+                    <div className="annotation">{hs.dataText}</div>
+                  </button>
+                ))}
               </model-viewer>
             </Grid>
           </Grid>

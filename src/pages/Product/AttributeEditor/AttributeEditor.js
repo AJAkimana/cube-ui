@@ -12,7 +12,12 @@ import { ManageImages } from "./ManageImages";
 import { initialStates } from "./initialStates";
 import { Poster } from "./Poster";
 
-export const AttributeEditor = ({ productId, attributes, setAttributes }) => {
+export const AttributeEditor = ({
+  productId,
+  attributes,
+  setAttributes,
+  modelViewRef,
+}) => {
   const classes = useStyles();
   const [activeBtn, setActiveBtn] = useState("scene");
 
@@ -148,13 +153,14 @@ export const AttributeEditor = ({ productId, attributes, setAttributes }) => {
           attName={activeBtn}
           attributes={attributes}
           onInputChange={onInputChange}
+          modelViewRef={modelViewRef}
         />
         <AREditor
           attName={activeBtn}
           attributes={attributes}
           onInputChange={onInputChange}
         />
-        <Poster attName={activeBtn} />
+        <Poster attName={activeBtn} modelViewRef={modelViewRef} />
         <ManageImages
           attName={activeBtn}
           attributes={attributes}
