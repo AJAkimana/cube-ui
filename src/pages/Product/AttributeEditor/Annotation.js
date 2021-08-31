@@ -21,13 +21,18 @@ export const Annotation = ({
   const onAddHotspot = () => {
     imageViewer.addEventListener("click", onClickHotspot);
   };
+  const onRemoveHotspot = () => {
+    if (selectedHotspot) {
+      imageViewer.removeChild(selectedHotspot);
+      setSelectedHotspot(null);
+    }
+  };
   const onClickHotspot = (event) => {
     const rect = imageViewer.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const positionAndNormal = imageViewer.positionAndNormalFromPoint(x, y);
     if (!positionAndNormal) {
-      console.log("no hit result: mouse = ", x, ", ", y);
       return;
     }
     const { position, normal } = positionAndNormal;
@@ -76,8 +81,15 @@ export const Annotation = ({
               shrink: true,
             }}
           />
-          <Button color="secondary" onClick={() => onAddHotspot()}>
+          <Button color="primary" onClick={() => onAddHotspot()}>
             Add new hotspot
+          </Button>
+          <Button
+            color="secondary"
+            disabled={!selectedHotspot}
+            onClick={() => onRemoveHotspot()}
+          >
+            Remove hotspot
           </Button>
         </CardContent>
       </Card>
