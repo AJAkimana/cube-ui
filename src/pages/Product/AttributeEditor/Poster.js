@@ -7,9 +7,9 @@ import {
   Collapse,
 } from "@material-ui/core";
 
-export const Poster = ({ attName }) => {
-  const imageViewer = document.querySelector("model-viewer#image3d-viewer");
+export const Poster = ({ attName, modelViewRef }) => {
   const onDownloadPoster = async () => {
+    const imageViewer = modelViewRef.current;
     let posterUrl = "";
     imageViewer.fieldOfView = "auto";
     imageViewer.jumpCameraToGoal();
