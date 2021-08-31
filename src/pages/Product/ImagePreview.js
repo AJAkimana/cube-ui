@@ -99,7 +99,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                     alt={attributes.alt}
                   />
                 )}
-                {attributes.hotspots.map((hs, hsIdx) => (
+                {attributes.hotspots?.map((hs, hsIdx) => (
                   <button
                     key={hsIdx}
                     slot={`hotspot-${hsIdx}`}
