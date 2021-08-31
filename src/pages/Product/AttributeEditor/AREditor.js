@@ -54,7 +54,7 @@ export const AREditor = ({ attName, attributes = {}, onInputChange }) => {
               ))}
             </Select>
           </FormControl>
-          {attributes.imageFiles.filter((img) => img.imageType === "custom")
+          {attributes.imageFiles?.filter((img) => img.imageType === "custom")
             .length > 0 && (
             <FormControl fullWidth>
               <InputLabel shrink id="select-ar-button-image">
@@ -68,7 +68,7 @@ export const AREditor = ({ attName, attributes = {}, onInputChange }) => {
               >
                 <MenuItem value="">Empty</MenuItem>
                 {attributes.imageFiles
-                  .filter((img) => img.imageType === "custom")
+                  ?.filter((img) => img.imageType === "custom")
                   .map((img, imgIdx) => (
                     <MenuItem value={img.imageFileName} key={imgIdx}>
                       {img.imageFileName}
