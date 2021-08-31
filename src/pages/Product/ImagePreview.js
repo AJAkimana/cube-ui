@@ -61,6 +61,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
             </Grid>
             <Grid item md={7} lg={7}>
               <model-viewer
+                id="image3d-viewer"
                 src={`${IMAGES_3D_PATH}/${product.imagesSrc?.glb}`}
                 ios-src={`${IMAGES_3D_PATH}/${product.imagesSrc?.usdz}`}
                 style={{ width: "100%", height: "70vh", border: "none" }}

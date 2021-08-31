@@ -10,6 +10,7 @@ import { updateAttributes } from "redux/actions/product";
 import { useSelector } from "react-redux";
 import { ManageImages } from "./ManageImages";
 import { initialStates } from "./initialStates";
+import { Poster } from "./Poster";
 
 export const AttributeEditor = ({ productId, attributes, setAttributes }) => {
   const classes = useStyles();
@@ -153,6 +154,7 @@ export const AttributeEditor = ({ productId, attributes, setAttributes }) => {
           attributes={attributes}
           onInputChange={onInputChange}
         />
+        <Poster attName={activeBtn} />
         <ManageImages
           attName={activeBtn}
           attributes={attributes}

@@ -6,7 +6,6 @@ import {
   CardMedia,
   Collapse,
   FormControl,
-  FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
