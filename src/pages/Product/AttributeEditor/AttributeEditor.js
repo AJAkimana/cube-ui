@@ -17,6 +17,8 @@ export const AttributeEditor = ({
   attributes,
   setAttributes,
   modelViewRef,
+  currentHotspot,
+  setCurrentHotspot,
 }) => {
   const classes = useStyles();
   const [activeBtn, setActiveBtn] = useState("scene");
@@ -154,6 +156,9 @@ export const AttributeEditor = ({
           attributes={attributes}
           onInputChange={onInputChange}
           modelViewRef={modelViewRef}
+          setAttributes={setAttributes}
+          currentHotspot={currentHotspot}
+          setCurrentHotspot={setCurrentHotspot}
         />
         <AREditor
           attName={activeBtn}

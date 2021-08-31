@@ -18,6 +18,7 @@ import { initialStates } from "./AttributeEditor/initialStates";
 export const ImagePreview = ({ open, setOpen, productId = null }) => {
   const modelViewRef = useRef(null);
   const [attributes, setAttributes] = useState(initialStates);
+  const [currentHotspot, setCurrentHotspot] = useState(null);
   const appState = useSelector((state) => state);
   const {
     productGet: { loading, product, loaded },
@@ -33,7 +34,17 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
       setAttributes(otherProps);
     }
   }, [loaded, product]);
-
+  const onSelectHotspot = (hotspot) => {
+    const currentAttributes = { ...attributes };
+    const theHotspots = currentAttributes.hotspots.map((hs) => ({
+      ...hs,
+      selected: hs.dataNormal === hotspot.dataNormal ? "selected" : "",
+    }));
+    currentAttributes.hotspots = theHotspots;
+    setAttributes(currentAttributes);
+    hotspot.selected = "selected";
+    setCurrentHotspot(hotspot);
+  };
   return (
     <Dialog
       open={open}
@@ -59,6 +70,8 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 attributes={attributes}
                 setAttributes={setAttributes}
                 modelViewRef={modelViewRef}
+                currentHotspot={currentHotspot}
+                setCurrentHotspot={setCurrentHotspot}
               />
             </Grid>
             <Grid item md={7} lg={7}>
@@ -103,9 +116,10 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                   <button
                     key={hsIdx}
                     slot={`hotspot-${hsIdx}`}
-                    className="hotspot"
+                    className={`hotspot ${hs.selected}`}
                     data-position={hs.dataPosition}
                     data-normal={hs.dataNormal}
+                    onClick={() => onSelectHotspot(hs)}
                   >
                     <div className="annotation">{hs.dataText}</div>
                   </button>
