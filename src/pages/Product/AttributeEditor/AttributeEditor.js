@@ -99,6 +99,12 @@ export const AttributeEditor = ({ productId, attributes, setAttributes }) => {
             AR
           </Button>
           <Button
+            color={activeBtn === "poster" ? "primary" : "success"}
+            onClick={() => setActiveBtn("poster")}
+          >
+            Poster
+          </Button>
+          <Button
             color={activeBtn === "manage_images" ? "primary" : "success"}
             onClick={() => setActiveBtn("manage_images")}
           >
