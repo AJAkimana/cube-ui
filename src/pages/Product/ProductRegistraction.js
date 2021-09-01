@@ -206,7 +206,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                   onSave={onUploadImages}
                   acceptedFiles={[".glb", ".usdz"]}
                   showPreviews={true}
-                  maxFileSize={5000000}
+                  maxFileSize={50000000}
                   filesLimit={2}
                   onClose={() => setOpenDz(false)}
                   clearOnUnmount={uploaded}
