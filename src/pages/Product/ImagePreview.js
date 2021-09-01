@@ -7,9 +7,10 @@ import {
   DialogTitle,
   Grid,
 } from "@material-ui/core";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { getProduct } from "redux/actions/product";
 import { useSelector } from "react-redux";
-import { IMAGES_3D_PATH, IMAGES_PATH } from "utils/constants";
+import { BASE_URL, IMAGES_3D_PATH, IMAGES_PATH } from "utils/constants";
 import Loading from "components/loading.component";
 import { AttributeEditor } from "./AttributeEditor";
 import { toOrbitProp, toAttributes } from "./productConstants";
@@ -19,6 +20,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   const modelViewRef = useRef(null);
   const [attributes, setAttributes] = useState(initialStates);
   const [currentHotspot, setCurrentHotspot] = useState(null);
+  const [copied, setCopied] = useState(false);
   const appState = useSelector((state) => state);
   const {
     productGet: { loading, product, loaded },
@@ -32,6 +34,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
     if (loaded) {
       const { src, ...otherProps } = product.image;
       setAttributes(otherProps);
+      setCopied(false);
     }
   }, [loaded, product]);
   // useEffect(() => {
@@ -67,6 +70,19 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
       aria-describedby="product-dialog-description"
     >
       <DialogTitle id="product-dialog-title">{product?.name}</DialogTitle>
+      <DialogActions>
+        <CopyToClipboard
+          text={`${BASE_URL}/products/${productId}`}
+          onCopy={() => setCopied(true)}
+        >
+          <Button color={copied ? "secondary" : ""}>
+            {copied ? "Copied!" : "Copy the embeded code"}
+          </Button>
+        </CopyToClipboard>
+        <Button onClick={setOpen} color="primary" autoFocus>
+          Exit
+        </Button>
+      </DialogActions>
       <DialogContent id="product-dialog-description">
         {loading && !Boolean(product.image) ? (
           <Loading />

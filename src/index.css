@@ -82,6 +82,6 @@ a:hover {
   background-color: red;
 }
 
-.hotspot:not(.selected) > .annotation {
+/* .hotspot:not(.selected) > .annotation {
   display: none;
-}
+} */
