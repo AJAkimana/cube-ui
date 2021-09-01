@@ -12,6 +12,7 @@ import { UserProfile } from "./pages/UserProfile";
 import { LoginPage } from "pages/Login";
 import { ProjectDetailPage } from "pages/ProjectDetail";
 import { ProductPage } from "pages/Product";
+import { ProductViewPage } from "pages/ProductView";
 
 const routes = [
   {
@@ -28,6 +29,11 @@ const routes = [
     path: "/set-password/:token/:action",
     exact: true,
     component: SetPassword,
+  },
+  {
+    path: "/products/:productId",
+    exact: true,
+    component: ProductViewPage,
   },
   {
     path: "/dashboard",
