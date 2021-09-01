@@ -34,6 +34,18 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
       setAttributes(otherProps);
     }
   }, [loaded, product]);
+  // useEffect(() => {
+  //   if (modelViewRef.current) {
+  //     const modelViewer = modelViewRef.current;
+  //     // const material = modelViewer.materials;
+  //     // console.log("material===>", modelViewer.model);
+  //     modelViewer.addEventListener("scene-graph-ready", (ev) => {
+  //       let material = modelViewer.model.materials[0];
+  //       material.pbrMetallicRoughness.setMetallicFactor(attributes.metalness);
+  //       material.pbrMetallicRoughness.setRoughnessFactor(attributes.roughness);
+  //     });
+  //   }
+  // }, [attributes.metalness, attributes.roughness]);
   const onSelectHotspot = (hotspot) => {
     const currentAttributes = { ...attributes };
     const theHotspots = currentAttributes.hotspots.map((hs) => ({
@@ -86,7 +98,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 camera-orbit={toOrbitProp("cameraOrbit", attributes)}
                 min-camera-orbit={toOrbitProp("minCameraOrbit", attributes)}
                 max-camera-orbit={toOrbitProp("maxCameraOrbit", attributes)}
-                camera-target={attributes.cameraTarget}
+                camera-target={toOrbitProp("cameraTarget", attributes)}
                 field-of-view={attributes.fieldOfView}
                 exposure={attributes.exposure}
                 shadow-intensity={attributes.shadowIntensity}
