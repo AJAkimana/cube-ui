@@ -33,10 +33,18 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   useEffect(() => {
     if (loaded) {
       const { src, ...otherProps } = product.image;
-      setAttributes(otherProps);
+      setAttributes((prevAttribs) => ({ prevAttribs, ...otherProps }));
       setCopied(false);
     }
   }, [loaded, product]);
+  // useEffect(() => {
+  //   if (attributes.hotspots.length) {
+  //     setAttributes((prevAttribs) => ({
+  //       ...prevAttribs,
+  //       hotspots: prevAttribs.hotspots,
+  //     }));
+  //   }
+  // }, [attributes.hotspots]);
   // useEffect(() => {
   //   if (modelViewRef.current) {
   //     const modelViewer = modelViewRef.current;
@@ -50,15 +58,21 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   //   }
   // }, [attributes.metalness, attributes.roughness]);
   const onSelectHotspot = (hotspot) => {
-    const currentAttributes = { ...attributes };
-    const theHotspots = currentAttributes.hotspots.map((hs) => ({
-      ...hs,
-      selected: hs.hotspotNum === hotspot.hotspotNum ? "selected" : "",
-    }));
-    currentAttributes.hotspots = theHotspots;
-    setAttributes(currentAttributes);
-    hotspot.selected = "selected";
-    setCurrentHotspot(hotspot);
+    // const currentAttributes = { ...attributes };
+    // const theHotspots = currentAttributes.hotspots.map((hs) => ({
+    //   ...hs,
+    //   selected: hs.hotspotNum === hotspot.hotspotNum ? "selected" : "",
+    // }));
+    // currentAttributes.hotspots = theHotspots;
+    setAttributes((prevAttribs) => {
+      const theHotspots = prevAttribs.hotspots.map((hs) => ({
+        ...hs,
+        selected: hs.hotspotNum === hotspot.hotspotNum ? "selected" : "",
+      }));
+      // hotspot.selected = "selected";
+      setCurrentHotspot(hotspot);
+      return { ...prevAttribs, hotspots: theHotspots };
+    });
   };
   return (
     <Dialog

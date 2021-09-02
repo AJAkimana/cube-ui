@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   Card,
@@ -28,9 +28,9 @@ export const Annotation = ({
       const theHotspots = currentAttributes.hotspots.filter(
         (hs) => hs.hotspotNum !== currentHotspot.hotspotNum
       );
-      currentAttributes.hotspots = theHotspots;
+      // currentAttributes.hotspots = theHotspots;
       // console.log(currentAttributes.hotspots);
-      setAttributes(currentAttributes);
+      setAttributes((prev) => ({ ...prev, hotspots: theHotspots }));
       setCurrentHotspot(null);
     }
   };
