@@ -17,7 +17,6 @@ export const Annotation = ({
   currentHotspot,
   setCurrentHotspot,
 }) => {
-  const [hotspotCount, setHotspotCount] = useState(1);
   const imageViewer = modelViewRef.current;
 
   const onAddHotspot = () => {
