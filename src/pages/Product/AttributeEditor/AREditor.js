@@ -58,7 +58,7 @@ export const AREditor = ({ attName, attributes = {}, onInputChange }) => {
             .length > 0 && (
             <FormControl fullWidth>
               <InputLabel shrink id="select-ar-button-image">
-                Images
+                AR button image
               </InputLabel>
               <Select
                 labelId="select-ar-button-image"
@@ -81,7 +81,7 @@ export const AREditor = ({ attName, attributes = {}, onInputChange }) => {
             <CardMedia
               image={IMAGES_PATH + attributes.arButtonImage}
               component="img"
-              height="140"
+              height="40"
             />
           )}
         </CardContent>

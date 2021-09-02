@@ -77,43 +77,43 @@ export const AttributeEditor = ({
           variant="text"
         >
           <Button
-            color={activeBtn === "scene" ? "primary" : "success"}
+            color={activeBtn === "scene" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("scene")}
           >
             Scene
           </Button>
           <Button
-            color={activeBtn === "lighting" ? "primary" : "success"}
+            color={activeBtn === "lighting" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("lighting")}
           >
             Lighting
           </Button>
           <Button
-            color={activeBtn === "material" ? "primary" : "success"}
+            color={activeBtn === "material" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("material")}
           >
             Material
           </Button>
           <Button
-            color={activeBtn === "annotation" ? "primary" : "success"}
+            color={activeBtn === "annotation" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("annotation")}
           >
             Annotations
           </Button>
           <Button
-            color={activeBtn === "ar" ? "primary" : "success"}
+            color={activeBtn === "ar" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("ar")}
           >
             AR
           </Button>
           <Button
-            color={activeBtn === "poster" ? "primary" : "success"}
+            color={activeBtn === "poster" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("poster")}
           >
             Poster
           </Button>
           <Button
-            color={activeBtn === "manage_images" ? "primary" : "success"}
+            color={activeBtn === "manage_images" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("manage_images")}
           >
             Manage images

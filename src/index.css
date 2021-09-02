@@ -81,6 +81,14 @@ a:hover {
 .hotspot.selected {
   background-color: red;
 }
+.ar-button {
+  background-color: white;
+  border-radius: 4px;
+  border: none;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
 
 /* .hotspot:not(.selected) > .annotation {
   display: none;

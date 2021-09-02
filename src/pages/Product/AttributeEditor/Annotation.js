@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -17,6 +17,7 @@ export const Annotation = ({
   currentHotspot,
   setCurrentHotspot,
 }) => {
+  const [hotspotCount, setHotspotCount] = useState(1);
   const imageViewer = modelViewRef.current;
 
   const onAddHotspot = () => {
@@ -25,13 +26,24 @@ export const Annotation = ({
   const onRemoveHotspot = () => {
     if (currentHotspot) {
       const currentAttributes = { ...attributes };
-      const idx = currentAttributes.hotspots.findIndex(
-        (hs) => hs.dataNormal === currentHotspot.dataNormal
+      const theHotspots = currentAttributes.hotspots.filter(
+        (hs) => hs.hotspotNum !== currentHotspot.hotspotNum
       );
-      currentAttributes.hotspots.splice(idx, 1);
+      currentAttributes.hotspots = theHotspots;
+      console.log(currentAttributes.hotspots);
       setAttributes(currentAttributes);
       setCurrentHotspot(null);
     }
+  };
+  const nextNumber = () => {
+    const hotspots = [...attributes.hotspots];
+    let theNum = 1;
+    if (hotspots.length > 0) {
+      const lastHotspot = hotspots.pop();
+      theNum = lastHotspot.hotspotNum + 1;
+    }
+    console.log("theNum====>", theNum);
+    return theNum;
   };
   const onClickHotspot = (event) => {
     const rect = imageViewer.getBoundingClientRect();
@@ -47,6 +59,7 @@ export const Annotation = ({
       dataPosition: position.toString(),
       dataNormal: normal.toString(),
       dataText: "",
+      hotspotNum: nextNumber(),
       selected: "selected",
     };
     const theHotspots = currentAttributes.hotspots.map((hs) => ({
@@ -54,8 +67,9 @@ export const Annotation = ({
       selected: "",
     }));
     theHotspots.push(newHotspot);
-    currentAttributes.hotspots = theHotspots;
-    setAttributes(currentAttributes);
+    // currentAttributes.hotspots = [newHotspot, ...theHotspots];
+    // console.log(currentAttributes.hotspots);
+    setAttributes({ ...attributes, hotspots: theHotspots });
     setCurrentHotspot(newHotspot);
     // const newHotspot = document.createElement("button");
     // newHotspot.slot = `hotspot-${hotstpotCount}`;

@@ -53,7 +53,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
     const currentAttributes = { ...attributes };
     const theHotspots = currentAttributes.hotspots.map((hs) => ({
       ...hs,
-      selected: hs.dataNormal === hotspot.dataNormal ? "selected" : "",
+      selected: hs.hotspotNum === hotspot.hotspotNum ? "selected" : "",
     }));
     currentAttributes.hotspots = theHotspots;
     setAttributes(currentAttributes);
@@ -134,7 +134,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                   <input
                     type="image"
                     src={IMAGES_PATH + attributes.arButtonImage}
-                    id="ar-button"
+                    className="ar-button"
                     style={{ width: "50%" }}
                     slot="ar-button"
                     alt={attributes.alt}
@@ -143,8 +143,10 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 {attributes.hotspots?.map((hs, hsIdx) => (
                   <button
                     key={hsIdx}
-                    slot={`hotspot-${hsIdx}`}
-                    className={`hotspot ${hs.selected}`}
+                    slot={`hotspot-${hs.hotspotNum}`}
+                    className={`${
+                      hs.selected ? "hotspot selected" : "hotspot"
+                    }`}
                     data-position={hs.dataPosition}
                     data-normal={hs.dataNormal}
                     onClick={() => onSelectHotspot(hs)}
