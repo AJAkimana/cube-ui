@@ -29,7 +29,7 @@ export const Annotation = ({
         (hs) => hs.hotspotNum !== currentHotspot.hotspotNum
       );
       currentAttributes.hotspots = theHotspots;
-      console.log(currentAttributes.hotspots);
+      // console.log(currentAttributes.hotspots);
       setAttributes(currentAttributes);
       setCurrentHotspot(null);
     }
@@ -41,7 +41,7 @@ export const Annotation = ({
       const lastHotspot = hotspots.pop();
       theNum = lastHotspot.hotspotNum + 1;
     }
-    console.log("theNum====>", theNum);
+    // console.log("theNum====>", theNum);
     return theNum;
   };
   const onClickHotspot = (event) => {
