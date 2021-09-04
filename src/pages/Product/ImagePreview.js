@@ -37,14 +37,28 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
       setCopied(false);
     }
   }, [loaded, product]);
-  // useEffect(() => {
-  //   if (attributes.hotspots.length) {
-  //     setAttributes((prevAttribs) => ({
-  //       ...prevAttribs,
-  //       hotspots: prevAttribs.hotspots,
-  //     }));
-  //   }
-  // }, [attributes.hotspots]);
+  useEffect(() => {
+    const modelViewer = modelViewRef.current;
+    document.querySelectorAll("button.hotspot").forEach((e) => e.remove());
+    if (attributes.hotspots.length) {
+      attributes.hotspots.forEach((el) => {
+        const newHotspot = document.createElement("button");
+        newHotspot.slot = `hotspot-${el.hotspotNum}`;
+        newHotspot.className = `hotspot ${el.selected}`;
+        newHotspot.dataset.position = el.dataPosition;
+        newHotspot.dataset.normal = el.dataNormal;
+
+        modelViewer.appendChild(newHotspot);
+        newHotspot.addEventListener("click", () => {
+          onSelectHotspot(el);
+        });
+        const div = document.createElement("div");
+        div.classList.add("annotation");
+        div.textContent = el.dataText;
+        newHotspot.appendChild(div);
+      });
+    }
+  }, [attributes.hotspots, currentHotspot]);
   // useEffect(() => {
   //   if (modelViewRef.current) {
   //     const modelViewer = modelViewRef.current;
@@ -154,7 +168,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                     alt={attributes.alt}
                   />
                 )}
-                {attributes.hotspots?.map((hs, hsIdx) => (
+                {/* {attributes.hotspots?.map((hs, hsIdx) => (
                   <button
                     key={hsIdx}
                     slot={`hotspot-${hs.hotspotNum}`}
@@ -167,7 +181,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                   >
                     <div className="annotation">{hs.dataText}</div>
                   </button>
-                ))}
+                ))} */}
               </model-viewer>
             </Grid>
           </Grid>
