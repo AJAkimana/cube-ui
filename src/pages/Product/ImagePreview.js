@@ -72,18 +72,11 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   //   }
   // }, [attributes.metalness, attributes.roughness]);
   const onSelectHotspot = (hotspot) => {
-    // const currentAttributes = { ...attributes };
-    // const theHotspots = currentAttributes.hotspots.map((hs) => ({
-    //   ...hs,
-    //   selected: hs.hotspotNum === hotspot.hotspotNum ? "selected" : "",
-    // }));
-    // currentAttributes.hotspots = theHotspots;
     setAttributes((prevAttribs) => {
       const theHotspots = prevAttribs.hotspots.map((hs) => ({
         ...hs,
         selected: hs.hotspotNum === hotspot.hotspotNum ? "selected" : "",
       }));
-      // hotspot.selected = "selected";
       setCurrentHotspot(hotspot);
       return { ...prevAttribs, hotspots: theHotspots };
     });
