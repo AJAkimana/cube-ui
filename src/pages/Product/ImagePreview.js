@@ -35,6 +35,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
       const { src, ...otherProps } = product.image;
       setAttributes((prevAttribs) => ({ prevAttribs, ...otherProps }));
       setCopied(false);
+      setCurrentHotspot(null);
     }
   }, [loaded, product]);
   useEffect(() => {
@@ -45,6 +46,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
         const newHotspot = document.createElement("button");
         newHotspot.slot = `hotspot-${el.hotspotNum}`;
         newHotspot.className = `hotspot ${el.selected}`;
+        newHotspot.style.backgroundColor = el.bgColor;
         newHotspot.dataset.position = el.dataPosition;
         newHotspot.dataset.normal = el.dataNormal;
 

@@ -7,6 +7,8 @@ import {
   Collapse,
   TextField,
 } from "@material-ui/core";
+import ColorPicker from "material-ui-color-picker";
+import { useStyles } from "../productStyles";
 
 export const Annotation = ({
   attName,
@@ -17,6 +19,7 @@ export const Annotation = ({
   currentHotspot,
   setCurrentHotspot,
 }) => {
+  const classes = useStyles();
   const imageViewer = modelViewRef.current;
 
   const onAddHotspot = () => {
@@ -58,6 +61,7 @@ export const Annotation = ({
       dataPosition: position.toString(),
       dataNormal: normal.toString(),
       dataText: "",
+      bgColor: "black",
       hotspotNum: nextNumber(),
       selected: "selected",
     };
@@ -104,9 +108,23 @@ export const Annotation = ({
       setAttributes(currentAttributes);
     }
   };
+  const onChangeColor = (color) => {
+    if (currentHotspot) {
+      const currentAttributes = { ...attributes };
+      const idx = currentAttributes.hotspots.findIndex(
+        (hs) => hs.dataNormal === currentHotspot.dataNormal
+      );
+      const theCurrentHotspot = { ...currentHotspot, bgColor: color };
+      setCurrentHotspot(theCurrentHotspot);
+
+      currentAttributes.hotspots[idx].bgColor = color;
+
+      setAttributes(currentAttributes);
+    }
+  };
   return (
     <Collapse in={attName === "annotation"}>
-      <Card>
+      <Card className={classes.root}>
         <CardHeader title="Modal annotation" />
         <CardContent>
           <TextField
@@ -138,6 +156,15 @@ export const Annotation = ({
             InputLabelProps={{
               shrink: true,
             }}
+          />
+          <ColorPicker
+            defaultValue="Click to select color"
+            name="bgColor"
+            floatingLabelText="Hotspot background color"
+            onChange={onChangeColor}
+            disabled={!currentHotspot}
+            fullWidth
+            value={currentHotspot?.bgColor}
           />
           <Button
             color="secondary"
