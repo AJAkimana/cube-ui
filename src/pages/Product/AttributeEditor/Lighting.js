@@ -91,11 +91,13 @@ export const Lighting = ({
                   onLighteningSelect(target, "skyboxImage")
                 }
               >
-                {attributes.imageFiles.map((img, imgIdx) => (
-                  <MenuItem value={img.imageFileName} key={imgIdx}>
-                    {img.imageFileName}
-                  </MenuItem>
-                ))}
+                {attributes.imageFiles
+                  ?.filter((img) => img.imageType === "skybox")
+                  .map((img, imgIdx) => (
+                    <MenuItem value={img.imageFileName} key={imgIdx}>
+                      {img.imageFileName}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           )}
@@ -130,11 +132,13 @@ export const Lighting = ({
                   onLighteningSelect(target, "environmentImage")
                 }
               >
-                {attributes.imageFiles.map((img, imgIdx) => (
-                  <MenuItem value={img.imageFileName} key={imgIdx}>
-                    {img.imageFileName}
-                  </MenuItem>
-                ))}
+                {attributes.imageFiles
+                  ?.filter((img) => img.imageType === "skybox")
+                  .map((img, imgIdx) => (
+                    <MenuItem value={img.imageFileName} key={imgIdx}>
+                      {img.imageFileName}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           )}
