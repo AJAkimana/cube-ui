@@ -30,6 +30,7 @@ import {
 } from "./user.reducer";
 import {
   ADD_NEW_PRODUCT,
+  ADD_PROJECT_PROD,
   DELETE_ATTR_IMAGE,
   GET_PRODUCT,
   GET_PRODUCTS,
@@ -74,4 +75,5 @@ export default combineReducers({
   productGet: promisedReducer(GET_PRODUCT, "product", "object", true),
   attrImg: attrImageReducer,
   imgAttrDel: promisedReducer(DELETE_ATTR_IMAGE, "deletedFile", "string"),
+  projectAddProd: promisedReducer(ADD_PROJECT_PROD, "message", "string", true),
 });
