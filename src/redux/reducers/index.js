@@ -35,6 +35,7 @@ import {
   GET_PRODUCT,
   GET_PRODUCTS,
   GET_PRODUCT_IMAGES,
+  GET_PROJECT_PROD,
   UPDATE_ATTRIBUTES,
   UPDATE_PRODUCT,
   UPLOAD_PRODUCT_IMAGES,
@@ -76,4 +77,5 @@ export default combineReducers({
   attrImg: attrImageReducer,
   imgAttrDel: promisedReducer(DELETE_ATTR_IMAGE, "deletedFile", "string"),
   projectAddProd: promisedReducer(ADD_PROJECT_PROD, "message", "string", true),
+  projectProdsGet: promisedReducer(GET_PROJECT_PROD, "projProds", "array"),
 });

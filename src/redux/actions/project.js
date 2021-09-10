@@ -8,6 +8,7 @@ import {
   GET_PROJECT_DETAILS,
   ADD_NEW_LOG,
   ADD_PROJECT_PROD,
+  GET_PROJECT_PROD,
 } from "./actionTypes";
 import { http } from "utils/http";
 
@@ -63,5 +64,13 @@ export const addProjectProd = (newProduct = {}) => {
   store.dispatch({
     type: ADD_PROJECT_PROD,
     payload: http.post(`${BASE_URL + projectId}/products`, rest),
+  });
+};
+export const getProjectProds = (ppId, type = "project") => {
+  let urlWithParams = `${BASE_URL + ppId}/products`;
+  urlWithParams += `?type=${type}`;
+  store.dispatch({
+    type: GET_PROJECT_PROD,
+    payload: http.get(urlWithParams),
   });
 };

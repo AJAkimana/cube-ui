@@ -21,6 +21,7 @@ import {
   CardActions,
   CardHeader,
   TextField,
+  Divider,
 } from "@material-ui/core";
 import {
   CloudDownloadOutlined as DownloadIcon,
@@ -34,6 +35,7 @@ import {
   addNewLog,
   getProjectDetails,
   getProjectHistories,
+  getProjectProds,
 } from "redux/actions/project";
 import { useSelector } from "react-redux";
 import Loading from "components/loading.component";
@@ -42,6 +44,7 @@ import { projectTypes } from "pages/Project/projectConstants";
 import { useStyles } from "styles/formStyles";
 import { notifUser } from "utils/helper";
 import { AddProductDialog } from "./AddProductDialog";
+import { NoDisplayData } from "components/NoDisplayData";
 
 const logInitialState = { title: "", description: "" };
 const productInitialState = { product: "", website: "", projectId: "" };
@@ -64,11 +67,13 @@ export const ProjectDetailPage = ({ match }) => {
       userInfo: { user },
     },
     projectAddProd: { loaded: productAdded },
+    projectProdsGet: { loading: ppFetching, projProds },
   } = appState;
   useEffect(() => {
     if (projectId) {
       // Fetch the project
       getProjectDetails(projectId);
+      getProjectProds(projectId);
     }
   }, [projectId]);
   useEffect(() => {
@@ -90,6 +95,7 @@ export const ProjectDetailPage = ({ match }) => {
     if (productAdded) {
       setNewProduct({ ...productInitialState, projectId });
       setOpenAddProduct(false);
+      getProjectProds(projectId);
     }
   }, [productAdded]);
   const { button: buttonStyles, ...contentStyles } =
@@ -131,6 +137,26 @@ export const ProjectDetailPage = ({ match }) => {
               {`Created by: ${project.user?.fullName}`}
             </Typography>
           </div>
+          <CardHeader title="Products addedd" />
+          <Divider />
+          <CardContent>
+            {ppFetching && !projProds.length ? (
+              <Loading />
+            ) : projProds.length ? (
+              <List>
+                {projProds.map((prod, prodIdx) => (
+                  <ListItem divider key={prodIdx}>
+                    <ListItemText
+                      primary={prod.product?.name}
+                      secondary={prod.website}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            ) : (
+              <NoDisplayData message="No product added yet" />
+            )}
+          </CardContent>
         </Card>
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
