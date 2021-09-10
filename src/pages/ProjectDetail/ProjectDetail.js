@@ -88,7 +88,7 @@ export const ProjectDetailPage = ({ match }) => {
   }, [done, projectId]);
   useEffect(() => {
     if (productAdded) {
-      setNewProduct(productInitialState);
+      setNewProduct({ ...productInitialState, projectId });
       setOpenAddProduct(false);
     }
   }, [productAdded]);
