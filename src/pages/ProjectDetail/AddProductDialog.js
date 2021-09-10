@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -16,6 +16,7 @@ import {
 import { useStyles } from "styles/formStyles";
 import { useSelector } from "react-redux";
 import { addProjectProd } from "redux/actions/project";
+import { getProducts } from "redux/actions/product";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -28,6 +29,9 @@ export const AddProductDialog = ({ open, setOpen, values, setValues }) => {
     projectAddProd: { loading },
   } = useSelector((state) => state);
 
+  useEffect(() => {
+    getProducts();
+  }, []);
   const onHandleChange = ({ target: { name, value } }) => {
     setValues((prev) => ({ ...prev, [name]: value }));
   };
