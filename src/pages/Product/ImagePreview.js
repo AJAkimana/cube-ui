@@ -41,11 +41,11 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   useEffect(() => {
     const modelViewer = modelViewRef.current;
     document.querySelectorAll("button.hotspot").forEach((e) => e.remove());
-    if (attributes.hotspots.length) {
+    if (attributes.hotspots.length && modelViewer) {
       attributes.hotspots.forEach((el) => {
         const newHotspot = document.createElement("button");
         newHotspot.slot = `hotspot-${el.hotspotNum}`;
-        newHotspot.className = `hotspot ${el.selected}`;
+        newHotspot.classList.add("hotspot");
         newHotspot.style.backgroundColor = el.bgColor;
         newHotspot.dataset.position = el.dataPosition;
         newHotspot.dataset.normal = el.dataNormal;
@@ -74,14 +74,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   //   }
   // }, [attributes.metalness, attributes.roughness]);
   const onSelectHotspot = (hotspot) => {
-    setAttributes((prevAttribs) => {
-      const theHotspots = prevAttribs.hotspots.map((hs) => ({
-        ...hs,
-        selected: hs.hotspotNum === hotspot.hotspotNum ? "selected" : "",
-      }));
-      setCurrentHotspot(hotspot);
-      return { ...prevAttribs, hotspots: theHotspots };
-    });
+    setCurrentHotspot(hotspot);
   };
   return (
     <Dialog

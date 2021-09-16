@@ -72,9 +72,14 @@ export const updateAttributes = (attributesBody = {}, productId = "") => {
   });
 };
 export const getProduct = (productId) => {
+  const config = {};
+  const ancOrigins = document.location.ancestorOrigins;
+  if (ancOrigins.length > 0) {
+    config.headers = { "ancestor-origin": ancOrigins[0] };
+  }
   store.dispatch({
     type: GET_PRODUCT,
-    payload: http.get(`${BASE_URL}/${productId}`),
+    payload: http.get(`${BASE_URL}/${productId}`, config),
   });
 };
 export const uploadAttrImage = (formData, imageType = "", productId = {}) => {

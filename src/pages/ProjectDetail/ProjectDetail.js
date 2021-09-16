@@ -45,6 +45,7 @@ import { useStyles } from "styles/formStyles";
 import { notifUser } from "utils/helper";
 import { AddProductDialog } from "./AddProductDialog";
 import { NoDisplayData } from "components/NoDisplayData";
+import { ViewProductDialog } from "./ViewProductDialog";
 
 const logInitialState = { title: "", description: "" };
 const productInitialState = { product: "", website: "", projectId: "" };
@@ -54,7 +55,9 @@ export const ProjectDetailPage = ({ match }) => {
   const [projectType, setProjectType] = useState({});
   const [newLog, setNewLog] = useState(logInitialState);
   const [newProduct, setNewProduct] = useState(productInitialState);
+  const [currentProd, setCurrentProd] = useState({});
   const [openAddProduct, setOpenAddProduct] = useState(false);
+  const [openViewProduct, setOpenViewProduct] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const { projectId } = match.params;
 
@@ -124,6 +127,14 @@ export const ProjectDetailPage = ({ match }) => {
         values={newProduct}
         setValues={setNewProduct}
       />
+      <ViewProductDialog
+        open={openViewProduct}
+        setOpen={() => {
+          setCurrentProd({});
+          setOpenViewProduct(false);
+        }}
+        productId={currentProd._id}
+      />
       <Grid item xs={12} sm={4} md={4} lg={4}>
         <Card component="main" className={classes.root}>
           <div className={classes.paper}>
@@ -149,6 +160,10 @@ export const ProjectDetailPage = ({ match }) => {
                     <ListItemText
                       primary={prod.product?.name}
                       secondary={prod.website}
+                      onClick={() => {
+                        setOpenViewProduct(true);
+                        setCurrentProd(prod.product);
+                      }}
                     />
                   </ListItem>
                 ))}

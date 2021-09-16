@@ -4,16 +4,22 @@ import { IMAGES_3D_PATH, IMAGES_PATH } from "utils/constants";
 import { getProduct } from "redux/actions/product";
 import { initialStates } from "pages/Product/AttributeEditor/initialStates";
 import { useSelector } from "react-redux";
+import Loading from "components/loading.component";
 
-export const ProductViewPage = ({ match }) => {
+export const ProductViewPage = ({
+  match,
+  styles = { width: "100%", height: "100vh" },
+}) => {
   const [attributes, setAttributes] = useState(initialStates);
   const appState = useSelector((state) => state);
   const { productId } = match.params;
   const {
-    productGet: { product, loaded },
+    productGet: { product, loaded, loading },
   } = appState;
   useEffect(() => {
-    getProduct(productId);
+    if (productId) {
+      getProduct(productId);
+    }
   }, [productId]);
   useEffect(() => {
     if (loaded) {
@@ -21,23 +27,14 @@ export const ProductViewPage = ({ match }) => {
       setAttributes(otherProps);
     }
   }, [loaded, product]);
-  const onSelectHotspot = (hotspot) => {
-    const currentAttributes = { ...attributes };
-    const theHotspots = currentAttributes.hotspots.map((hs) => ({
-      ...hs,
-      selected: hs.dataNormal === hotspot.dataNormal ? "selected" : "",
-    }));
-    currentAttributes.hotspots = theHotspots;
-    setAttributes(currentAttributes);
-  };
+  if (loading || !Boolean(product.imagesSrc)) return <Loading />;
   return (
     <model-viewer
       id="image3d-viewer"
       src={`${IMAGES_3D_PATH}/${product.imagesSrc?.glb}`}
       ios-src={`${IMAGES_3D_PATH}/${product.imagesSrc?.usdz}`}
       style={{
-        width: "100%",
-        height: "100vh",
+        ...styles,
         border: "none",
         backgroundColor: attributes.backgroundColor,
       }}
@@ -76,10 +73,10 @@ export const ProductViewPage = ({ match }) => {
         <button
           key={hsIdx}
           slot={`hotspot-${hsIdx}`}
-          className={`hotspot ${hs.selected}`}
+          className="hotspot"
+          style={{ backgroundColor: hs.bgColor }}
           data-position={hs.dataPosition}
           data-normal={hs.dataNormal}
-          onClick={() => onSelectHotspot(hs)}
         >
           <div className="annotation">{hs.dataText}</div>
         </button>
