@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { ManageImages } from "./ManageImages";
 import { initialStates } from "./initialStates";
 import { Poster } from "./Poster";
+import { AddedProducts } from "./AddedProducts";
 
 export const AttributeEditor = ({
   productId,
@@ -118,6 +119,12 @@ export const AttributeEditor = ({
           >
             Manage images
           </Button>
+          <Button
+            color={activeBtn === "added_projects" ? "primary" : "secondary"}
+            onClick={() => setActiveBtn("added_projects")}
+          >
+            Added products
+          </Button>
         </ButtonGroup>
         <Button
           color="secondary"
@@ -172,6 +179,7 @@ export const AttributeEditor = ({
           setAttributes={setAttributes}
           productId={productId}
         />
+        <AddedProducts attName={activeBtn} productId={productId} />
       </Grid>
     </Grid>
   );

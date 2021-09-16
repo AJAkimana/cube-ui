@@ -21,6 +21,7 @@ import {
   CardActions,
   CardHeader,
   TextField,
+  Divider,
 } from "@material-ui/core";
 import {
   CloudDownloadOutlined as DownloadIcon,
@@ -34,6 +35,7 @@ import {
   addNewLog,
   getProjectDetails,
   getProjectHistories,
+  getProjectProds,
 } from "redux/actions/project";
 import { useSelector } from "react-redux";
 import Loading from "components/loading.component";
@@ -41,12 +43,18 @@ import { INVOICE_ROUTE } from "utils/constants";
 import { projectTypes } from "pages/Project/projectConstants";
 import { useStyles } from "styles/formStyles";
 import { notifUser } from "utils/helper";
+import { AddProductDialog } from "./AddProductDialog";
+import { NoDisplayData } from "components/NoDisplayData";
 
+const logInitialState = { title: "", description: "" };
+const productInitialState = { product: "", website: "", projectId: "" };
 export const ProjectDetailPage = ({ match }) => {
   const classes = useStyles();
 
   const [projectType, setProjectType] = useState({});
-  const [newLog, setNewLog] = useState({ title: "", description: "" });
+  const [newLog, setNewLog] = useState(logInitialState);
+  const [newProduct, setNewProduct] = useState(productInitialState);
+  const [openAddProduct, setOpenAddProduct] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const { projectId } = match.params;
 
@@ -58,16 +66,20 @@ export const ProjectDetailPage = ({ match }) => {
     login: {
       userInfo: { user },
     },
+    projectAddProd: { loaded: productAdded },
+    projectProdsGet: { loading: ppFetching, projProds },
   } = appState;
   useEffect(() => {
     if (projectId) {
       // Fetch the project
       getProjectDetails(projectId);
+      getProjectProds(projectId);
     }
   }, [projectId]);
   useEffect(() => {
     if (projectId && loaded) {
-      getProjectHistories(projectId);
+      setNewProduct((prev) => ({ ...prev, projectId }));
+      // getProjectHistories(projectId);
       const currentPType = projectTypes.find((e) => e.name === project.type);
       setProjectType(currentPType);
     }
@@ -75,10 +87,17 @@ export const ProjectDetailPage = ({ match }) => {
   useEffect(() => {
     if (done) {
       getProjectHistories(projectId);
-      setNewLog({ title: "", description: "" });
+      setNewLog(logInitialState);
       setEditorState(EditorState.createEmpty());
     }
   }, [done, projectId]);
+  useEffect(() => {
+    if (productAdded) {
+      setNewProduct({ ...productInitialState, projectId });
+      setOpenAddProduct(false);
+      getProjectProds(projectId);
+    }
+  }, [productAdded]);
   const { button: buttonStyles, ...contentStyles } =
     useBlogTextInfoContentStyles();
   const toDowloadUrl = (projectHistory = {}) => {
@@ -99,6 +118,12 @@ export const ProjectDetailPage = ({ match }) => {
         py: 3,
       }}
     >
+      <AddProductDialog
+        open={openAddProduct}
+        setOpen={() => setOpenAddProduct(false)}
+        values={newProduct}
+        setValues={setNewProduct}
+      />
       <Grid item xs={12} sm={4} md={4} lg={4}>
         <Card component="main" className={classes.root}>
           <div className={classes.paper}>
@@ -112,6 +137,26 @@ export const ProjectDetailPage = ({ match }) => {
               {`Created by: ${project.user?.fullName}`}
             </Typography>
           </div>
+          <CardHeader title="Products addedd" />
+          <Divider />
+          <CardContent>
+            {ppFetching && !projProds.length ? (
+              <Loading />
+            ) : projProds.length ? (
+              <List>
+                {projProds.map((prod, prodIdx) => (
+                  <ListItem divider key={prodIdx}>
+                    <ListItemText
+                      primary={prod.product?.name}
+                      secondary={prod.website}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            ) : (
+              <NoDisplayData message="No product added yet" />
+            )}
+          </CardContent>
         </Card>
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
@@ -119,7 +164,14 @@ export const ProjectDetailPage = ({ match }) => {
           aria-labelledby="project-name"
           aria-describedby="project-description"
         >
-          <CardHeader title={`Project name: ${project.name?.toUpperCase()}`} />
+          <CardHeader
+            title={`Project name: ${project.name?.toUpperCase()}`}
+            action={
+              <Button onClick={() => setOpenAddProduct(true)}>
+                Add a product
+              </Button>
+            }
+          />
           <CardContent>
             {projectFetching ? (
               <Loading />
