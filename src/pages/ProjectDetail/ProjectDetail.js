@@ -182,7 +182,11 @@ export const ProjectDetailPage = ({ match }) => {
           <CardHeader
             title={`Project name: ${project.name?.toUpperCase()}`}
             action={
-              <Button onClick={() => setOpenAddProduct(true)}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => setOpenAddProduct(true)}
+              >
                 Add a product
               </Button>
             }
