@@ -27,7 +27,8 @@ export const ProductViewPage = ({
       setAttributes(otherProps);
     }
   }, [loaded, product]);
-  if (loading || !Boolean(product.imagesSrc)) return <Loading />;
+  if (loading) return <Loading />;
+  if (!Boolean(product.imagesSrc)) return null;
   return (
     <model-viewer
       id="image3d-viewer"
