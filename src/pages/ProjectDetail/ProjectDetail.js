@@ -100,7 +100,7 @@ export const ProjectDetailPage = ({ match }) => {
       setOpenAddProduct(false);
       getProjectProds(projectId);
     }
-  }, [productAdded]);
+  }, [productAdded, projectId]);
   const { button: buttonStyles, ...contentStyles } =
     useBlogTextInfoContentStyles();
   const toDowloadUrl = (projectHistory = {}) => {
