@@ -123,7 +123,7 @@ export const AttributeEditor = ({
             color={activeBtn === "added_projects" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("added_projects")}
           >
-            Added products
+            Added projects
           </Button>
         </ButtonGroup>
         <Button

@@ -148,7 +148,7 @@ export const ProjectDetailPage = ({ match }) => {
               {`Created by: ${project.user?.fullName}`}
             </Typography>
           </div>
-          <CardHeader title="Products addedd" />
+          <CardHeader title="3D assets addedd" />
           <Divider />
           <CardContent>
             {ppFetching && !projProds.length ? (
@@ -169,7 +169,7 @@ export const ProjectDetailPage = ({ match }) => {
                 ))}
               </List>
             ) : (
-              <NoDisplayData message="No product added yet" />
+              <NoDisplayData message="No asset added yet" />
             )}
           </CardContent>
         </Card>
@@ -187,7 +187,7 @@ export const ProjectDetailPage = ({ match }) => {
                 color="primary"
                 onClick={() => setOpenAddProduct(true)}
               >
-                Add a product
+                Add a 3d asset
               </Button>
             }
           />

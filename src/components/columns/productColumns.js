@@ -18,7 +18,7 @@ export const productColumns = (onProductClick) => [
         {item.name}
       </Button>
     ),
-    label: "Product name",
+    label: "Asset name",
   },
   {
     content: (item) => (

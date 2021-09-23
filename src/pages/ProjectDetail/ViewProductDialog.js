@@ -14,7 +14,7 @@ export const ViewProductDialog = ({ productId, open, setOpen }) => {
       aria-labelledby="view-product"
       aria-describedby="project-description"
     >
-      <DialogTitle id="view-product">Product View</DialogTitle>
+      <DialogTitle id="view-product">Asset View</DialogTitle>
       <DialogContent>
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>

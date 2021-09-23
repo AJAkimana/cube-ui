@@ -95,7 +95,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
         <Typography component="h1" variant="h4">
           {action === "edit"
             ? `Update ${currentItem?.name.toUpperCase()}`
-            : "Add a new product"}
+            : "Add a new 3D asset"}
         </Typography>
         <form className={classes.form} onSubmit={submitHandler}>
           <Grid container spacing={2}>
@@ -105,7 +105,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                 name="name"
                 variant="outlined"
                 fullWidth
-                label="Product name"
+                label="3D Asset name"
                 onChange={onHandleChange}
                 value={values.name}
               />
@@ -136,20 +136,11 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                 name="sku"
                 variant="outlined"
                 fullWidth
-                label="Product SKU"
+                label="SKU"
                 onChange={onHandleChange}
                 value={values.sku}
               />
             </Grid>
-            {/* <Grid item lg={6} md={6} sm={6} xs={12}>
-              <ColorPicker
-                defaultValue="Color"
-                name="bgColor"
-                floatingLabelText="Background color"
-                onChange={(color) => setValues({ ...values, bgColor: color })}
-                value={values.bgColor}
-              />
-            </Grid> */}
             <Grid item lg={6} md={6} sm={6} xs={12}>
               <NumberFormat
                 className={classes.input}
@@ -199,7 +190,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
             {action === "add" && (
               <Grid item xs={12}>
                 <Button onClick={() => setOpenDz(true)}>
-                  Add Product Images
+                  Add the 3D asset files
                 </Button>
                 <DropzoneDialog
                   open={openDz}
@@ -238,7 +229,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                 className={classes.submit}
                 disabled={editing}
               >
-                Update the product
+                Update the asset
               </Button>
             )}
           </CardActions>

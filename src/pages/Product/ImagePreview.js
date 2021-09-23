@@ -61,18 +61,6 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
       });
     }
   }, [attributes.hotspots, currentHotspot]);
-  // useEffect(() => {
-  //   if (modelViewRef.current) {
-  //     const modelViewer = modelViewRef.current;
-  //     // const material = modelViewer.materials;
-  //     // console.log("material===>", modelViewer.model);
-  //     modelViewer.addEventListener("scene-graph-ready", (ev) => {
-  //       let material = modelViewer.model.materials[0];
-  //       material.pbrMetallicRoughness.setMetallicFactor(attributes.metalness);
-  //       material.pbrMetallicRoughness.setRoughnessFactor(attributes.roughness);
-  //     });
-  //   }
-  // }, [attributes.metalness, attributes.roughness]);
   const onSelectHotspot = (hotspot) => {
     setCurrentHotspot(hotspot);
   };
