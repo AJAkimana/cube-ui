@@ -27,6 +27,7 @@ import {
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getUsersList } from "redux/actions/user";
+import { getProjects } from "redux/actions/project";
 
 export const ProductRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
@@ -38,16 +39,28 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
     productAdd: { loading: adding, loaded: added },
     productEdit: { loading: editing, loaded: edited },
     userList: { users },
+    projectsGet: { projects },
   } = appState;
   useEffect(() => {
     getUsersList("Client");
   }, []);
+  useEffect(() => {
+    if (values.customer) {
+      getProjects({ clientId: values.customer });
+    }
+  }, [values.customer]);
   const onHandleChange = (e) => {
     e.preventDefault();
     const {
       target: { name, value },
     } = e;
-    setValues({ ...values, [name]: value });
+    setValues((prev) => {
+      const newValues = { ...prev, [name]: value };
+      if (name === "customer") {
+        newValues.project = "";
+      }
+      return newValues;
+    });
   };
   useEffect(() => {
     if (uploaded && filePath) {
@@ -65,8 +78,9 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
   }, [added, edited]);
   useEffect(() => {
     if (currentItem && action === "edit") {
-      const { createdAt, updatedAt, image, itemNumber, ...rest } = currentItem;
-      setValues(rest);
+      const { createdAt, updatedAt, image, project, customer, ...rest } =
+        currentItem;
+      setValues({ ...rest, project: project?._id, customer: customer?._id });
     }
   }, [action, currentItem]);
   const submitHandler = (e) => {
@@ -75,6 +89,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
       addNewProduct(values);
     }
     if (action === "edit") {
+      delete values.itemNumber;
       editProduct(values);
     }
   };
@@ -125,6 +140,25 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                   {users.map((user, userIdx) => (
                     <MenuItem value={user._id} key={userIdx}>
                       {user.fullName}, {user.companyName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl variant="outlined" fullWidth>
+                <InputLabel id="select-project">Select project</InputLabel>
+                <Select
+                  labelId="select-project"
+                  value={values.project}
+                  name="project"
+                  onChange={onHandleChange}
+                  disabled={!Boolean(values.customer)}
+                >
+                  <MenuItem value="">---</MenuItem>
+                  {projects.map((project, projectIdx) => (
+                    <MenuItem value={project._id} key={projectIdx}>
+                      {project.name}
                     </MenuItem>
                   ))}
                 </Select>

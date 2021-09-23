@@ -22,7 +22,13 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export const AddProductDialog = ({ open, setOpen, values, setValues }) => {
+export const AddProductDialog = ({
+  open,
+  setOpen,
+  values,
+  setValues,
+  projectId,
+}) => {
   const classes = useStyles();
   const {
     productsGet: { products },
@@ -30,8 +36,8 @@ export const AddProductDialog = ({ open, setOpen, values, setValues }) => {
   } = useSelector((state) => state);
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    getProducts({ projectId });
+  }, [projectId]);
   const onHandleChange = ({ target: { name, value } }) => {
     setValues((prev) => ({ ...prev, [name]: value }));
   };

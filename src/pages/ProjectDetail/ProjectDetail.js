@@ -125,6 +125,7 @@ export const ProjectDetailPage = ({ match }) => {
         open={openAddProduct}
         setOpen={() => setOpenAddProduct(false)}
         values={newProduct}
+        projectId={projectId}
         setValues={setNewProduct}
       />
       <ViewProductDialog
@@ -159,7 +160,9 @@ export const ProjectDetailPage = ({ match }) => {
                   <ListItem divider key={prodIdx}>
                     <ListItemText
                       primary={prod.product?.name}
-                      secondary={prod.website}
+                      secondary={`${prod.website} (added ${moment(
+                        prod.createdAt
+                      ).fromNow()})`}
                       onClick={() => {
                         setOpenViewProduct(true);
                         setCurrentProd(prod.product);

@@ -46,10 +46,14 @@ export const addNewProduct = (productBody) => {
     payload: http.post(BASE_URL, productBody),
   });
 };
-export const getProducts = () => {
+export const getProducts = ({ projectId }) => {
+  let params = "?";
+  if (projectId) {
+    params += `project=${projectId}`;
+  }
   store.dispatch({
     type: GET_PRODUCTS,
-    payload: http.get(BASE_URL),
+    payload: http.get(BASE_URL + params),
   });
 };
 export const getProductImages = (productId = "") => {

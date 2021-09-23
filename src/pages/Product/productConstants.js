@@ -3,6 +3,7 @@ import { IMAGES_PATH } from "utils/constants";
 export const initialState = {
   name: "",
   customer: "",
+  project: "",
   price: "",
   status: "",
   sku: "",

@@ -19,10 +19,13 @@ export const addNewProject = (projectInfo) => {
     payload: http.post(BASE_URL, projectInfo),
   });
 };
-export const getProjects = ({ status }) => {
+export const getProjects = ({ status, clientId }) => {
   let params = "";
   if (status) {
-    params += `status=${status}`;
+    params += `status=${status}&`;
+  }
+  if (clientId) {
+    params += `client=${clientId}&`;
   }
   store.dispatch({
     type: GET_PROJECTS,

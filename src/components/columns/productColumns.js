@@ -28,6 +28,10 @@ export const productColumns = (onProductClick) => [
     ),
     label: "Customer",
   },
+  {
+    content: (item) => <Typography>{item.project?.name}</Typography>,
+    label: "Project",
+  },
   { path: "sku", label: "SKU" },
   {
     content: (item) => (
