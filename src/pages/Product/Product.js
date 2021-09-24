@@ -53,7 +53,7 @@ export const ProductPage = () => {
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable
-          tableTitle="List of products"
+          tableTitle="List of 3D assets"
           columns={productColumns(onProductClick)}
           loading={fetching}
           data={paginatedData}

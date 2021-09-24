@@ -21,7 +21,7 @@ export const NavigationMenu = ({
   if (user && user.role !== "Client") {
     navigations = [
       { link: "customers", title: "Customers" },
-      { link: "products", title: "Products" },
+      { link: "products", title: "3D assets" },
       ...navigations,
     ];
   }
