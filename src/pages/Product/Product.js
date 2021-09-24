@@ -28,7 +28,7 @@ export const ProductPage = () => {
     }
   }, [products, paginator]);
   useEffect(() => {
-    getProducts();
+    getProducts({});
   }, []);
   const onPageChange = ({ selected }) => {
     setPaginator({ ...paginator, pageNumber: selected + 1 });
