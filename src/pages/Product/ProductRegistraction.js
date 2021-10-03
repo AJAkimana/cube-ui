@@ -58,6 +58,8 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
       const newValues = { ...prev, [name]: value };
       if (name === "customer") {
         newValues.project = "";
+        const user = users.find((u) => u._id === value);
+        newValues.website = user.companyUrl;
       }
       return newValues;
     });
@@ -73,7 +75,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
   useEffect(() => {
     if (added || edited) {
       setValues(initialState);
-      getProducts();
+      getProducts({});
     }
   }, [added, edited]);
   useEffect(() => {

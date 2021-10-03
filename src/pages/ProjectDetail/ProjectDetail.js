@@ -43,20 +43,20 @@ import { INVOICE_ROUTE } from "utils/constants";
 import { projectTypes } from "pages/Project/projectConstants";
 import { useStyles } from "styles/formStyles";
 import { notifUser } from "utils/helper";
-import { AddProductDialog } from "./AddProductDialog";
+// import { AddProductDialog } from "./AddProductDialog";
 import { NoDisplayData } from "components/NoDisplayData";
 import { ViewProductDialog } from "./ViewProductDialog";
 
 const logInitialState = { title: "", description: "" };
-const productInitialState = { product: "", website: "", projectId: "" };
+// const productInitialState = { product: "", website: "", projectId: "" };
 export const ProjectDetailPage = ({ match }) => {
   const classes = useStyles();
 
   const [projectType, setProjectType] = useState({});
   const [newLog, setNewLog] = useState(logInitialState);
-  const [newProduct, setNewProduct] = useState(productInitialState);
+  // const [newProduct, setNewProduct] = useState(productInitialState);
   const [currentProd, setCurrentProd] = useState({});
-  const [openAddProduct, setOpenAddProduct] = useState(false);
+  // const [openAddProduct, setOpenAddProduct] = useState(false);
   const [openViewProduct, setOpenViewProduct] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const { projectId } = match.params;
@@ -69,7 +69,7 @@ export const ProjectDetailPage = ({ match }) => {
     login: {
       userInfo: { user },
     },
-    projectAddProd: { loaded: productAdded },
+    // projectAddProd: { loaded: productAdded },
     projectProdsGet: { loading: ppFetching, projProds },
   } = appState;
   useEffect(() => {
@@ -81,7 +81,7 @@ export const ProjectDetailPage = ({ match }) => {
   }, [projectId]);
   useEffect(() => {
     if (projectId && loaded) {
-      setNewProduct((prev) => ({ ...prev, projectId }));
+      // setNewProduct((prev) => ({ ...prev, projectId }));
       // getProjectHistories(projectId);
       const currentPType = projectTypes.find((e) => e.name === project.type);
       setProjectType(currentPType);
@@ -94,13 +94,13 @@ export const ProjectDetailPage = ({ match }) => {
       setEditorState(EditorState.createEmpty());
     }
   }, [done, projectId]);
-  useEffect(() => {
-    if (productAdded) {
-      setNewProduct({ ...productInitialState, projectId });
-      setOpenAddProduct(false);
-      getProjectProds(projectId);
-    }
-  }, [productAdded, projectId]);
+  // useEffect(() => {
+  //   if (productAdded) {
+  //     setNewProduct({ ...productInitialState, projectId });
+  //     setOpenAddProduct(false);
+  //     getProjectProds(projectId);
+  //   }
+  // }, [productAdded, projectId]);
   const { button: buttonStyles, ...contentStyles } =
     useBlogTextInfoContentStyles();
   const toDowloadUrl = (projectHistory = {}) => {
@@ -121,13 +121,13 @@ export const ProjectDetailPage = ({ match }) => {
         py: 3,
       }}
     >
-      <AddProductDialog
+      {/* <AddProductDialog
         open={openAddProduct}
         setOpen={() => setOpenAddProduct(false)}
         values={newProduct}
         projectId={projectId}
         setValues={setNewProduct}
-      />
+      /> */}
       <ViewProductDialog
         open={openViewProduct}
         setOpen={() => {
@@ -184,15 +184,15 @@ export const ProjectDetailPage = ({ match }) => {
         >
           <CardHeader
             title={`Project name: ${project.name?.toUpperCase()}`}
-            action={
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => setOpenAddProduct(true)}
-              >
-                Add a 3d asset
-              </Button>
-            }
+            // action={
+            //   <Button
+            //     variant="outlined"
+            //     color="primary"
+            //     onClick={() => setOpenAddProduct(true)}
+            //   >
+            //     Add a 3d asset
+            //   </Button>
+            // }
           />
           <CardContent>
             {projectFetching ? (

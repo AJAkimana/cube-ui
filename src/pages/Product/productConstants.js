@@ -9,6 +9,7 @@ export const initialState = {
   sku: "",
   bgColor: "#FAFAFA",
   description: "",
+  website: "",
   image: "",
 };
 export const productStatuses = ["QA", "COMPLETED"];
