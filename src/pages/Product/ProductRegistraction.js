@@ -59,7 +59,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
       if (name === "customer") {
         newValues.project = "";
         const user = users.find((u) => u._id === value);
-        newValues.website = user.companyUrl;
+        newValues.website = user?.companyUrl;
       }
       return newValues;
     });
