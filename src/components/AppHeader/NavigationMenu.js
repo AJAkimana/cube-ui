@@ -12,6 +12,7 @@ export const NavigationMenu = ({
   user,
 }) => {
   let navigations = [
+    { link: "products", title: "3D assets" },
     { link: "projects", title: "Projects" },
     { link: "quotes", title: "Quotes" },
     { link: "invoices", title: "Invoices" },
@@ -19,11 +20,7 @@ export const NavigationMenu = ({
     { link: "profile", title: "My profile" },
   ];
   if (user && user.role !== "Client") {
-    navigations = [
-      { link: "customers", title: "Customers" },
-      { link: "products", title: "3D assets" },
-      ...navigations,
-    ];
+    navigations = [{ link: "customers", title: "Customers" }, ...navigations];
   }
   return (
     <Menu
