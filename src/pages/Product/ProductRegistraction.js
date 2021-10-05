@@ -40,6 +40,9 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
     productEdit: { loading: editing, loaded: edited },
     userList: { users },
     projectsGet: { projects },
+    login: {
+      userInfo: { user },
+    },
   } = appState;
   useEffect(() => {
     getUsersList("Client");
@@ -137,6 +140,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                   value={values.customer}
                   name="customer"
                   onChange={onHandleChange}
+                  disabled={user.role === "Client"}
                 >
                   <MenuItem value="">---</MenuItem>
                   {users.map((user, userIdx) => (
@@ -155,7 +159,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                   value={values.project}
                   name="project"
                   onChange={onHandleChange}
-                  disabled={!Boolean(values.customer)}
+                  disabled={user.role === "Client" || !Boolean(values.customer)}
                 >
                   <MenuItem value="">---</MenuItem>
                   {projects.map((project, projectIdx) => (
@@ -247,7 +251,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
             )}
           </Grid>
           <CardActions>
-            {action === "add" ? (
+            {(action === "add" || user.role !== "Client") && (
               <Button
                 type="submit"
                 fullWidth
@@ -257,7 +261,8 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
               >
                 Save
               </Button>
-            ) : (
+            )}
+            {action === "edit" && (
               <Button
                 type="submit"
                 fullWidth
