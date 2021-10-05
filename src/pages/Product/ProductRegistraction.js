@@ -251,7 +251,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
             )}
           </Grid>
           <CardActions>
-            {(action === "add" || user.role !== "Client") && (
+            {action === "add" && user.role !== "Client" && (
               <Button
                 type="submit"
                 fullWidth
