@@ -27,6 +27,9 @@ export const AttributeEditor = ({
   const appState = useSelector((state) => state);
   const {
     attrUpdate: { loading },
+    login: {
+      userInfo: { user },
+    },
   } = appState;
 
   const onSetCounterValue = (attribute, name, currentValue) => {
@@ -113,18 +116,20 @@ export const AttributeEditor = ({
           >
             Poster
           </Button>
-          <Button
-            color={activeBtn === "manage_images" ? "primary" : "secondary"}
-            onClick={() => setActiveBtn("manage_images")}
-          >
-            Manage images
-          </Button>
-          <Button
+          {user.role !== "Client" && (
+            <Button
+              color={activeBtn === "manage_images" ? "primary" : "secondary"}
+              onClick={() => setActiveBtn("manage_images")}
+            >
+              Manage images
+            </Button>
+          )}
+          {/* <Button
             color={activeBtn === "added_projects" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("added_projects")}
           >
             Added projects
-          </Button>
+          </Button> */}
         </ButtonGroup>
         <Button
           color="secondary"
@@ -173,12 +178,14 @@ export const AttributeEditor = ({
           onInputChange={onInputChange}
         />
         <Poster attName={activeBtn} modelViewRef={modelViewRef} />
-        <ManageImages
-          attName={activeBtn}
-          attributes={attributes}
-          setAttributes={setAttributes}
-          productId={productId}
-        />
+        {user.role !== "Client" && (
+          <ManageImages
+            attName={activeBtn}
+            attributes={attributes}
+            setAttributes={setAttributes}
+            productId={productId}
+          />
+        )}
         <AddedProducts attName={activeBtn} productId={productId} />
       </Grid>
     </Grid>
