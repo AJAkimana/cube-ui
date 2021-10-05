@@ -11,17 +11,17 @@ import {
 import { useSelector } from "react-redux";
 import Loading from "components/loading.component";
 import { NoDisplayData } from "components/NoDisplayData";
-import { getProjectProds } from "redux/actions/project";
+// import { getProjectProds } from "redux/actions/project";
 
 export const AddedProducts = ({ attName, productId }) => {
   const appState = useSelector((state) => state);
 
-  useEffect(() => {
-    getProjectProds(productId, "product");
-  }, [productId]);
   const {
     projectProdsGet: { loading: ppFetching, projProds },
   } = appState;
+  useEffect(() => {
+    // getProjectProds(productId, "product");
+  }, [productId]);
   return (
     <Collapse in={attName === "added_projects"}>
       <Card>
