@@ -61,8 +61,6 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
       const newValues = { ...prev, [name]: value };
       if (name === "customer") {
         newValues.project = "";
-        const user = users.find((u) => u._id === value);
-        newValues.website = user?.companyUrl;
       }
       return newValues;
     });
@@ -90,6 +88,8 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
   }, [action, currentItem]);
   const submitHandler = (e) => {
     e.preventDefault();
+    const user = users.find((u) => u._id === values.customer);
+    values.website = user?.companyUrl;
     if (action === "add") {
       addNewProduct(values);
     }
@@ -159,7 +159,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                   value={values.project}
                   name="project"
                   onChange={onHandleChange}
-                  disabled={user.role === "Client" || !Boolean(values.customer)}
+                  disabled={!Boolean(values.customer)}
                 >
                   <MenuItem value="">---</MenuItem>
                   {projects.map((project, projectIdx) => (
