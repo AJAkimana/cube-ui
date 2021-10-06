@@ -82,7 +82,7 @@ export const ProjectDetailPage = ({ match }) => {
   useEffect(() => {
     if (projectId && loaded) {
       // setNewProduct((prev) => ({ ...prev, projectId }));
-      // getProjectHistories(projectId);
+      getProjectHistories(projectId);
       const currentPType = projectTypes.find((e) => e.name === project.type);
       setProjectType(currentPType);
     }
