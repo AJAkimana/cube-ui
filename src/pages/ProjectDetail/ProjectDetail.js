@@ -149,7 +149,7 @@ export const ProjectDetailPage = ({ match }) => {
               {`Created by: ${project.user?.fullName}`}
             </Typography>
           </div>
-          <CardHeader title="3D assets addedd" />
+          <CardHeader title="3D assets added" />
           <Divider />
           <CardContent>
             {ppFetching && !projProds.length ? (
@@ -157,12 +157,10 @@ export const ProjectDetailPage = ({ match }) => {
             ) : projProds.length ? (
               <List>
                 {projProds.map((prod, prodIdx) => (
-                  <ListItem divider key={prodIdx}>
+                  <ListItem divider key={prodIdx} component={Button}>
                     <ListItemText
                       primary={prod.product?.name}
-                      secondary={`${prod.website} (added ${moment(
-                        prod.createdAt
-                      ).fromNow()})`}
+                      secondary={`added ${moment(prod.createdAt).fromNow()}`}
                       onClick={() => {
                         setOpenViewProduct(true);
                         setCurrentProd(prod.product);
