@@ -6,6 +6,7 @@ import { getQuotes } from "redux/actions/quote";
 import { initialPaginate, paginate } from "utils/paginate";
 import { quoteColumns } from "components/columns/quoteColumns";
 import { CustomisedTable } from "components/CustomizedTable";
+import { QuoteItemsDialog } from "./QuoteItemsDialog";
 
 export const QuotePage = () => {
   const quoteState = useSelector((state) => state);
@@ -13,6 +14,7 @@ export const QuotePage = () => {
   const [paginator, setPaginator] = useState(initialPaginate());
   const [currentItem, setCurrentItem] = useState(null);
   const [action, setAction] = useState("add");
+
   const {
     quotesGet: { loading, quotes },
     quoteAdd: { loaded: added },
@@ -53,6 +55,11 @@ export const QuotePage = () => {
     >
       <Grid item xs={12} sm={4} md={4} lg={4}>
         <QuoteRegistration action={action} currentItem={currentItem} />
+        <QuoteItemsDialog
+          open={action === "items"}
+          setOpen={() => setAction("add")}
+          quote={currentItem}
+        />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable

@@ -42,7 +42,7 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
           <IconButton
             aria-label="manage-items"
             color="secondary"
-            onClick={() => onQuoteClick(item, "item")}
+            onClick={() => onQuoteClick(item, "items")}
             size="small"
           >
             <EditIcon />
