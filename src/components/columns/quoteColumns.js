@@ -33,17 +33,22 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
     ),
     label: "Amount",
   },
-  {
-    content: (item) => <Typography>{item.status ?? "Pending"}</Typography>,
-    label: "Status",
-  },
+  { path: "status", label: "Status" },
   { path: "comment", label: "Comment" },
   {
     content: (item) =>
-      item.status ? (
-        <Typography variant="caption" color="error">
-          No action needed
-        </Typography>
+      item.status === "draft" ? (
+        <Tooltip title="manage-items">
+          <IconButton
+            aria-label="manage-items"
+            color="secondary"
+            onClick={() => onQuoteClick(item, "item")}
+            size="small"
+          >
+            <EditIcon />
+            Items
+          </IconButton>
+        </Tooltip>
       ) : (
         <ButtonGroup variant="outlined" size="small">
           {user.role !== "Client" ? (

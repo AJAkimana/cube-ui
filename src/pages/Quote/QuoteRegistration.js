@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import NumberFormat from "react-number-format";
+import { DraftEditor } from "components/DraftEditor";
+import { EditorState } from "draft-js";
+import { stateToHTML } from "draft-js-export-html";
 import {
   Avatar,
   Button,
@@ -24,11 +27,16 @@ const initialState = {
   projectId: "",
   billingCycle: "Monthly",
   amount: "",
+  tax: "0",
+  propasalText: "",
+  customerNote: "",
 };
 const quoteCycles = ["Monthly", "Yearly", "OneTime"];
 export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
+  const [propTextState, setPropTextState] = useState(EditorState.createEmpty());
+  const [noteState, setNoteState] = useState(EditorState.createEmpty());
   const quoteState = useSelector((state) => state);
 
   const {
@@ -43,6 +51,8 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   useEffect(() => {
     if (added || updated) {
       setValues(initialState);
+      setPropTextState(EditorState.createEmpty());
+      setNoteState(EditorState.createEmpty());
     }
   }, [added, updated]);
   useEffect(() => {
@@ -63,10 +73,13 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
+    values.propasalText = stateToHTML(propTextState.getCurrentContent());
+    values.customerNote = stateToHTML(noteState.getCurrentContent());
+    const { amount, ...quoteValues } = values;
     if (action !== "add" && currentItem) {
-      updateQuote(values, currentItem._id);
+      updateQuote(quoteValues, currentItem._id);
     } else {
-      addNewQuote(values);
+      addNewQuote(quoteValues);
     }
   };
   return (
@@ -84,7 +97,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
         {(currentItem || (action === "add" && user.role !== "Client")) && (
           <form className={classes.form} onSubmit={submitHandler}>
             <Grid container spacing={2}>
-              {action === "add" ? (
+              {action === "add" && (
                 <Grid item xs={12}>
                   <FormControl variant="outlined" fullWidth>
                     <InputLabel id="project">Project</InputLabel>
@@ -103,7 +116,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                     </Select>
                   </FormControl>
                 </Grid>
-              ) : null}
+              )}
               <Grid item xs={12}>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel id="billing-cycle">Billing cycle</InputLabel>
@@ -123,7 +136,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={12} md={6} lg={6}>
                 <NumberFormat
                   className={classes.input}
                   value={values.amount}
@@ -136,6 +149,32 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                   fullWidth
                   variant="outlined"
                   label="Amount(in USD)"
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6}>
+                <TextField
+                  className={classes.input}
+                  name="tax"
+                  variant="outlined"
+                  type="number"
+                  fullWidth
+                  label="Sales tax"
+                  onChange={onHandleChange}
+                  value={values.tax}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h4">Propasal text</Typography>
+                <DraftEditor
+                  editorState={propTextState}
+                  setEditorState={setPropTextState}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h4">Customer note</Typography>
+                <DraftEditor
+                  editorState={noteState}
+                  setEditorState={setNoteState}
                 />
               </Grid>
               {action === "change" && (
