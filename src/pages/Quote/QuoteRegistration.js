@@ -16,6 +16,8 @@ import {
   MenuItem,
   Card,
   CardActions,
+  FormControlLabel,
+  Switch,
 } from "@material-ui/core";
 import { ComputerOutlined } from "@material-ui/icons";
 import { addNewQuote, updateQuote } from "redux/actions/quote";
@@ -28,10 +30,13 @@ const initialState = {
   billingCycle: "Monthly",
   amount: "",
   tax: "0",
+  discount: "0",
+  isFixed: false,
   propasalText: "",
   customerNote: "",
 };
 const quoteCycles = ["Monthly", "Yearly", "OneTime"];
+const qStatuses = ["Draft", "Delivered", "Accepted", "Lost", "Dead"];
 export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
@@ -158,9 +163,49 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                   variant="outlined"
                   type="number"
                   fullWidth
-                  label="Sales tax"
+                  label="Sales tax in %"
                   onChange={onHandleChange}
                   value={values.tax}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6}>
+                {values.isFixed ? (
+                  <NumberFormat
+                    className={classes.input}
+                    value={values.discount}
+                    onValueChange={({ floatValue }) =>
+                      setValues({ ...values, discount: floatValue })
+                    }
+                    prefix="$"
+                    thousandSeparator
+                    customInput={TextField}
+                    fullWidth
+                    variant="outlined"
+                    label="Discount(in USD)"
+                  />
+                ) : (
+                  <TextField
+                    name="discount"
+                    variant="outlined"
+                    type="number"
+                    fullWidth
+                    label="Discount(in %)"
+                    onChange={onHandleChange}
+                    value={values.discount}
+                  />
+                )}
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={values.isFixed}
+                      onChange={({ target: { checked } }) =>
+                        setValues({ ...values, isFixed: checked })
+                      }
+                    />
+                  }
+                  label="Is discount fixed"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -188,7 +233,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                       onChange={onHandleChange}
                     >
                       <MenuItem value="">---</MenuItem>
-                      {["approved", "declined"].map((status, choiceIdx) => (
+                      {qStatuses.map((status, choiceIdx) => (
                         <MenuItem value={status} key={choiceIdx}>
                           {status.toUpperCase()}
                         </MenuItem>

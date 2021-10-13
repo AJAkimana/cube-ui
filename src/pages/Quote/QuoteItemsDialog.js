@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -18,16 +19,20 @@ import {
   Typography,
 } from "@material-ui/core";
 import { NoDisplayData } from "components/NoDisplayData";
+import { Delete } from "@material-ui/icons";
 
 const initialItem = { name: "", quantity: "", price: "", total: "" };
-const aggregateInit = { subtotal: 0, tax: 0, total: 0 };
-const calculateAggregate = (items = [], pctTax) => {
-  const subTotal = items.reduce((sum, item) => sum + item.total, 0);
-  const totTax = subTotal * pctTax;
+const aggregateInit = { subtotal: 0, tax: 0, discount: 0, total: 0 };
+
+const calculateAggregate = (items = [], { tax, discount, isFixed }) => {
+  const subTotal = Number(items.reduce((sum, item) => sum + item.total, 0));
+  const totTax = (subTotal * tax) / 100;
+  const totDiscount = isFixed ? discount : (subTotal * discount) / 100;
   const aggreg = {
-    subtotal: subTotal,
-    tax: totTax,
-    total: subTotal - totTax,
+    subtotal: subTotal.toFixed(2),
+    tax: totTax.toFixed(2),
+    discount: totDiscount.toFixed(2),
+    total: (subTotal + totTax - totDiscount).toFixed(2),
   };
   return aggreg;
 };
@@ -38,11 +43,19 @@ export const QuoteItemsDialog = ({ open, setOpen, quote }) => {
   useEffect(() => {
     if (quote && quote.items) {
       setItems(quote.items);
-      setAggregate(calculateAggregate(quote.items, quote.tax));
+      setAggregate(calculateAggregate(quote.items, quote));
     }
   }, [quote]);
   const onHandleChange = ({ target: { name, value } }) => {
     setItem((prev) => ({ ...prev, [name]: value }));
+  };
+  const updateItems = (newItems) => {
+    const aggregs = calculateAggregate(newItems, quote);
+    setItems(newItems);
+    setAggregate(aggregs);
+    setItem(initialItem);
+    quote.items = newItems;
+    quote.amounts = aggregs;
   };
   const onAdd = () => {
     const theItems = [...items];
@@ -55,11 +68,13 @@ export const QuoteItemsDialog = ({ open, setOpen, quote }) => {
       theItems[index].quantity = item.quantity;
       theItems[index].total = item.total;
     }
-    setItems(theItems);
-    setAggregate(calculateAggregate(theItems, quote.tax));
-    setItem(initialItem);
-    quote.items = theItems;
+    updateItems(theItems);
   };
+  const onRemove = (itemName) => {
+    const newItems = items.filter((i) => i.name !== itemName);
+    updateItems(newItems);
+  };
+
   return (
     <Dialog
       open={open}
@@ -146,7 +161,7 @@ export const QuoteItemsDialog = ({ open, setOpen, quote }) => {
                           <TableCell align="right">Item price</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell>Desc</TableCell>
+                          <TableCell>Name</TableCell>
                           <TableCell align="right">Qty.</TableCell>
                           <TableCell align="right">Price</TableCell>
                           <TableCell align="right">Total</TableCell>
@@ -155,14 +170,22 @@ export const QuoteItemsDialog = ({ open, setOpen, quote }) => {
                       <TableBody>
                         {items.map((item, itemIdx) => (
                           <TableRow key={itemIdx}>
-                            <TableCell>{item.name}</TableCell>
+                            <TableCell>
+                              {item.name}
+                              <IconButton
+                                size="small"
+                                onClick={() => onRemove(item.name)}
+                              >
+                                <Delete />
+                              </IconButton>
+                            </TableCell>
                             <TableCell align="right">{item.quantity}</TableCell>
                             <TableCell align="right">{item.price}</TableCell>
                             <TableCell align="right">{item.total}</TableCell>
                           </TableRow>
                         ))}
                         <TableRow>
-                          <TableCell rowSpan={3} />
+                          <TableCell rowSpan={4} />
                           <TableCell colSpan={2}>Subtotal</TableCell>
                           <TableCell align="right">
                             {aggregate.subtotal}
@@ -170,10 +193,15 @@ export const QuoteItemsDialog = ({ open, setOpen, quote }) => {
                         </TableRow>
                         <TableRow>
                           <TableCell>Tax</TableCell>
-                          <TableCell align="right">
-                            {quote.tax ? `${quote.tax} %` : "-"}
-                          </TableCell>
+                          <TableCell align="right">{quote.tax}</TableCell>
                           <TableCell align="right">{aggregate.tax}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Discount</TableCell>
+                          <TableCell align="right">{quote.discount}</TableCell>
+                          <TableCell align="right">
+                            {aggregate.discount}
+                          </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell colSpan={2}>Total</TableCell>
