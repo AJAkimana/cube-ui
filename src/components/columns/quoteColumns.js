@@ -28,30 +28,34 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
   ...projectOwnerCol(user),
   { path: "billingCycle", label: "Billing cycle" },
   {
-    content: (item) => (
-      <Typography>$ {item.amount?.toLocaleString("en-US")}</Typography>
-    ),
+    content: (item) =>
+      item.status === "Pending" ? (
+        "-"
+      ) : (
+        <Typography>
+          $ {item.amounts?.total?.toLocaleString("en-US")}
+        </Typography>
+      ),
     label: "Amount",
   },
   { path: "status", label: "Status" },
   { path: "comment", label: "Comment" },
   {
     content: (item) =>
-      item.status === "draft" ? (
-        <Tooltip title="manage-items">
-          <IconButton
-            aria-label="manage-items"
-            color="secondary"
-            onClick={() => onQuoteClick(item, "items")}
-            size="small"
-          >
-            <EditIcon />
-            Items
-          </IconButton>
-        </Tooltip>
-      ) : (
+      item.status === "Pending" || item.status === "Draft" ? (
         <ButtonGroup variant="outlined" size="small">
-          {user.role !== "Client" ? (
+          <Tooltip title="Manage items">
+            <IconButton
+              aria-label="manage-items"
+              color="secondary"
+              onClick={() => onQuoteClick(item, "items")}
+              size="small"
+            >
+              <EditIcon />
+              Items
+            </IconButton>
+          </Tooltip>
+          {user.role !== "Client" && (
             <Tooltip title="Edit">
               <IconButton
                 aria-label="Edit"
@@ -62,7 +66,8 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
                 Edit
               </IconButton>
             </Tooltip>
-          ) : (
+          )}
+          {user.role === "Client" && (
             <Tooltip title="Change status">
               <IconButton
                 aria-label="Change status"
@@ -74,6 +79,10 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
             </Tooltip>
           )}
         </ButtonGroup>
+      ) : (
+        <Typography variant="caption" color="error">
+          No action needed
+        </Typography>
       ),
     label: "Actions",
   },
