@@ -4,6 +4,7 @@ import NumberFormat from "react-number-format";
 import { DraftEditor } from "components/DraftEditor";
 import { EditorState } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
+import { stateFromHTML } from "draft-js-import-html";
 import {
   Avatar,
   Button,
@@ -28,7 +29,6 @@ import { getProjects } from "redux/actions/project";
 const initialState = {
   projectId: "",
   billingCycle: "Monthly",
-  amount: "",
   tax: "0",
   discount: "0",
   isFixed: false,
@@ -36,7 +36,7 @@ const initialState = {
   customerNote: "",
 };
 const quoteCycles = ["Monthly", "Yearly", "OneTime"];
-const qStatuses = ["Draft", "Delivered", "Accepted", "Lost", "Dead"];
+const qStatuses = ["Delivered", "Accepted", "Lost", "Dead"];
 export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
@@ -65,8 +65,14 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   }, []);
   useEffect(() => {
     if (currentItem) {
-      const { project, billingCycle, amount } = currentItem;
-      setValues({ projectId: project._id, billingCycle, amount });
+      const { project, user, updatedAt, createdAt, _id, __v, ...rest } =
+        currentItem;
+      const projectId = project._id;
+      setValues({ ...rest, projectId });
+      const propasalText = stateFromHTML(rest.propasalText);
+      const customerNote = stateFromHTML(rest.customerNote);
+      setPropTextState(EditorState.createWithContent(propasalText));
+      setNoteState(EditorState.createWithContent(customerNote));
     }
   }, [currentItem]);
   const onHandleChange = (e) => {
@@ -99,10 +105,11 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
             : "Add a new quote"}
         </Typography>
         {(adding || updating) && <Loading />}
-        {(currentItem || (action === "add" && user.role !== "Client")) && (
+        {((currentItem && action !== "items") ||
+          (action !== "add" && user.role !== "Client")) && (
           <form className={classes.form} onSubmit={submitHandler}>
-            <Grid container spacing={2}>
-              {action === "add" && (
+            <Grid container spacing={1}>
+              {(action === "add" || action === "edit") && (
                 <Grid item xs={12}>
                   <FormControl variant="outlined" fullWidth>
                     <InputLabel id="project">Project</InputLabel>
@@ -122,106 +129,98 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                   </FormControl>
                 </Grid>
               )}
-              <Grid item xs={12}>
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel id="billing-cycle">Billing cycle</InputLabel>
-                  <Select
-                    labelId="billing-cycle"
-                    value={values.billingCycle}
-                    name="billingCycle"
-                    onChange={onHandleChange}
-                    disabled={action === "change"}
-                  >
-                    <MenuItem value="">---</MenuItem>
-                    {quoteCycles.map((cyle, choiceIdx) => (
-                      <MenuItem value={cyle} key={choiceIdx}>
-                        {cyle.toUpperCase()}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={12} md={6} lg={6}>
-                <NumberFormat
-                  className={classes.input}
-                  value={values.amount}
-                  onValueChange={({ floatValue }) =>
-                    setValues({ ...values, amount: floatValue })
-                  }
-                  prefix="$"
-                  thousandSeparator
-                  customInput={TextField}
-                  fullWidth
-                  variant="outlined"
-                  label="Amount(in USD)"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6} lg={6}>
-                <TextField
-                  className={classes.input}
-                  name="tax"
-                  variant="outlined"
-                  type="number"
-                  fullWidth
-                  label="Sales tax in %"
-                  onChange={onHandleChange}
-                  value={values.tax}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6} lg={6}>
-                {values.isFixed ? (
-                  <NumberFormat
-                    className={classes.input}
-                    value={values.discount}
-                    onValueChange={({ floatValue }) =>
-                      setValues({ ...values, discount: floatValue })
-                    }
-                    prefix="$"
-                    thousandSeparator
-                    customInput={TextField}
-                    fullWidth
-                    variant="outlined"
-                    label="Discount(in USD)"
-                  />
-                ) : (
-                  <TextField
-                    name="discount"
-                    variant="outlined"
-                    type="number"
-                    fullWidth
-                    label="Discount(in %)"
-                    onChange={onHandleChange}
-                    value={values.discount}
-                  />
-                )}
-              </Grid>
-              <Grid item xs={12} sm={12} md={6} lg={6}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={values.isFixed}
-                      onChange={({ target: { checked } }) =>
-                        setValues({ ...values, isFixed: checked })
-                      }
+              {(action === "add" || action === "edit") && (
+                <Grid item xs={12}>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel id="billing-cycle">Billing cycle</InputLabel>
+                    <Select
+                      labelId="billing-cycle"
+                      value={values.billingCycle}
+                      name="billingCycle"
+                      onChange={onHandleChange}
+                      disabled={action === "change"}
+                    >
+                      <MenuItem value="">---</MenuItem>
+                      {quoteCycles.map((cyle, choiceIdx) => (
+                        <MenuItem value={cyle} key={choiceIdx}>
+                          {cyle.toUpperCase()}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              )}
+              {(action === "add" || action === "edit") && (
+                <>
+                  <Grid item xs={12} sm={12} md={5} lg={5}>
+                    <TextField
+                      className={classes.input}
+                      name="tax"
+                      variant="outlined"
+                      type="number"
+                      fullWidth
+                      label="Sales tax in %"
+                      onChange={onHandleChange}
+                      value={values.tax}
                     />
-                  }
-                  label="Is discount fixed"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h4">Propasal text</Typography>
-                <DraftEditor
-                  editorState={propTextState}
-                  setEditorState={setPropTextState}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h4">Customer note</Typography>
-                <DraftEditor
-                  editorState={noteState}
-                  setEditorState={setNoteState}
-                />
-              </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={5} lg={5}>
+                    {values.isFixed ? (
+                      <NumberFormat
+                        className={classes.input}
+                        value={values.discount}
+                        onValueChange={({ floatValue }) =>
+                          setValues({ ...values, discount: floatValue })
+                        }
+                        prefix="$"
+                        thousandSeparator
+                        customInput={TextField}
+                        fullWidth
+                        variant="outlined"
+                        label="Discount(in USD)"
+                      />
+                    ) : (
+                      <TextField
+                        name="discount"
+                        variant="outlined"
+                        type="number"
+                        fullWidth
+                        label="Discount(in %)"
+                        onChange={onHandleChange}
+                        value={values.discount}
+                      />
+                    )}
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={2} lg={2}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={values.isFixed}
+                          onChange={({ target: { checked } }) =>
+                            setValues({ ...values, isFixed: checked })
+                          }
+                        />
+                      }
+                      label="Is fixed"
+                      labelPlacement="top"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="h4">Propasal text</Typography>
+                    <DraftEditor
+                      editorState={propTextState}
+                      setEditorState={setPropTextState}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="h4">Customer note</Typography>
+                    <DraftEditor
+                      editorState={noteState}
+                      setEditorState={setNoteState}
+                    />
+                  </Grid>
+                </>
+              )}
               {action === "change" && (
                 <Grid item xs={12}>
                   <FormControl variant="outlined" fullWidth>

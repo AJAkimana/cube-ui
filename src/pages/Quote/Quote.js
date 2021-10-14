@@ -18,7 +18,7 @@ export const QuotePage = () => {
   const {
     quotesGet: { loading, quotes },
     quoteAdd: { loaded: added },
-    quoteEdit: { loaded: updated },
+    quoteEdit: { loaded: updated, loading: updating },
     login: { userInfo },
   } = quoteState;
   useEffect(() => {
@@ -33,8 +33,7 @@ export const QuotePage = () => {
   }, []);
   useEffect(() => {
     if (added || updated) {
-      setCurrentItem(null);
-      setAction("add");
+      onReset();
       getQuotes();
     }
   }, [added, updated]);
@@ -44,6 +43,10 @@ export const QuotePage = () => {
   const onQuoteClick = (project = {}, action) => {
     setCurrentItem(project);
     setAction(action);
+  };
+  const onReset = () => {
+    setCurrentItem(null);
+    setAction("add");
   };
   return (
     <Grid
@@ -57,8 +60,10 @@ export const QuotePage = () => {
         <QuoteRegistration action={action} currentItem={currentItem} />
         <QuoteItemsDialog
           open={action === "items"}
-          setOpen={() => setAction("add")}
+          setOpen={() => onReset()}
           quote={currentItem}
+          loading={updating}
+          user={userInfo.user}
         />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>

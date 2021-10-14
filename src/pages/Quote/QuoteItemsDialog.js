@@ -20,6 +20,7 @@ import {
 } from "@material-ui/core";
 import { NoDisplayData } from "components/NoDisplayData";
 import { Delete } from "@material-ui/icons";
+import { updateQuote } from "redux/actions/quote";
 
 const initialItem = { name: "", quantity: "", price: "", total: "" };
 const aggregateInit = { subtotal: 0, tax: 0, discount: 0, total: 0 };
@@ -36,14 +37,20 @@ const calculateAggregate = (items = [], { tax, discount, isFixed }) => {
   };
   return aggreg;
 };
-export const QuoteItemsDialog = ({ open, setOpen, quote }) => {
+export const QuoteItemsDialog = ({
+  open,
+  setOpen,
+  quote,
+  loading = false,
+  user = {},
+}) => {
   const [item, setItem] = useState(initialItem);
   const [aggregate, setAggregate] = useState(aggregateInit);
   const [items, setItems] = useState([]);
   useEffect(() => {
     if (quote && quote.items) {
-      setItems(quote.items);
-      setAggregate(calculateAggregate(quote.items, quote));
+      setItems(quote?.items || []);
+      setAggregate(quote?.amounts || {});
     }
   }, [quote]);
   const onHandleChange = ({ target: { name, value } }) => {
@@ -74,7 +81,12 @@ export const QuoteItemsDialog = ({ open, setOpen, quote }) => {
     const newItems = items.filter((i) => i.name !== itemName);
     updateItems(newItems);
   };
-
+  const onQuoteUpdate = () => {
+    const { project, user, updatedAt, createdAt, _id, __v, ...rest } = quote;
+    rest.projectId = project._id;
+    rest.status = "Draft";
+    updateQuote(rest, _id);
+  };
   return (
     <Dialog
       open={open}
@@ -111,6 +123,7 @@ export const QuoteItemsDialog = ({ open, setOpen, quote }) => {
                   onChange={onHandleChange}
                   value={item.name}
                   size="small"
+                  disabled={user.role === "Client"}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={3} lg={3}>
@@ -193,12 +206,12 @@ export const QuoteItemsDialog = ({ open, setOpen, quote }) => {
                         </TableRow>
                         <TableRow>
                           <TableCell>Tax</TableCell>
-                          <TableCell align="right">{quote.tax}</TableCell>
+                          <TableCell align="right">{quote?.tax}</TableCell>
                           <TableCell align="right">{aggregate.tax}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Discount</TableCell>
-                          <TableCell align="right">{quote.discount}</TableCell>
+                          <TableCell align="right">{quote?.discount}</TableCell>
                           <TableCell align="right">
                             {aggregate.discount}
                           </TableCell>
@@ -219,9 +232,19 @@ export const QuoteItemsDialog = ({ open, setOpen, quote }) => {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button color="primary" variant="contained">
-          Save
+        <Button color="default" variant="contained" onClick={() => setOpen()}>
+          Cancel
         </Button>
+        {user.role !== "Client" && (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => onQuoteUpdate()}
+            disabled={loading}
+          >
+            {loading ? "Saving,..." : "Save"}
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

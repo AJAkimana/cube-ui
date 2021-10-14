@@ -15,9 +15,8 @@ export const getQuotes = () => {
   });
 };
 export const updateQuote = (quoteInfo, quoteId) => {
-  const { projectId, ...rest } = quoteInfo;
   store.dispatch({
     type: UPDATE_QUOTE,
-    payload: http.patch(`/quote/${quoteId}`, rest),
+    payload: http.patch(`/quote/${quoteId}`, quoteInfo),
   });
 };
