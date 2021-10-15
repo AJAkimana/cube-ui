@@ -106,7 +106,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
         </Typography>
         {(adding || updating) && <Loading />}
         {((currentItem && action !== "items") ||
-          (action !== "add" && user.role !== "Client")) && (
+          (action === "add" && user.role !== "Client")) && (
           <form className={classes.form} onSubmit={submitHandler}>
             <Grid container spacing={1}>
               {(action === "add" || action === "edit") && (

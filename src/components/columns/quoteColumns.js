@@ -67,7 +67,7 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
               </IconButton>
             </Tooltip>
           )}
-          {user.role === "Client" && (
+          {user.role === "Client" && item.items.length && (
             <Tooltip title="Change status">
               <IconButton
                 aria-label="Change status"
