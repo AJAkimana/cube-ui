@@ -68,7 +68,7 @@ export const QuotePage = () => {
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable
-          tableTitle="All quotes"
+          tableTitle="All proposals"
           columns={quoteColumns(onQuoteClick, userInfo.user)}
           loading={loading}
           data={paginatedData}

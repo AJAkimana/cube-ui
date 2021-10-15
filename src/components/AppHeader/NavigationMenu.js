@@ -14,7 +14,7 @@ export const NavigationMenu = ({
   let navigations = [
     { link: "products", title: "3D assets" },
     { link: "projects", title: "Projects" },
-    { link: "quotes", title: "Quotes" },
+    { link: "quotes", title: "Proposals" },
     { link: "invoices", title: "Invoices" },
     { link: "subscriptions", title: "Subscriptions" },
     { link: "profile", title: "My profile" },

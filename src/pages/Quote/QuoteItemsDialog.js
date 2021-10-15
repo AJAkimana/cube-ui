@@ -97,7 +97,7 @@ export const QuoteItemsDialog = ({
       aria-labelledby="quote-items-title"
       aria-describedby="quote-items-description"
     >
-      <DialogTitle id="quote-items-title">Manage quote items</DialogTitle>
+      <DialogTitle id="quote-items-title">Manage proposal items</DialogTitle>
       <DialogContent>
         <Grid container spacing={1}>
           <Grid item xs={12} sm={12} md={7} lg={7}>

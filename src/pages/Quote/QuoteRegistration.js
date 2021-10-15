@@ -36,7 +36,7 @@ const initialState = {
   customerNote: "",
 };
 const quoteCycles = ["Monthly", "Yearly", "OneTime"];
-const qStatuses = ["Delivered", "Accepted", "Lost", "Dead"];
+const qStatuses = ["Accepted", "Lost", "Dead"];
 export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
@@ -101,8 +101,8 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
         </Avatar>
         <Typography component="h1" variant="h4">
           {currentItem
-            ? `Update "${currentItem.project.name.toUpperCase()}" quote`
-            : "Add a new quote"}
+            ? `Update "${currentItem.project.name.toUpperCase()}" proposal`
+            : "Add a new proposal"}
         </Typography>
         {(adding || updating) && <Loading />}
         {((currentItem && action !== "items") ||
