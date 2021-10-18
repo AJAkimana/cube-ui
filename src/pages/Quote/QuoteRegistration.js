@@ -94,7 +94,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
     e.preventDefault();
     values.propasalText = stateToHTML(propTextState.getCurrentContent());
     values.customerNote = stateToHTML(noteState.getCurrentContent());
-    const { amount, ...quoteValues } = values;
+    const { amount, amounts, ...quoteValues } = values;
     if (action !== "add" && currentItem) {
       updateQuote(quoteValues, currentItem._id);
     } else {
