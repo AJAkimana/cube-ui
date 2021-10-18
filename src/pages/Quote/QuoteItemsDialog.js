@@ -19,7 +19,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { NoDisplayData } from "components/NoDisplayData";
-import { Delete } from "@material-ui/icons";
+import { Delete as DeleteIcon, Edit as EditIcon } from "@material-ui/icons";
 import { updateQuote } from "redux/actions/quote";
 
 const initialItem = { name: "", quantity: "", price: "", total: "" };
@@ -187,9 +187,17 @@ export const QuoteItemsDialog = ({
                               {item.name}
                               <IconButton
                                 size="small"
+                                onClick={() =>
+                                  setItem((prev) => ({ ...prev, item }))
+                                }
+                              >
+                                <EditIcon />
+                              </IconButton>
+                              <IconButton
+                                size="small"
                                 onClick={() => onRemove(item.name)}
                               >
-                                <Delete />
+                                <DeleteIcon />
                               </IconButton>
                             </TableCell>
                             <TableCell align="right">{item.quantity}</TableCell>
