@@ -188,7 +188,7 @@ export const QuoteItemsDialog = ({
                               <IconButton
                                 size="small"
                                 onClick={() =>
-                                  setItem((prev) => ({ ...prev, item }))
+                                  setItem((prev) => ({ ...prev, ...item }))
                                 }
                               >
                                 <EditIcon />
