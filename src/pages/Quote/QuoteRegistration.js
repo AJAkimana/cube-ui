@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 import { useSelector } from "react-redux";
 import NumberFormat from "react-number-format";
 import { DraftEditor } from "components/DraftEditor";
@@ -32,6 +38,7 @@ const initialState = {
   tax: "0",
   discount: "0",
   isFixed: false,
+  expiryDate: moment().format("YYYY-MM-DD"),
   propasalText: "",
   customerNote: "",
 };
@@ -68,7 +75,8 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
       const { project, user, updatedAt, createdAt, _id, __v, ...rest } =
         currentItem;
       const projectId = project._id;
-      setValues({ ...rest, projectId });
+      const expiryDate = moment(currentItem.expiryDate).format("YYYY-MM-DD");
+      setValues({ ...rest, projectId, expiryDate });
       const propasalText = stateFromHTML(rest.propasalText);
       const customerNote = stateFromHTML(rest.customerNote);
       setPropTextState(EditorState.createWithContent(propasalText));
@@ -204,6 +212,25 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                       label="Is fixed"
                       labelPlacement="top"
                     />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        label="Expiry Date"
+                        inputVariant="outlined"
+                        value={values.expiryDate}
+                        InputAdornmentProps={{ position: "start" }}
+                        format="yyyy-MM-dd"
+                        views={["year", "month", "date"]}
+                        onChange={(dateValue) =>
+                          setValues((prev) => ({
+                            ...prev,
+                            expiryDate: dateValue,
+                          }))
+                        }
+                        minDate={new Date()}
+                      />
+                    </MuiPickersUtilsProvider>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="h4">Propasal text</Typography>
