@@ -7,10 +7,7 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
-import {
-  EditRounded as EditIcon,
-  Publish as PublishIcon,
-} from "@material-ui/icons";
+import { EditRounded as EditIcon } from "@material-ui/icons";
 import { projectOwnerCol } from "./projectColumns";
 
 const hasExpired = (aDate) => {
@@ -55,23 +52,22 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
   },
   { path: "comment", label: "Comment" },
   {
-    content: (item) =>
-      item.status === "Pending" ||
-      item.status === "Draft" ||
-      hasExpired(item.expiryDate) ? (
-        <ButtonGroup variant="outlined" size="small">
-          <Tooltip title="Manage items">
-            <IconButton
-              aria-label="manage-items"
-              color="secondary"
-              onClick={() => onQuoteClick(item, "items")}
-              size="small"
-            >
-              <EditIcon />
-              Items
-            </IconButton>
-          </Tooltip>
-          {user.role !== "Client" && (
+    content: (item) => (
+      <ButtonGroup variant="outlined" size="small">
+        <Tooltip title="Manage items">
+          <IconButton
+            aria-label="manage-items"
+            color="secondary"
+            onClick={() => onQuoteClick(item, "items")}
+            size="small"
+          >
+            View
+          </IconButton>
+        </Tooltip>
+        {user.role !== "Client" &&
+          (item.status === "Pending" ||
+            item.status === "Draft" ||
+            hasExpired(item.expiryDate)) && (
             <Tooltip title="Edit">
               <IconButton
                 aria-label="Edit"
@@ -83,23 +79,8 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
               </IconButton>
             </Tooltip>
           )}
-          {user.role === "Client" && item.items.length && (
-            <Tooltip title="Change status">
-              <IconButton
-                aria-label="Change status"
-                color="default"
-                onClick={() => onQuoteClick(item, "change")}
-              >
-                <PublishIcon /> Change status
-              </IconButton>
-            </Tooltip>
-          )}
-        </ButtonGroup>
-      ) : (
-        <Typography variant="caption" color="error">
-          No action needed
-        </Typography>
-      ),
+      </ButtonGroup>
+    ),
     label: "Actions",
   },
 ];

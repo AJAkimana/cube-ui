@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import HtmlParser from "react-html-parser";
 import {
   Button,
+  ButtonGroup,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,9 +19,17 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import {
+  EditRounded as EditIcon,
+  Delete as DeleteIcon,
+  ThumbUp as ThumbUpIcon,
+  ThumbDown as ThumbDownIcon,
+  Save as SaveIcon,
+  Cancel as CancelIcon,
+} from "@material-ui/icons";
 import { NoDisplayData } from "components/NoDisplayData";
-import { Delete as DeleteIcon, Edit as EditIcon } from "@material-ui/icons";
 import { updateQuote } from "redux/actions/quote";
+import { INVOICE_ROUTE } from "utils/constants";
 
 const initialItem = { name: "", quantity: "", price: "", total: "" };
 const aggregateInit = { subtotal: 0, tax: 0, discount: 0, total: 0 };
@@ -36,6 +45,11 @@ const calculateAggregate = (items = [], { tax, discount, isFixed }) => {
     total: (subTotal + totTax - totDiscount).toFixed(2),
   };
   return aggreg;
+};
+const hasExpired = (aDate) => {
+  const today = new Date();
+  const theDate = new Date(aDate);
+  return today.getTime() < theDate.getTime();
 };
 export const QuoteItemsDialog = ({
   open,
@@ -55,6 +69,9 @@ export const QuoteItemsDialog = ({
   }, [quote]);
   const onHandleChange = ({ target: { name, value } }) => {
     setItem((prev) => ({ ...prev, [name]: value }));
+  };
+  const onHandleCommentChange = ({ target: { value } }) => {
+    quote.comment = value;
   };
   const updateItems = (newItems) => {
     const aggregs = calculateAggregate(newItems, quote);
@@ -81,10 +98,10 @@ export const QuoteItemsDialog = ({
     const newItems = items.filter((i) => i.name !== itemName);
     updateItems(newItems);
   };
-  const onQuoteUpdate = () => {
+  const onQuoteUpdate = (status = "Draft") => {
     const { project, user, updatedAt, createdAt, _id, __v, ...rest } = quote;
     rest.projectId = project._id;
-    rest.status = "Draft";
+    rest.status = status;
     updateQuote(rest, _id);
   };
   return (
@@ -246,24 +263,77 @@ export const QuoteItemsDialog = ({
                   )}
                 </TableContainer>
               </Grid>
+              {user.role === "Client" && (
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    name="comment"
+                    label="Add comment"
+                    value={quote?.comment}
+                    disabled={quote?.status !== "Pending"}
+                    onChange={onHandleCommentChange}
+                  />
+                </Grid>
+              )}
             </Grid>
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
+        <Button
+          color="default"
+          variant="contained"
+          component="a"
+          aria-label="Print invoice"
+          rel="noreferrer"
+          href={`${INVOICE_ROUTE}/${quote?._id}?downloadType=proposal`}
+          target="_blank"
+        >
+          Download PDF
+        </Button>
+        {(quote?.status === "Pending" ||
+          quote?.status === "Draft" ||
+          hasExpired(quote?.expiryDate)) && (
+          <ButtonGroup variant="outlined" color="primary">
+            {user.role !== "Client" ? (
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => onQuoteUpdate()}
+                disabled={loading}
+              >
+                <SaveIcon />
+                {loading ? "Saving,..." : "Save"}
+              </Button>
+            ) : (
+              <>
+                <Button
+                  aria-label="Change status"
+                  color="primary"
+                  disabled={loading}
+                  onClick={() => onQuoteUpdate("Accepted")}
+                >
+                  <ThumbUpIcon />
+                  {loading ? "Saving,..." : "Accept"}
+                </Button>
+                <Button
+                  aria-label="Change status"
+                  color="secondary"
+                  disabled={loading}
+                  onClick={() => onQuoteUpdate("Declined")}
+                >
+                  <ThumbDownIcon />
+                  {loading ? "Saving,..." : "Decline"}
+                </Button>
+              </>
+            )}
+          </ButtonGroup>
+        )}
         <Button color="default" variant="contained" onClick={() => setOpen()}>
+          <CancelIcon />
           Cancel
         </Button>
-        {user.role !== "Client" && (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => onQuoteUpdate()}
-            disabled={loading}
-          >
-            {loading ? "Saving,..." : "Save"}
-          </Button>
-        )}
       </DialogActions>
     </Dialog>
   );
