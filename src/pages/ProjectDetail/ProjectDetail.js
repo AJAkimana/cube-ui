@@ -106,7 +106,7 @@ export const ProjectDetailPage = ({ match }) => {
   const toDowloadUrl = (projectHistory = {}) => {
     let url = projectHistory.invoice;
     if (projectHistory.quote) {
-      url = `${projectHistory.quote}?downloadType=quote`;
+      url = `${projectHistory.quote}?downloadType=proposal`;
     }
     return url;
   };
