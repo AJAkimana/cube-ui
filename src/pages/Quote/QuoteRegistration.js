@@ -31,6 +31,7 @@ import { addNewQuote, updateQuote } from "redux/actions/quote";
 import { Loading } from "components/loading.component";
 import { useStyles } from "styles/formStyles";
 import { getProjects } from "redux/actions/project";
+import { getUsersList } from "redux/actions/user";
 
 const initialState = {
   projectId: "",
@@ -41,6 +42,7 @@ const initialState = {
   expiryDate: moment().format("YYYY-MM-DD"),
   propasalText: "",
   customerNote: "",
+  customer: "",
 };
 const quoteCycles = ["Monthly", "Yearly", "OneTime"];
 const qStatuses = ["Accepted", "Declined"];
@@ -55,11 +57,20 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
     quoteAdd: { loading: adding, loaded: added },
     quoteEdit: { loading: updating, loaded: updated },
     projectsGet: { projects },
+    userList: { users },
     login: {
       userInfo: { user },
     },
   } = quoteState;
 
+  useEffect(() => {
+    getUsersList("Client");
+  }, []);
+  useEffect(() => {
+    if (values.customer) {
+      getProjects({ clientId: values.customer });
+    }
+  }, [values.customer]);
   useEffect(() => {
     if (added || updated) {
       setValues(initialState);
@@ -67,9 +78,6 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
       setNoteState(EditorState.createEmpty());
     }
   }, [added, updated]);
-  useEffect(() => {
-    getProjects({});
-  }, []);
   useEffect(() => {
     if (currentItem) {
       const { project, user, updatedAt, createdAt, _id, __v, ...rest } =
@@ -88,13 +96,19 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
     const {
       target: { name, value },
     } = e;
-    setValues({ ...values, [name]: value });
+    setValues((prev) => {
+      const newValues = { ...prev, [name]: value };
+      if (name === "customer") {
+        newValues.projectId = "";
+      }
+      return newValues;
+    });
   };
   const submitHandler = (e) => {
     e.preventDefault();
     values.propasalText = stateToHTML(propTextState.getCurrentContent());
     values.customerNote = stateToHTML(noteState.getCurrentContent());
-    const { amount, ...quoteValues } = values;
+    const { amount, customer, ...quoteValues } = values;
     if (action !== "add" && currentItem) {
       updateQuote(quoteValues, currentItem._id);
     } else {
@@ -124,24 +138,50 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
           <form className={classes.form} onSubmit={submitHandler}>
             <Grid container spacing={1}>
               {(action === "add" || action === "edit") && (
-                <Grid item xs={12}>
-                  <FormControl variant="outlined" fullWidth>
-                    <InputLabel id="project">Project</InputLabel>
-                    <Select
-                      labelId="project"
-                      value={values.projectId}
-                      name="projectId"
-                      onChange={onHandleChange}
-                    >
-                      <MenuItem value="">---</MenuItem>
-                      {projects.map(({ _id, name, user }, choiceIdx) => (
-                        <MenuItem value={_id} key={choiceIdx}>
-                          {`${name} ---> ${user?.fullName}`}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
+                <>
+                  <Grid item xs={12}>
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel id="customer-or-comp">
+                        Customer or company
+                      </InputLabel>
+                      <Select
+                        labelId="customer-or-comp"
+                        value={values.customer}
+                        name="customer"
+                        onChange={onHandleChange}
+                        disabled={user.role === "Client"}
+                      >
+                        <MenuItem value="">---</MenuItem>
+                        {users.map((user, userIdx) => (
+                          <MenuItem value={user._id} key={userIdx}>
+                            {user.fullName}, {user.companyName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel id="select-project">
+                        Select project
+                      </InputLabel>
+                      <Select
+                        labelId="select-project"
+                        value={values.projectId}
+                        name="projectId"
+                        onChange={onHandleChange}
+                        disabled={!Boolean(values.customer)}
+                      >
+                        <MenuItem value="">---</MenuItem>
+                        {projects.map(({ _id, name, user }, choiceIdx) => (
+                          <MenuItem value={_id} key={choiceIdx}>
+                            {`${name} ---> ${user?.fullName}`}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </>
               )}
               {(action === "add" || action === "edit") && (
                 <Grid item xs={12}>
