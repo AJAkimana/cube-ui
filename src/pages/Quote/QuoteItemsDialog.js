@@ -204,32 +204,40 @@ export const QuoteItemsDialog = ({
                               </IconButton>
                             </TableCell>
                             <TableCell align="right">{item.quantity}</TableCell>
-                            <TableCell align="right">{item.price}</TableCell>
-                            <TableCell align="right">{item.total}</TableCell>
+                            <TableCell align="right">
+                              ${item.price?.toLocaleString("en-US")}
+                            </TableCell>
+                            <TableCell align="right">
+                              ${item.total?.toLocaleString("en-US")}
+                            </TableCell>
                           </TableRow>
                         ))}
                         <TableRow>
                           <TableCell rowSpan={4} />
                           <TableCell colSpan={2}>Subtotal</TableCell>
                           <TableCell align="right">
-                            {aggregate.subtotal}
+                            ${aggregate.subtotal?.toLocaleString("en-US")}
                           </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Tax</TableCell>
                           <TableCell align="right">{quote?.tax}</TableCell>
-                          <TableCell align="right">{aggregate.tax}</TableCell>
+                          <TableCell align="right">
+                            ${aggregate.tax?.toLocaleString("en-US")}
+                          </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Discount</TableCell>
                           <TableCell align="right">{quote?.discount}</TableCell>
                           <TableCell align="right">
-                            {aggregate.discount}
+                            ${aggregate.discount?.toLocaleString("en-US")}
                           </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell colSpan={2}>Total</TableCell>
-                          <TableCell align="right">{aggregate.total}</TableCell>
+                          <TableCell align="right">
+                            ${aggregate.total?.toLocaleString("en-US")}
+                          </TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
