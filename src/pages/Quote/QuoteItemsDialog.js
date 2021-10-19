@@ -123,7 +123,10 @@ export const QuoteItemsDialog = ({
                   onChange={onHandleChange}
                   value={item.name}
                   size="small"
-                  disabled={user.role === "Client"}
+                  disabled={
+                    user.role === "Client" ||
+                    (quote?.status !== "Draft" && quote?.status !== "Pending")
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={3} lg={3}>
