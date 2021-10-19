@@ -13,6 +13,11 @@ import {
 } from "@material-ui/icons";
 import { projectOwnerCol } from "./projectColumns";
 
+const hasExpired = (aDate) => {
+  const today = new Date();
+  const theDate = new Date(aDate);
+  return today.getTime() < theDate.getTime();
+};
 export const quoteColumns = (onQuoteClick, user = {}) => [
   {
     content: (item) => (
@@ -29,20 +34,31 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
   { path: "billingCycle", label: "Billing cycle" },
   {
     content: (item) =>
-      item.status === "Pending" ? (
-        "-"
-      ) : (
+      item.amounts?.total ? (
         <Typography>
           $ {item.amounts?.total?.toLocaleString("en-US")}
         </Typography>
+      ) : (
+        "-"
       ),
     label: "Amount",
   },
-  { path: "status", label: "Status" },
+  {
+    content: (item) => (
+      <Typography>
+        {item.status === "Pending" && hasExpired(item.expiryDate)
+          ? "Dead"
+          : item.status}
+      </Typography>
+    ),
+    label: "Status",
+  },
   { path: "comment", label: "Comment" },
   {
     content: (item) =>
-      item.status === "Pending" || item.status === "Draft" ? (
+      item.status === "Pending" ||
+      item.status === "Draft" ||
+      hasExpired(item.expiryDate) ? (
         <ButtonGroup variant="outlined" size="small">
           <Tooltip title="Manage items">
             <IconButton
