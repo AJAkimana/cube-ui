@@ -43,7 +43,7 @@ const initialState = {
   customerNote: "",
 };
 const quoteCycles = ["Monthly", "Yearly", "OneTime"];
-const qStatuses = ["Accepted", "Lost", "Dead"];
+const qStatuses = ["Accepted", "Declined"];
 export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
@@ -100,6 +100,12 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
     } else {
       addNewQuote(quoteValues);
     }
+  };
+  const onSetSeen = (e) => {
+    const {
+      target: { checked },
+    } = e;
+    setValues({ ...values, status: checked ? "Pending" : "Draft" });
   };
   return (
     <Card component="main" className={classes.root}>
@@ -278,6 +284,22 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                     label="Add comment"
                     value={values.comment}
                     onChange={onHandleChange}
+                  />
+                </Grid>
+              )}
+              {action === "edit" && currentItem.items?.length > 0 && (
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={values.status !== "Draft"}
+                        onChange={onSetSeen}
+                      />
+                    }
+                    disabled={
+                      values.status !== "Draft" && values.status !== "Pending"
+                    }
+                    label="Set to be seen by client"
                   />
                 </Grid>
               )}
