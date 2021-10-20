@@ -34,8 +34,9 @@ import { INVOICE_ROUTE } from "utils/constants";
 const initialItem = { name: "", quantity: "", price: "", total: "" };
 const aggregateInit = { subtotal: 0, tax: 0, discount: 0, total: 0 };
 
-const calculateAggregate = (items = [], { tax, discount, isFixed }) => {
+const calculateAggregate = (items = [], { taxes, discount, isFixed }) => {
   const subTotal = Number(items.reduce((sum, item) => sum + item.total, 0));
+  const tax = taxes.reduce((a, b) => a + b, 0);
   const totTax = (subTotal * tax) / 100;
   const totDiscount = isFixed ? discount : (subTotal * discount) / 100;
   const aggreg = {
@@ -238,7 +239,9 @@ export const QuoteItemsDialog = ({
                         </TableRow>
                         <TableRow>
                           <TableCell>Tax</TableCell>
-                          <TableCell align="right">{quote?.tax}</TableCell>
+                          <TableCell align="right">
+                            {quote?.taxes?.reduce((a, b) => a + `${b}% `, "")}
+                          </TableCell>
                           <TableCell align="right">
                             ${aggregate.tax?.toLocaleString("en-US")}
                           </TableCell>
