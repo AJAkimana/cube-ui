@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import DateFnsUtils from "@date-io/date-fns";
+import ChipInput from "material-ui-chip-input";
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
@@ -36,7 +37,7 @@ import { getUsersList } from "redux/actions/user";
 const initialState = {
   projectId: "",
   billingCycle: "Monthly",
-  tax: "0",
+  taxes: [],
   discount: "0",
   isFixed: false,
   expiryDate: moment().format("YYYY-MM-DD"),
@@ -83,8 +84,9 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
       const { project, user, updatedAt, createdAt, _id, __v, ...rest } =
         currentItem;
       const projectId = project._id;
+      const customer = user._id;
       const expiryDate = moment(currentItem.expiryDate).format("YYYY-MM-DD");
-      setValues({ ...rest, projectId, expiryDate });
+      setValues({ ...rest, projectId, expiryDate, customer });
       const propasalText = stateFromHTML(rest.propasalText);
       const customerNote = stateFromHTML(rest.customerNote);
       setPropTextState(EditorState.createWithContent(propasalText));
@@ -120,6 +122,22 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
       target: { checked },
     } = e;
     setValues({ ...values, status: checked ? "Pending" : "Draft" });
+  };
+  const onChangeTaxes = (tax, action = "add") => {
+    let taxes = [...values.taxes];
+    if (isNaN(Number(tax))) {
+      return;
+    }
+    if (action === "add") {
+      const taxesSum = taxes.reduce((a, b) => a + Number(b), 0);
+      if (taxesSum + Number(tax) > 100) {
+        return;
+      }
+      taxes.push(Number(tax));
+    } else {
+      taxes = taxes.filter((t) => t !== Number(tax));
+    }
+    setValues((prev) => ({ ...prev, taxes }));
   };
   return (
     <Card component="main" className={classes.root}>
@@ -206,19 +224,18 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
               )}
               {(action === "add" || action === "edit") && (
                 <>
-                  <Grid item xs={12} sm={12} md={5} lg={5}>
-                    <TextField
-                      className={classes.input}
-                      name="tax"
-                      variant="outlined"
-                      type="number"
+                  <Grid item xs={12}>
+                    <ChipInput
+                      value={values.taxes}
                       fullWidth
-                      label="Sales tax in %"
-                      onChange={onHandleChange}
-                      value={values.tax}
+                      label="Taxes"
+                      variant="outlined"
+                      placeholder="Type tax and press enter"
+                      onAdd={(taxe) => onChangeTaxes(taxe)}
+                      onDelete={(taxe) => onChangeTaxes(taxe, "delete")}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12} md={5} lg={5}>
+                  <Grid item xs={12} sm={12} md={8} lg={8}>
                     {values.isFixed ? (
                       <NumberFormat
                         className={classes.input}
@@ -245,7 +262,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                       />
                     )}
                   </Grid>
-                  <Grid item xs={12} sm={12} md={2} lg={2}>
+                  <Grid item xs={12} sm={12} md={4} lg={4}>
                     <FormControlLabel
                       control={
                         <Switch
@@ -255,7 +272,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                           }
                         />
                       }
-                      label="Is fixed"
+                      label="Is fixed?"
                       labelPlacement="top"
                     />
                   </Grid>
