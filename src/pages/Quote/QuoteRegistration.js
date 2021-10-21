@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import DateFnsUtils from "@date-io/date-fns";
-import ChipInput from "material-ui-chip-input";
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
@@ -26,8 +25,13 @@ import {
   CardActions,
   FormControlLabel,
   Switch,
+  IconButton,
 } from "@material-ui/core";
-import { ComputerOutlined } from "@material-ui/icons";
+import {
+  ComputerOutlined,
+  Cancel as CancelIcon,
+  Edit as EditIcon,
+} from "@material-ui/icons";
 import { addNewQuote, updateQuote } from "redux/actions/quote";
 import { Loading } from "components/loading.component";
 import { useStyles } from "styles/formStyles";
@@ -45,11 +49,13 @@ const initialState = {
   customerNote: "",
   customer: "",
 };
+const taxInitials = { title: "", amount: "" };
 const quoteCycles = ["Monthly", "Yearly", "OneTime"];
 const qStatuses = ["Accepted", "Declined"];
 export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
   const [values, setValues] = useState(initialState);
+  const [tax, setTax] = useState(taxInitials);
   const [propTextState, setPropTextState] = useState(EditorState.createEmpty());
   const [noteState, setNoteState] = useState(EditorState.createEmpty());
   const quoteState = useSelector((state) => state);
@@ -123,21 +129,24 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
     } = e;
     setValues({ ...values, status: checked ? "Pending" : "Draft" });
   };
-  const onChangeTaxes = (tax, action = "add") => {
-    let taxes = [...values.taxes];
-    if (isNaN(Number(tax))) {
-      return;
-    }
-    if (action === "add") {
-      const taxesSum = taxes.reduce((a, b) => a + Number(b), 0);
-      if (taxesSum + Number(tax) > 100) {
-        return;
-      }
-      taxes.push(Number(tax));
+  const onAddTax = () => {
+    const taxes = [...values.taxes];
+    const index = taxes.findIndex((i) => i.title === tax.title);
+    if (index < 0) {
+      taxes.push(tax);
     } else {
-      taxes = taxes.filter((t) => t !== Number(tax));
+      taxes[index].title = tax.title;
+      taxes[index].amount = tax.amount;
     }
     setValues((prev) => ({ ...prev, taxes }));
+    setTax(taxInitials);
+  };
+  const onDeleteTax = (taxTitle) => {
+    const newTaxes = values.taxes.filter((t) => t.title !== taxTitle);
+    setValues((prev) => ({ ...prev, taxes: newTaxes }));
+  };
+  const onChangeTax = ({ target: { name, value } }) => {
+    setTax((prev) => ({ ...prev, [name]: value }));
   };
   return (
     <Card component="main" className={classes.root}>
@@ -225,15 +234,24 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
               {(action === "add" || action === "edit") && (
                 <>
                   <Grid item xs={12}>
-                    <ChipInput
-                      value={values.taxes}
-                      fullWidth
-                      label="Taxes"
-                      variant="outlined"
-                      placeholder="Type tax and press enter"
-                      onAdd={(taxe) => onChangeTaxes(taxe)}
-                      onDelete={(taxe) => onChangeTaxes(taxe, "delete")}
-                    />
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        label="Expiry Date"
+                        inputVariant="outlined"
+                        fullWidth
+                        value={values.expiryDate}
+                        InputAdornmentProps={{ position: "start" }}
+                        format="yyyy-MM-dd"
+                        views={["year", "month", "date"]}
+                        onChange={(dateValue) =>
+                          setValues((prev) => ({
+                            ...prev,
+                            expiryDate: dateValue,
+                          }))
+                        }
+                        minDate={new Date()}
+                      />
+                    </MuiPickersUtilsProvider>
                   </Grid>
                   <Grid item xs={12} sm={12} md={8} lg={8}>
                     {values.isFixed ? (
@@ -276,24 +294,58 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                       labelPlacement="top"
                     />
                   </Grid>
+                  <Grid item xs={12} sm={12} md={5} lg={5}>
+                    <TextField
+                      name="title"
+                      variant="outlined"
+                      fullWidth
+                      label="Tax title"
+                      size="small"
+                      onChange={onChangeTax}
+                      value={tax.title}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={5} lg={5}>
+                    <TextField
+                      name="amount"
+                      variant="outlined"
+                      type="number"
+                      fullWidth
+                      label="Tax(in %)"
+                      size="small"
+                      onChange={onChangeTax}
+                      value={tax.amount}
+                      disabled={!Boolean(tax.title)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={2} lg={2}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      disabled={!Boolean(tax.amount)}
+                      onClick={() => onAddTax()}
+                    >
+                      Add
+                    </Button>
+                  </Grid>
                   <Grid item xs={12}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
-                        label="Expiry Date"
-                        inputVariant="outlined"
-                        value={values.expiryDate}
-                        InputAdornmentProps={{ position: "start" }}
-                        format="yyyy-MM-dd"
-                        views={["year", "month", "date"]}
-                        onChange={(dateValue) =>
-                          setValues((prev) => ({
-                            ...prev,
-                            expiryDate: dateValue,
-                          }))
-                        }
-                        minDate={new Date()}
-                      />
-                    </MuiPickersUtilsProvider>
+                    <ul>
+                      {values.taxes.map((t, tIndex) => (
+                        <li key={tIndex}>
+                          <strong>{t.title}: </strong>
+                          {`${t.amount}%`}
+                          <IconButton size="small" onClick={() => setTax(t)}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            onClick={() => onDeleteTax(t.title)}
+                          >
+                            <CancelIcon />
+                          </IconButton>
+                        </li>
+                      ))}
+                    </ul>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="h4">Propasal text</Typography>
@@ -356,7 +408,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                     disabled={
                       values.status !== "Draft" && values.status !== "Pending"
                     }
-                    label="Set to be seen by client"
+                    label="Send proposal"
                   />
                 </Grid>
               )}
@@ -380,7 +432,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                   className={classes.submit}
                   disabled={updating}
                 >
-                  Update the quote
+                  Update the proposal
                 </Button>
               )}
             </CardActions>
