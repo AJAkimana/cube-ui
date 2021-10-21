@@ -50,7 +50,6 @@ export const quoteColumns = (onQuoteClick, user = {}) => [
     ),
     label: "Status",
   },
-  { path: "comment", label: "Comment" },
   {
     content: (item) => (
       <ButtonGroup variant="outlined" size="small">
