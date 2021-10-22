@@ -206,20 +206,24 @@ export const QuoteItemsDialog = ({
                           <TableRow key={itemIdx}>
                             <TableCell>
                               {item.name}
-                              <IconButton
-                                size="small"
-                                onClick={() =>
-                                  setItem((prev) => ({ ...prev, ...item }))
-                                }
-                              >
-                                <EditIcon />
-                              </IconButton>
-                              <IconButton
-                                size="small"
-                                onClick={() => onRemove(item.name)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
+                              {user.role !== "Client" && (
+                                <>
+                                  <IconButton
+                                    size="small"
+                                    onClick={() =>
+                                      setItem((prev) => ({ ...prev, ...item }))
+                                    }
+                                  >
+                                    <EditIcon />
+                                  </IconButton>
+                                  <IconButton
+                                    size="small"
+                                    onClick={() => onRemove(item.name)}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </>
+                              )}
                             </TableCell>
                             <TableCell align="right">{item.quantity}</TableCell>
                             <TableCell align="right">
@@ -251,7 +255,11 @@ export const QuoteItemsDialog = ({
                         </TableRow>
                         <TableRow>
                           <TableCell>Discount</TableCell>
-                          <TableCell align="right">{quote?.discount}</TableCell>
+                          <TableCell align="right">
+                            {quote?.isFixed
+                              ? `${quote?.discount.toLocaleString("en-US")}`
+                              : `${quote?.discount}%`}
+                          </TableCell>
                           <TableCell align="right">
                             ${aggregate.discount?.toLocaleString("en-US")}
                           </TableCell>
