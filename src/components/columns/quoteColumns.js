@@ -13,7 +13,7 @@ import { projectOwnerCol } from "./projectColumns";
 const hasExpired = (aDate) => {
   const today = new Date();
   const theDate = new Date(aDate);
-  return today.getTime() < theDate.getTime();
+  return today.getTime() > theDate.getTime();
 };
 export const quoteColumns = (onQuoteClick, user = {}) => [
   {
