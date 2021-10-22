@@ -242,7 +242,7 @@ export const QuoteItemsDialog = ({
                           </TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell>Tax</TableCell>
+                          <TableCell>Taxes</TableCell>
                           <TableCell align="right">
                             {quote?.taxes?.reduce(
                               (a, b) => a + `${b.amount}%, `,
@@ -321,26 +321,28 @@ export const QuoteItemsDialog = ({
                 {loading ? "Saving,..." : "Save"}
               </Button>
             ) : (
-              <>
-                <Button
-                  aria-label="Change status"
-                  color="primary"
-                  disabled={loading}
-                  onClick={() => onQuoteUpdate("Accepted")}
-                >
-                  <ThumbUpIcon />
-                  {loading ? "Saving,..." : "Accept"}
-                </Button>
-                <Button
-                  aria-label="Change status"
-                  color="secondary"
-                  disabled={loading}
-                  onClick={() => onQuoteUpdate("Declined")}
-                >
-                  <ThumbDownIcon />
-                  {loading ? "Saving,..." : "Decline"}
-                </Button>
-              </>
+              quote?.status === "Pending" && (
+                <>
+                  <Button
+                    aria-label="Change status"
+                    color="primary"
+                    disabled={loading}
+                    onClick={() => onQuoteUpdate("Accepted")}
+                  >
+                    <ThumbUpIcon />
+                    {loading ? "Saving,..." : "Accept"}
+                  </Button>
+                  <Button
+                    aria-label="Change status"
+                    color="secondary"
+                    disabled={loading}
+                    onClick={() => onQuoteUpdate("Declined")}
+                  >
+                    <ThumbDownIcon />
+                    {loading ? "Saving,..." : "Decline"}
+                  </Button>
+                </>
+              )
             )}
           </ButtonGroup>
         )}
