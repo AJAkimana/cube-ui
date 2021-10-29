@@ -35,16 +35,18 @@ const initialItem = { name: "", quantity: "", price: "", total: "" };
 const aggregateInit = { subtotal: 0, tax: 0, discount: 0, total: 0 };
 
 const calculateAggregate = (items = [], { taxes, discount, isFixed }) => {
-  const subTotal = Number(items.reduce((sum, item) => sum + item.total, 0));
+  const grandTotal = Number(items.reduce((sum, item) => sum + item.total, 0));
+  const totDiscount = isFixed ? discount : (grandTotal * discount) / 100;
+  const subTotal = grandTotal - totDiscount;
   const tax = taxes.reduce((a, b) => a + b.amount, 0);
   const totTax = (subTotal * tax) / 100;
-  const totDiscount = isFixed ? discount : (subTotal * discount) / 100;
   const aggreg = {
-    subtotal: subTotal.toFixed(2),
+    subtotal: grandTotal.toFixed(2),
     tax: totTax.toFixed(2),
     discount: totDiscount.toFixed(2),
-    total: (subTotal + totTax - totDiscount).toFixed(2),
+    total: (subTotal + totTax).toFixed(2),
   };
+  console.log(aggreg);
   return aggreg;
 };
 const hasExpired = (aDate) => {
