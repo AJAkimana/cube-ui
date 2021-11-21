@@ -19,21 +19,20 @@ export const productAnalyticsColumns = () => [
       <>
         <Chip
           variant="outlined"
-          color="success"
+          color="primary"
           size="small"
           label="iOs"
           avatar={<Avatar>{item.iOs}</Avatar>}
         />
         <Chip
           variant="outlined"
-          color="success"
+          color="secondary"
           size="small"
           label="Android"
           avatar={<Avatar>{item.androids}</Avatar>}
         />
         <Chip
           variant="outlined"
-          color="success"
           size="small"
           label="Desktop"
           avatar={<Avatar>{item.desktops}</Avatar>}
@@ -47,7 +46,6 @@ export const productAnalyticsColumns = () => [
       item.countries.map((el, elIdx) => (
         <Chip
           variant="outlined"
-          color="success"
           size="small"
           label={el}
           avatar={<Avatar>{el.charAt(0)}</Avatar>}

@@ -51,6 +51,7 @@ export const AnalyticsPage = () => {
       project + "TIME: " + btnFilters.find((el) => el.id === options.time).name
     );
     getProdAnalytics(options);
+    // eslint-disable-next-line
   }, [options]);
   useEffect(() => {
     const { pageNumber, pageSize } = paginator;
@@ -80,6 +81,7 @@ export const AnalyticsPage = () => {
                     <Select
                       labelId="select-project"
                       name="project"
+                      value={options.project}
                       onChange={({ target }) =>
                         setOptions((prev) => ({
                           ...prev,

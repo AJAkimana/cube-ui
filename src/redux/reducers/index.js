@@ -29,6 +29,7 @@ import {
   usersListReducer,
 } from "./user.reducer";
 import {
+  ADD_ANALYTIC,
   ADD_NEW_PRODUCT,
   ADD_PROJECT_PROD,
   DELETE_ATTR_IMAGE,
@@ -80,4 +81,5 @@ export default combineReducers({
   projectAddProd: promisedReducer(ADD_PROJECT_PROD, "message", "string", true),
   projectProdsGet: promisedReducer(GET_PROJECT_PROD, "projProds", "array"),
   analyticsGet: promisedReducer(GET_ANALYTICS, "analytics", "array"),
+  analyticAdd: promisedReducer(ADD_ANALYTIC, "analytic", "object", true),
 });

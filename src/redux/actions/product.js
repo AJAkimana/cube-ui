@@ -1,5 +1,6 @@
 import { store } from "../store";
 import {
+  ADD_ANALYTIC,
   ADD_NEW_PRODUCT,
   DELETE_ATTR_IMAGE,
   GET_ANALYTICS,
@@ -77,15 +78,16 @@ export const updateAttributes = (attributesBody = {}, productId = "") => {
     payload: http.patch(`${BASE_URL}/attributes/${productId}`, attributesBody),
   });
 };
-export const getProduct = (productId) => {
+export const getProduct = (productId, addVisit = false) => {
   const config = {};
+  const params = addVisit ? "?analyticType=visit" : "";
   const ancOrigins = document.location.ancestorOrigins;
   if (ancOrigins.length > 0) {
     config.headers = { "ancestor-origin": ancOrigins[0] };
   }
   store.dispatch({
     type: GET_PRODUCT,
-    payload: http.get(`${BASE_URL}/${productId}`, config),
+    payload: http.get(`${BASE_URL}/${productId + params}`, config),
   });
 };
 export const uploadAttrImage = (formData, imageType = "", productId = {}) => {
@@ -119,5 +121,12 @@ export const getProdAnalytics = (filters = {}) => {
   store.dispatch({
     type: GET_ANALYTICS,
     payload: http.get(`${BASE_URL}/get/analytics${params}`),
+  });
+};
+export const addNewAnalytic = (productId, type = "visit") => {
+  const params = `?analyticType=${type}`;
+  store.dispatch({
+    type: ADD_ANALYTIC,
+    payload: http.post(`${BASE_URL}/${productId}/analytics${params}`),
   });
 };

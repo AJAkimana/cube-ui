@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toAttributes, toOrbitProp } from "pages/Product/productConstants";
 import { IMAGES_3D_PATH, IMAGES_PATH } from "utils/constants";
-import { getProduct } from "redux/actions/product";
+import { addNewAnalytic, getProduct } from "redux/actions/product";
 import { initialStates } from "pages/Product/AttributeEditor/initialStates";
 import { useSelector } from "react-redux";
 import Loading from "components/loading.component";
@@ -15,10 +15,11 @@ export const ProductViewPage = ({
   const { productId } = match.params;
   const {
     productGet: { product, loaded, loading },
+    analyticAdd: { loading: adding },
   } = appState;
   useEffect(() => {
     if (productId) {
-      getProduct(productId);
+      getProduct(productId, true);
     }
   }, [productId]);
   useEffect(() => {
@@ -68,6 +69,8 @@ export const ProductViewPage = ({
           style={{ width: "50%" }}
           slot="ar-button"
           alt={attributes.alt}
+          disabled={adding}
+          onClick={() => addNewAnalytic(product._id, "click")}
         />
       )}
       {attributes.hotspots?.map((hs, hsIdx) => (
