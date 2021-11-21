@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
   ButtonGroup,
+  Card,
+  CardContent,
+  CardHeader,
   FormControl,
   Grid,
   InputLabel,
@@ -12,11 +15,51 @@ import {
 } from "@material-ui/core";
 import { CustomisedTable } from "components/CustomizedTable";
 import { productAnalyticsColumns } from "components/columns";
+import { useSelector } from "react-redux";
+import { getProjects } from "redux/actions/project";
+import { initialPaginate, paginate } from "utils/paginate";
+import { getProdAnalytics } from "redux/actions/product";
 
-const data = [
-  { name: "The asset example", users: 23, clicks: 5, devices: "20 androids" },
+const initialOptions = { project: "", time: "allTime" };
+const btnFilters = [
+  { id: "today", name: "Today" },
+  { id: "7days", name: "Last 7 days" },
+  { id: "30days", name: "Last 30 days" },
+  { id: "allTime", name: "All time" },
 ];
 export const AnalyticsPage = () => {
+  const [options, setOptions] = useState(initialOptions);
+  const [tableTitle, setTableTitle] = useState("All");
+  const [paginator, setPaginator] = useState(initialPaginate());
+  const [paginatedData, setPaginatedData] = useState([]);
+  const appState = useSelector((state) => state);
+  const {
+    projectsGet: { projects },
+    analyticsGet: { analytics, loading },
+  } = appState;
+  useEffect(() => {
+    getProjects({});
+  }, []);
+  useEffect(() => {
+    let project = "";
+    if (Boolean(options.project)) {
+      project = `PROJECT: ${
+        projects.find((el) => el._id === options.project).name
+      }. `;
+    }
+    setTableTitle(
+      project + "TIME: " + btnFilters.find((el) => el.id === options.time).name
+    );
+    getProdAnalytics(options);
+  }, [options]);
+  useEffect(() => {
+    const { pageNumber, pageSize } = paginator;
+    const paginatedData = paginate(analytics, pageNumber, pageSize);
+    setPaginatedData(paginatedData);
+  }, [analytics, paginator]);
+  const onPageChange = ({ selected }) => {
+    setPaginator({ ...paginator, pageNumber: selected + 1 });
+  };
   return (
     <Box
       sx={{
@@ -27,36 +70,66 @@ export const AnalyticsPage = () => {
     >
       <Grid container spacing={1}>
         <Grid item lg={4} md={4} xl={6} xs={12}>
-          <FormControl variant="filled" size="small">
-            <InputLabel id="select-project">Age</InputLabel>
-            <Select
-              labelId="select-project"
-              id="select-project-filled"
-              onChange={() => {}}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
-          <ButtonGroup
-            variant="contained"
-            aria-label="outlined primary button group"
-          >
-            <Button>Today</Button>
-            <Button>Last 7 days</Button>
-            <Button>Current Month</Button>
-          </ButtonGroup>
+          <Card>
+            <CardHeader title="Add filters" />
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel id="select-project">Select project</InputLabel>
+                    <Select
+                      labelId="select-project"
+                      name="project"
+                      onChange={({ target }) =>
+                        setOptions((prev) => ({
+                          ...prev,
+                          project: target.value,
+                        }))
+                      }
+                    >
+                      <MenuItem value="">---</MenuItem>
+                      {projects.map((project, projectIdx) => (
+                        <MenuItem value={project._id} key={projectIdx}>
+                          {project.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <ButtonGroup
+                    variant="contained"
+                    aria-label="outlined primary button group"
+                  >
+                    {btnFilters.map(({ id, name }, btnIdx) => (
+                      <Button
+                        key={btnIdx}
+                        color={options.time === id ? "primary" : ""}
+                        onClick={() =>
+                          setOptions((prev) => ({ ...prev, time: id }))
+                        }
+                      >
+                        {name}
+                      </Button>
+                    ))}
+                  </ButtonGroup>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
         </Grid>
         <Grid item lg={8} md={8} xl={6} xs={12}>
           <Typography variant="h4">Analytics page</Typography>
           <CustomisedTable
-            tableTitle="3D assets analytics"
+            tableTitle={`Filters: ${tableTitle}`}
             columns={productAnalyticsColumns()}
-            data={data}
+            loading={loading}
+            data={paginatedData}
+            withPagination
+            dataCount={analytics.length}
+            pageCount={Math.ceil(analytics.length / paginator.pageSize)}
+            handlePageChange={onPageChange}
+            page={paginator.pageNumber}
           />
         </Grid>
       </Grid>

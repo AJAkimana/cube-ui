@@ -1,19 +1,9 @@
 import React from "react";
-import {
-  Button,
-  Typography,
-  ButtonGroup,
-  IconButton,
-  Tooltip,
-} from "@material-ui/core";
-import {
-  EditRounded as EditIcon,
-  ViewComfy as ViewComfyIcon,
-} from "@material-ui/icons";
+import { Avatar, Chip, Typography } from "@material-ui/core";
 
 export const productAnalyticsColumns = () => [
   {
-    path: "name",
+    content: (item) => <Typography>{item.product?.name}</Typography>,
     label: "Asset name",
   },
   {
@@ -21,11 +11,49 @@ export const productAnalyticsColumns = () => [
     label: "# of users",
   },
   {
-    path: "devices",
+    path: "clicks",
+    label: "# of clicks",
+  },
+  {
+    content: (item) => (
+      <>
+        <Chip
+          variant="outlined"
+          color="success"
+          size="small"
+          label="iOs"
+          avatar={<Avatar>{item.iOs}</Avatar>}
+        />
+        <Chip
+          variant="outlined"
+          color="success"
+          size="small"
+          label="Android"
+          avatar={<Avatar>{item.androids}</Avatar>}
+        />
+        <Chip
+          variant="outlined"
+          color="success"
+          size="small"
+          label="Desktop"
+          avatar={<Avatar>{item.desktops}</Avatar>}
+        />
+      </>
+    ),
     label: "Devices",
   },
   {
-    path: "clicks",
-    label: "# of clicks",
+    content: (item) =>
+      item.countries.map((el, elIdx) => (
+        <Chip
+          variant="outlined"
+          color="success"
+          size="small"
+          label={el}
+          avatar={<Avatar>{el.charAt(0)}</Avatar>}
+          key={elIdx}
+        />
+      )),
+    label: "The 1st 3 countries",
   },
 ];

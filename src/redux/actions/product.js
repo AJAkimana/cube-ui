@@ -2,6 +2,7 @@ import { store } from "../store";
 import {
   ADD_NEW_PRODUCT,
   DELETE_ATTR_IMAGE,
+  GET_ANALYTICS,
   GET_PRODUCT,
   GET_PRODUCTS,
   GET_PRODUCT_IMAGES,
@@ -108,5 +109,15 @@ export const deleteAttrImg = (productId = "", imgFile = "") => {
   store.dispatch({
     type: DELETE_ATTR_IMAGE,
     payload: http.delete(url),
+  });
+};
+export const getProdAnalytics = (filters = {}) => {
+  let params = `?time=${filters.time || "allTime"}`;
+  if (filters.project) {
+    params += `&project=${filters.project}`;
+  }
+  store.dispatch({
+    type: GET_ANALYTICS,
+    payload: http.get(`${BASE_URL}/get/analytics${params}`),
   });
 };
