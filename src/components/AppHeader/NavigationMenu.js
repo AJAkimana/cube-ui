@@ -20,7 +20,11 @@ export const NavigationMenu = ({
     { link: "profile", title: "My profile" },
   ];
   if (user && user.role !== "Client") {
-    navigations = [{ link: "customers", title: "Customers" }, ...navigations];
+    navigations = [
+      { link: "customers", title: "Customers" },
+      { link: "analytics", title: "Asset analytics" },
+      ...navigations,
+    ];
   }
   return (
     <Menu
