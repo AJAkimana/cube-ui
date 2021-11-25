@@ -8,11 +8,11 @@ export const productAnalyticsColumns = () => [
   },
   {
     path: "users",
-    label: "# of users",
+    label: "Users",
   },
   {
     path: "clicks",
-    label: "# of clicks",
+    label: "AR Users",
   },
   {
     content: (item) => (
@@ -39,7 +39,7 @@ export const productAnalyticsColumns = () => [
         />
       </>
     ),
-    label: "Devices",
+    label: "Country by Users",
   },
   {
     content: (item) =>
@@ -47,11 +47,11 @@ export const productAnalyticsColumns = () => [
         <Chip
           variant="outlined"
           size="small"
-          label={el}
-          avatar={<Avatar>{el.charAt(0)}</Avatar>}
+          label={el.name}
+          avatar={<Avatar>{el.count}</Avatar>}
           key={elIdx}
         />
       )),
-    label: "The 1st 3 countries",
+    label: "Device by Users",
   },
 ];
