@@ -1,9 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Avatar, Chip, Typography } from "@material-ui/core";
 
 export const productAnalyticsColumns = () => [
   {
-    content: (item) => <Typography>{item.product?.name}</Typography>,
+    content: (item) => (
+      <Typography component={Link} to={`/dashboard/products`}>
+        {item.product?.name}
+      </Typography>
+    ),
     label: "Asset name",
   },
   {
@@ -39,7 +44,7 @@ export const productAnalyticsColumns = () => [
         />
       </>
     ),
-    label: "Country by Users",
+    label: "Device by Users",
   },
   {
     content: (item) =>
@@ -52,6 +57,6 @@ export const productAnalyticsColumns = () => [
           key={elIdx}
         />
       )),
-    label: "Device by Users",
+    label: "Country by Users",
   },
 ];
