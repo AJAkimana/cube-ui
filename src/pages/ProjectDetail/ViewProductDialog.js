@@ -1,6 +1,13 @@
 import React from "react";
 import { ProductViewPage } from "pages/ProductView";
-import { Dialog, DialogContent, DialogTitle, Grid } from "@material-ui/core";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+} from "@material-ui/core";
 
 export const ViewProductDialog = ({ productId, open, setOpen }) => {
   const match = { params: { productId } };
@@ -21,10 +28,16 @@ export const ViewProductDialog = ({ productId, open, setOpen }) => {
             <ProductViewPage
               match={match}
               styles={{ width: "100%", height: "70vh" }}
+              addVisit={false}
             />
           </Grid>
         </Grid>
       </DialogContent>
+      <DialogActions>
+        <Button color="secondary" onClick={() => setOpen()}>
+          Cancel
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };

@@ -9,6 +9,7 @@ import Loading from "components/loading.component";
 export const ProductViewPage = ({
   match,
   styles = { width: "100%", height: "100vh" },
+  addVisit = true,
 }) => {
   const [attributes, setAttributes] = useState(initialStates);
   const appState = useSelector((state) => state);
@@ -19,7 +20,7 @@ export const ProductViewPage = ({
   } = appState;
   useEffect(() => {
     if (productId) {
-      getProduct(productId, true);
+      getProduct(productId, addVisit);
     }
   }, [productId]);
   useEffect(() => {

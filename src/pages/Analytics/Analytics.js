@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { getProjects } from "redux/actions/project";
 import { initialPaginate, paginate } from "utils/paginate";
 import { getProdAnalytics } from "redux/actions/product";
+import { ViewProductDialog } from "pages/ProjectDetail/ViewProductDialog";
 
 const initialOptions = { project: "", time: "allTime" };
 const btnFilters = [
@@ -32,6 +33,8 @@ export const AnalyticsPage = () => {
   const [tableTitle, setTableTitle] = useState("All");
   const [paginator, setPaginator] = useState(initialPaginate());
   const [paginatedData, setPaginatedData] = useState([]);
+  const [currentItem, setCurrentItem] = useState(null);
+
   const appState = useSelector((state) => state);
   const {
     projectsGet: { projects },
@@ -61,6 +64,9 @@ export const AnalyticsPage = () => {
   const onPageChange = ({ selected }) => {
     setPaginator({ ...paginator, pageNumber: selected + 1 });
   };
+  const onClickItem = (item) => {
+    setCurrentItem(item);
+  };
   return (
     <Box
       sx={{
@@ -69,6 +75,13 @@ export const AnalyticsPage = () => {
         py: 3,
       }}
     >
+      <ViewProductDialog
+        open={Boolean(currentItem)}
+        setOpen={() => {
+          setCurrentItem(null);
+        }}
+        productId={currentItem?.product?._id}
+      />
       <Grid container spacing={1}>
         <Grid item lg={4} md={4} xl={6} xs={12}>
           <Card>
@@ -124,7 +137,7 @@ export const AnalyticsPage = () => {
           <Typography variant="h4">Analytics page</Typography>
           <CustomisedTable
             tableTitle={`Filters: ${tableTitle}`}
-            columns={productAnalyticsColumns()}
+            columns={productAnalyticsColumns(onClickItem)}
             loading={loading}
             data={paginatedData}
             withPagination
