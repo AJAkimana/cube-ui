@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Avatar, Chip, Typography } from "@material-ui/core";
+import { Avatar, Button, Chip, Typography } from "@material-ui/core";
 
-export const productAnalyticsColumns = () => [
+export const productAnalyticsColumns = (onItemClick) => [
   {
     content: (item) => (
-      <Typography component={Link} to={`/dashboard/products`}>
+      <Button onClick={() => onItemClick(item, "preview")}>
         {item.product?.name}
-      </Typography>
+      </Button>
     ),
-    label: "Asset name",
+    label: "3D Assets",
   },
   {
     path: "users",
