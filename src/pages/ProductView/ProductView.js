@@ -22,7 +22,7 @@ export const ProductViewPage = ({
     if (productId) {
       getProduct(productId, addVisit);
     }
-  }, [productId]);
+  }, [productId, addVisit]);
   useEffect(() => {
     if (loaded) {
       const { src, ...otherProps } = product.image;
