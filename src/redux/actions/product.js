@@ -3,6 +3,7 @@ import {
   ADD_ANALYTIC,
   ADD_NEW_PRODUCT,
   DELETE_ATTR_IMAGE,
+  GENERATE_QR,
   GET_ANALYTICS,
   GET_PRODUCT,
   GET_PRODUCTS,
@@ -14,8 +15,9 @@ import {
   UPLOAD_PRODUCT_IMAGES,
 } from "./actionTypes";
 import { http } from "utils/http";
+import { BASE_URL } from "utils/constants";
 
-const BASE_URL = "/products";
+const PRODUCTS_URL = "/products";
 export const uploadProductImages = (
   files,
   imageType = "image3d",
@@ -29,7 +31,7 @@ export const uploadProductImages = (
   const config = {
     headers: { "Content-Type": "multipart/form-data" },
   };
-  let uploadUrl = `${BASE_URL}/upload/${imageType}`;
+  let uploadUrl = `${PRODUCTS_URL}/upload/${imageType}`;
   let actionType = UPLOAD_PRODUCT_IMAGES;
   if (productId && imgType) {
     uploadUrl += `?productId=${productId}&imgType=${imgType}`;
@@ -45,7 +47,7 @@ export const uploadProductImages = (
 export const addNewProduct = (productBody) => {
   store.dispatch({
     type: ADD_NEW_PRODUCT,
-    payload: http.post(BASE_URL, productBody),
+    payload: http.post(PRODUCTS_URL, productBody),
   });
 };
 export const getProducts = ({ projectId }) => {
@@ -55,13 +57,13 @@ export const getProducts = ({ projectId }) => {
   }
   store.dispatch({
     type: GET_PRODUCTS,
-    payload: http.get(BASE_URL + params),
+    payload: http.get(PRODUCTS_URL + params),
   });
 };
 export const getProductImages = (productId = "") => {
   store.dispatch({
     type: GET_PRODUCT_IMAGES,
-    payload: http.get(`${BASE_URL}/files/${productId}`),
+    payload: http.get(`${PRODUCTS_URL}/files/${productId}`),
   });
 };
 export const editProduct = (productBody) => {
@@ -69,13 +71,16 @@ export const editProduct = (productBody) => {
   // console.log(productBody);
   store.dispatch({
     type: UPDATE_PRODUCT,
-    payload: http.patch(`${BASE_URL}/${_id}`, rest),
+    payload: http.patch(`${PRODUCTS_URL}/${_id}`, rest),
   });
 };
 export const updateAttributes = (attributesBody = {}, productId = "") => {
   store.dispatch({
     type: UPDATE_ATTRIBUTES,
-    payload: http.patch(`${BASE_URL}/attributes/${productId}`, attributesBody),
+    payload: http.patch(
+      `${PRODUCTS_URL}/attributes/${productId}`,
+      attributesBody
+    ),
   });
 };
 export const getProduct = (productId, addVisit = false) => {
@@ -87,14 +92,14 @@ export const getProduct = (productId, addVisit = false) => {
   }
   store.dispatch({
     type: GET_PRODUCT,
-    payload: http.get(`${BASE_URL}/${productId + params}`, config),
+    payload: http.get(`${PRODUCTS_URL}/${productId + params}`, config),
   });
 };
 export const uploadAttrImage = (formData, imageType = "", productId = {}) => {
   const config = {
     headers: { "Content-Type": "multipart/form-data" },
   };
-  let uploadUrl = `${BASE_URL}/upload/${imageType}`;
+  let uploadUrl = `${PRODUCTS_URL}/upload/${imageType}`;
   uploadUrl += `/${productId}`;
   store.dispatch({
     type: UPLOAD_ATTR_IMAGE,
@@ -107,7 +112,7 @@ export const resetUploadAttrImg = () => {
   });
 };
 export const deleteAttrImg = (productId = "", imgFile = "") => {
-  const url = `${BASE_URL}/${productId}/image/${imgFile}`;
+  const url = `${PRODUCTS_URL}/${productId}/image/${imgFile}`;
   store.dispatch({
     type: DELETE_ATTR_IMAGE,
     payload: http.delete(url),
@@ -120,13 +125,27 @@ export const getProdAnalytics = (filters = {}) => {
   }
   store.dispatch({
     type: GET_ANALYTICS,
-    payload: http.get(`${BASE_URL}/get/analytics${params}`),
+    payload: http.get(`${PRODUCTS_URL}/get/analytics${params}`),
   });
 };
 export const addNewAnalytic = (productId, type = "visit") => {
   const params = `?analyticType=${type}`;
   store.dispatch({
     type: ADD_ANALYTIC,
-    payload: http.post(`${BASE_URL}/${productId}/analytics${params}`),
+    payload: http.post(`${PRODUCTS_URL}/${productId}/analytics${params}`),
+  });
+};
+export const generateQR = (productId) => {
+  const qrCodeData = {
+    data: `${BASE_URL}/products/${productId}`,
+    size: "200x200",
+    bgcolor: "8967fc",
+  };
+  const params = Object.entries(qrCodeData)
+    .map((pair) => pair.map(encodeURIComponent).join("="))
+    .join("&");
+  store.dispatch({
+    type: GENERATE_QR,
+    payload: `${process.env.REACT_APP_QR_URL}/create-qr-code/?${params}`,
   });
 };

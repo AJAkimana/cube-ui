@@ -42,7 +42,7 @@ import {
   UPDATE_PRODUCT,
   UPLOAD_PRODUCT_IMAGES,
 } from "redux/actions/actionTypes";
-import { attrImageReducer } from "./file.reducer";
+import { attrImageReducer, qrCodeGeneratorReducer } from "./file.reducer";
 
 export default combineReducers({
   login: loginReducer,
@@ -82,4 +82,5 @@ export default combineReducers({
   projectProdsGet: promisedReducer(GET_PROJECT_PROD, "projProds", "array"),
   analyticsGet: promisedReducer(GET_ANALYTICS, "analytics", "array"),
   analyticAdd: promisedReducer(ADD_ANALYTIC, "analytic", "object", true),
+  qrGenerate: qrCodeGeneratorReducer,
 });

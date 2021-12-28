@@ -12,6 +12,7 @@ import { ManageImages } from "./ManageImages";
 import { initialStates } from "./initialStates";
 import { Poster } from "./Poster";
 import { AddedProducts } from "./AddedProducts";
+import { QRCodeViewer } from "./QRCodeViewer";
 
 export const AttributeEditor = ({
   productId,
@@ -130,6 +131,12 @@ export const AttributeEditor = ({
           >
             Added projects
           </Button> */}
+          <Button
+            color={activeBtn === "qr-code" ? "primary" : "secondary"}
+            onClick={() => setActiveBtn("qr-code")}
+          >
+            View QR code
+          </Button>
         </ButtonGroup>
         <Button
           color="secondary"
@@ -187,6 +194,7 @@ export const AttributeEditor = ({
           />
         )}
         <AddedProducts attName={activeBtn} productId={productId} />
+        <QRCodeViewer attName={activeBtn} productId={productId} />
       </Grid>
     </Grid>
   );
