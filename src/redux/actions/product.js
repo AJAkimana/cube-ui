@@ -81,7 +81,7 @@ export const updateAttributes = (attributesBody = {}, productId = "") => {
 export const getProduct = (productId, addVisit = false) => {
   const config = {};
   const params = addVisit ? "?analyticType=visit" : "";
-  const ancOrigins = document.location.ancestorOrigins;
+  const ancOrigins = document.location?.ancestorOrigins || [];
   if (ancOrigins.length > 0) {
     config.headers = { "ancestor-origin": ancOrigins[0] };
   }

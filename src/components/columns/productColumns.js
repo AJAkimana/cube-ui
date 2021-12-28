@@ -11,7 +11,7 @@ import {
   ViewComfy as ViewComfyIcon,
 } from "@material-ui/icons";
 
-export const productColumns = (onProductClick) => [
+export const productColumns = (onProductClick, user) => [
   {
     content: (item) => (
       <Button onClick={() => onProductClick(item, "preview")}>
@@ -54,16 +54,18 @@ export const productColumns = (onProductClick) => [
             <ViewComfyIcon /> View
           </IconButton>
         </Tooltip>
-        <Tooltip title="Edit">
-          <IconButton
-            aria-label="Edit"
-            color="secondary"
-            disabled={item.status === "COMPLETED"}
-            onClick={() => onProductClick(item, "edit")}
-          >
-            <EditIcon /> Edit
-          </IconButton>
-        </Tooltip>
+        {user.role !== "Client" && (
+          <Tooltip title="Edit">
+            <IconButton
+              aria-label="Edit"
+              color="secondary"
+              disabled={item.status === "COMPLETED"}
+              onClick={() => onProductClick(item, "edit")}
+            >
+              <EditIcon /> Edit
+            </IconButton>
+          </Tooltip>
+        )}
       </ButtonGroup>
     ),
     label: "Actions",
