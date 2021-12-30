@@ -18,7 +18,7 @@ export const QRCodeViewer = ({ attName, productId }) => {
   return (
     <Collapse in={attName === "qr-code"}>
       <Card>
-        <CardHeader title="QR Code Viewer" />
+        <CardHeader title="Scan the QR code to preview 3D asset in your space" />
         <CardContent>
           {loading && <Loading />}
           {loaded && (

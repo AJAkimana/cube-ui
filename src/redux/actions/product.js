@@ -139,7 +139,7 @@ export const generateQR = (productId) => {
   const qrCodeData = {
     data: `${BASE_URL}/products/${productId}`,
     size: "200x200",
-    bgcolor: "8967fc",
+    bgcolor: "9722FF",
   };
   const params = Object.entries(qrCodeData)
     .map((pair) => pair.map(encodeURIComponent).join("="))
