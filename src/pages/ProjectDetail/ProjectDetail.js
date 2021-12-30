@@ -22,6 +22,7 @@ import {
   CardHeader,
   TextField,
   Divider,
+  Box,
 } from "@material-ui/core";
 import {
   CloudDownloadOutlined as DownloadIcon,
@@ -310,7 +311,7 @@ export const ProjectDetailPage = ({ match }) => {
                           </AccordionSummary>
                           {Boolean(history.content) && (
                             <AccordionDetails>
-                              {HtmlParser(history.content)}
+                              <Box>{HtmlParser(history.content)}</Box>
                             </AccordionDetails>
                           )}
                         </Accordion>
