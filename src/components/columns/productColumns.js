@@ -54,18 +54,16 @@ export const productColumns = (onProductClick, user) => [
             <ViewComfyIcon /> View
           </IconButton>
         </Tooltip>
-        {user.role !== "Client" && (
-          <Tooltip title="Edit">
-            <IconButton
-              aria-label="Edit"
-              color="secondary"
-              disabled={item.status === "COMPLETED"}
-              onClick={() => onProductClick(item, "edit")}
-            >
-              <EditIcon /> Edit
-            </IconButton>
-          </Tooltip>
-        )}
+        <Tooltip title="Edit">
+          <IconButton
+            aria-label="Edit"
+            color="secondary"
+            disabled={item.status === "COMPLETED"}
+            onClick={() => onProductClick(item, "edit")}
+          >
+            <EditIcon /> Edit
+          </IconButton>
+        </Tooltip>
       </ButtonGroup>
     ),
     label: "Actions",
