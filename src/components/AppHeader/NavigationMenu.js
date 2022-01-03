@@ -12,18 +12,16 @@ export const NavigationMenu = ({
   user,
 }) => {
   let navigations = [
+    { link: "analytics", title: "Analytics" },
+    { link: "products", title: "3D assets" },
     { link: "projects", title: "Projects" },
-    { link: "quotes", title: "Quotes" },
+    { link: "quotes", title: "Proposals" },
     { link: "invoices", title: "Invoices" },
     { link: "subscriptions", title: "Subscriptions" },
     { link: "profile", title: "My profile" },
   ];
   if (user && user.role !== "Client") {
-    navigations = [
-      { link: "customers", title: "Customers" },
-      { link: "products", title: "Products" },
-      ...navigations,
-    ];
+    navigations = [{ link: "customers", title: "Customers" }, ...navigations];
   }
   return (
     <Menu

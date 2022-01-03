@@ -11,20 +11,33 @@ import {
   ViewComfy as ViewComfyIcon,
 } from "@material-ui/icons";
 
-export const productColumns = (onProductClick) => [
+export const productColumns = (onProductClick, user) => [
   {
     content: (item) => (
       <Button onClick={() => onProductClick(item, "preview")}>
         {item.name}
       </Button>
     ),
-    label: "Product name",
+    label: "Asset name",
   },
-  { path: "customer", label: "Customer" },
+  {
+    content: (item) => (
+      <Typography>
+        {item.customer.fullName}, {item.customer.companyName}
+      </Typography>
+    ),
+    label: "Customer",
+  },
+  {
+    content: (item) => <Typography>{item.project?.name}</Typography>,
+    label: "Project",
+  },
   { path: "sku", label: "SKU" },
   {
     content: (item) => (
-      <Typography>$ {item.price?.toLocaleString("en-US")}</Typography>
+      <Typography>
+        {item.price ? `$ ${item.price?.toLocaleString("en-US")}` : ""}
+      </Typography>
     ),
     label: "Price",
   },

@@ -15,7 +15,7 @@ const TotalQuotes = ({ counts }) => (
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textSecondary" gutterBottom variant="h6">
-            TOTAL QUOTES
+            TOTAL PROPOSALS
           </Typography>
           <Typography color="textPrimary" variant="h3">
             {counts}

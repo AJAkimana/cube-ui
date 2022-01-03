@@ -25,4 +25,15 @@ export const initialStates = {
   placement: "floor",
   metalness: 0,
   roughness: 0,
+  arButtonImage: "",
+  skyboxImage: {
+    active: false,
+    image: "",
+  },
+  environmentImage: {
+    active: false,
+    image: "",
+  },
+  imageFiles: [],
+  hotspots: [],
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Button,
   Dialog,
@@ -7,19 +7,23 @@ import {
   DialogTitle,
   Grid,
 } from "@material-ui/core";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { getProduct } from "redux/actions/product";
 import { useSelector } from "react-redux";
-import { IMAGES_PATH } from "utils/constants";
+import { BASE_URL, IMAGES_3D_PATH, IMAGES_PATH } from "utils/constants";
 import Loading from "components/loading.component";
 import { AttributeEditor } from "./AttributeEditor";
-import { toOrbitProp } from "./productConstants";
-import { notifier } from "utils/notifier";
+import { toOrbitProp, toAttributes } from "./productConstants";
+import { initialStates } from "./AttributeEditor/initialStates";
 
 export const ImagePreview = ({ open, setOpen, productId = null }) => {
+  const modelViewRef = useRef(null);
+  const [attributes, setAttributes] = useState(initialStates);
+  const [currentHotspot, setCurrentHotspot] = useState(null);
+  const [copied, setCopied] = useState(false);
   const appState = useSelector((state) => state);
   const {
-    productGet: { loading, product },
-    attrUpdate: { loaded, message },
+    productGet: { loading, product, loaded },
   } = appState;
   useEffect(() => {
     if (productId && open) {
@@ -28,19 +32,37 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   }, [productId, open]);
   useEffect(() => {
     if (loaded) {
-      getProduct(productId);
-      notifier.success(message);
+      const { src, ...otherProps } = product.image;
+      setAttributes((prevAttribs) => ({ prevAttribs, ...otherProps }));
+      setCopied(false);
+      setCurrentHotspot(null);
     }
-  }, [loaded, message, productId]);
-  const booleanAttributes = (imageProp) => {
-    let attribs = {};
-    if (imageProp?.disableZoom) {
-      attribs["disable-zoom"] = "true";
+  }, [loaded, product]);
+  useEffect(() => {
+    const modelViewer = modelViewRef.current;
+    document.querySelectorAll("button.hotspot").forEach((e) => e.remove());
+    if (attributes.hotspots.length && modelViewer) {
+      attributes.hotspots.forEach((el) => {
+        const newHotspot = document.createElement("button");
+        newHotspot.slot = `hotspot-${el.hotspotNum}`;
+        newHotspot.classList.add("hotspot");
+        newHotspot.style.backgroundColor = el.bgColor;
+        newHotspot.dataset.position = el.dataPosition;
+        newHotspot.dataset.normal = el.dataNormal;
+
+        modelViewer.appendChild(newHotspot);
+        newHotspot.addEventListener("click", () => {
+          onSelectHotspot(el);
+        });
+        const div = document.createElement("div");
+        div.classList.add("annotation");
+        div.textContent = el.dataText;
+        newHotspot.appendChild(div);
+      });
     }
-    if (imageProp?.autoRotate) {
-      attribs["auto-rotate"] = "true";
-    }
-    return attribs;
+  }, [attributes.hotspots, currentHotspot]);
+  const onSelectHotspot = (hotspot) => {
+    setCurrentHotspot(hotspot);
   };
   return (
     <Dialog
@@ -52,6 +74,19 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
       aria-describedby="product-dialog-description"
     >
       <DialogTitle id="product-dialog-title">{product?.name}</DialogTitle>
+      <DialogActions>
+        <CopyToClipboard
+          text={`${BASE_URL}/products/${productId}`}
+          onCopy={() => setCopied(true)}
+        >
+          <Button color={copied ? "secondary" : ""}>
+            {copied ? "Copied!" : "Copy the embeded code"}
+          </Button>
+        </CopyToClipboard>
+        <Button onClick={setOpen} color="primary" autoFocus>
+          Exit
+        </Button>
+      </DialogActions>
       <DialogContent id="product-dialog-description">
         {loading && !Boolean(product.image) ? (
           <Loading />
@@ -59,37 +94,71 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
           <Grid
             container
             spacing={2}
-            style={{ backgroundColor: product.image?.backgroundColor }}
+            style={{ backgroundColor: attributes.backgroundColor }}
           >
             <Grid item md={5} lg={5}>
-              <AttributeEditor productId={productId} />
+              <AttributeEditor
+                productId={productId}
+                attributes={attributes}
+                setAttributes={setAttributes}
+                modelViewRef={modelViewRef}
+                currentHotspot={currentHotspot}
+                setCurrentHotspot={setCurrentHotspot}
+              />
             </Grid>
             <Grid item md={7} lg={7}>
               <model-viewer
-                src={`${IMAGES_PATH}/${product.imagesSrc?.glb}`}
-                ios-src={`${IMAGES_PATH}/${product.imagesSrc?.usdz}`}
+                id="image3d-viewer"
+                ref={modelViewRef}
+                src={`${IMAGES_3D_PATH}/${product.imagesSrc?.glb}`}
+                ios-src={`${IMAGES_3D_PATH}/${product.imagesSrc?.usdz}`}
                 style={{ width: "100%", height: "70vh", border: "none" }}
-                auto-rotate-delay={product.image?.autoRotateDelay}
-                background-color={product.image?.backgroundColor}
-                camera-orbit={toOrbitProp("cameraOrbit", product.image)}
-                min-camera-orbit={toOrbitProp("minCameraOrbit", product.image)}
-                max-camera-orbit={toOrbitProp("maxCameraOrbit", product.image)}
-                camera-target={product.image?.cameraTarget}
-                field-of-view={product.image?.fieldOfView}
-                exposure={product.image?.exposure}
-                shadow-intensity={product.image?.shadowIntensity}
-                shadow-softness={product.image?.shadowSoftness}
-                alt={product.image?.alt}
-                ar-scale={product.image?.scale}
-                placement={product.image?.placement}
+                auto-rotate-delay={attributes.autoRotateDelay}
+                background-color={attributes.backgroundColor}
+                camera-orbit={toOrbitProp("cameraOrbit", attributes)}
+                min-camera-orbit={toOrbitProp("minCameraOrbit", attributes)}
+                max-camera-orbit={toOrbitProp("maxCameraOrbit", attributes)}
+                camera-target={toOrbitProp("cameraTarget", attributes)}
+                field-of-view={attributes.fieldOfView}
+                exposure={attributes.exposure}
+                shadow-intensity={attributes.shadowIntensity}
+                shadow-softness={attributes.shadowSoftness}
+                alt={attributes.alt}
+                ar-scale={attributes.scale}
+                placement={attributes.placement}
                 ar
                 ar-modes="webxr scene-viewer quick-look"
                 camera-controls
                 autoplay
                 quick-look-browsers="safari chrome firefox"
                 loading="eager"
-                {...booleanAttributes(product.image)}
-              ></model-viewer>
+                {...toAttributes(attributes)}
+              >
+                {Boolean(attributes.arButtonImage) && (
+                  <input
+                    type="image"
+                    src={IMAGES_PATH + attributes.arButtonImage}
+                    className="ar-button"
+                    style={{ width: "50%" }}
+                    slot="ar-button"
+                    alt={attributes.alt}
+                  />
+                )}
+                {/* {attributes.hotspots?.map((hs, hsIdx) => (
+                  <button
+                    key={hsIdx}
+                    slot={`hotspot-${hs.hotspotNum}`}
+                    className={`${
+                      hs.selected ? "hotspot selected" : "hotspot"
+                    }`}
+                    data-position={hs.dataPosition}
+                    data-normal={hs.dataNormal}
+                    onClick={() => onSelectHotspot(hs)}
+                  >
+                    <div className="annotation">{hs.dataText}</div>
+                  </button>
+                ))} */}
+              </model-viewer>
             </Grid>
           </Grid>
         )}

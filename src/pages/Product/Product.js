@@ -18,6 +18,9 @@ export const ProductPage = () => {
   const appState = useSelector((state) => state);
   const {
     productsGet: { loading: fetching, products },
+    login: {
+      userInfo: { user },
+    },
   } = appState;
 
   useEffect(() => {
@@ -28,7 +31,7 @@ export const ProductPage = () => {
     }
   }, [products, paginator]);
   useEffect(() => {
-    getProducts();
+    getProducts({});
   }, []);
   const onPageChange = ({ selected }) => {
     setPaginator({ ...paginator, pageNumber: selected + 1 });
@@ -53,8 +56,8 @@ export const ProductPage = () => {
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable
-          tableTitle="List of products"
-          columns={productColumns(onProductClick)}
+          tableTitle="List of 3D assets"
+          columns={productColumns(onProductClick, user)}
           loading={fetching}
           data={paginatedData}
           withPagination

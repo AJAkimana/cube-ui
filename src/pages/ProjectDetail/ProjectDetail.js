@@ -21,6 +21,8 @@ import {
   CardActions,
   CardHeader,
   TextField,
+  Divider,
+  Box,
 } from "@material-ui/core";
 import {
   CloudDownloadOutlined as DownloadIcon,
@@ -34,6 +36,7 @@ import {
   addNewLog,
   getProjectDetails,
   getProjectHistories,
+  getProjectProds,
 } from "redux/actions/project";
 import { useSelector } from "react-redux";
 import Loading from "components/loading.component";
@@ -41,12 +44,21 @@ import { INVOICE_ROUTE } from "utils/constants";
 import { projectTypes } from "pages/Project/projectConstants";
 import { useStyles } from "styles/formStyles";
 import { notifUser } from "utils/helper";
+// import { AddProductDialog } from "./AddProductDialog";
+import { NoDisplayData } from "components/NoDisplayData";
+import { ViewProductDialog } from "./ViewProductDialog";
 
+const logInitialState = { title: "", description: "" };
+// const productInitialState = { product: "", website: "", projectId: "" };
 export const ProjectDetailPage = ({ match }) => {
   const classes = useStyles();
 
   const [projectType, setProjectType] = useState({});
-  const [newLog, setNewLog] = useState({ title: "", description: "" });
+  const [newLog, setNewLog] = useState(logInitialState);
+  // const [newProduct, setNewProduct] = useState(productInitialState);
+  const [currentProd, setCurrentProd] = useState({});
+  // const [openAddProduct, setOpenAddProduct] = useState(false);
+  const [openViewProduct, setOpenViewProduct] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const { projectId } = match.params;
 
@@ -58,15 +70,19 @@ export const ProjectDetailPage = ({ match }) => {
     login: {
       userInfo: { user },
     },
+    // projectAddProd: { loaded: productAdded },
+    projectProdsGet: { loading: ppFetching, projProds },
   } = appState;
   useEffect(() => {
     if (projectId) {
       // Fetch the project
       getProjectDetails(projectId);
+      getProjectProds(projectId);
     }
   }, [projectId]);
   useEffect(() => {
     if (projectId && loaded) {
+      // setNewProduct((prev) => ({ ...prev, projectId }));
       getProjectHistories(projectId);
       const currentPType = projectTypes.find((e) => e.name === project.type);
       setProjectType(currentPType);
@@ -75,16 +91,23 @@ export const ProjectDetailPage = ({ match }) => {
   useEffect(() => {
     if (done) {
       getProjectHistories(projectId);
-      setNewLog({ title: "", description: "" });
+      setNewLog(logInitialState);
       setEditorState(EditorState.createEmpty());
     }
   }, [done, projectId]);
+  // useEffect(() => {
+  //   if (productAdded) {
+  //     setNewProduct({ ...productInitialState, projectId });
+  //     setOpenAddProduct(false);
+  //     getProjectProds(projectId);
+  //   }
+  // }, [productAdded, projectId]);
   const { button: buttonStyles, ...contentStyles } =
     useBlogTextInfoContentStyles();
   const toDowloadUrl = (projectHistory = {}) => {
     let url = projectHistory.invoice;
     if (projectHistory.quote) {
-      url = `${projectHistory.quote}?downloadType=quote`;
+      url = `${projectHistory.quote}?downloadType=proposal`;
     }
     return url;
   };
@@ -99,6 +122,21 @@ export const ProjectDetailPage = ({ match }) => {
         py: 3,
       }}
     >
+      {/* <AddProductDialog
+        open={openAddProduct}
+        setOpen={() => setOpenAddProduct(false)}
+        values={newProduct}
+        projectId={projectId}
+        setValues={setNewProduct}
+      /> */}
+      <ViewProductDialog
+        open={openViewProduct}
+        setOpen={() => {
+          setCurrentProd({});
+          setOpenViewProduct(false);
+        }}
+        productId={currentProd._id}
+      />
       <Grid item xs={12} sm={4} md={4} lg={4}>
         <Card component="main" className={classes.root}>
           <div className={classes.paper}>
@@ -112,6 +150,30 @@ export const ProjectDetailPage = ({ match }) => {
               {`Created by: ${project.user?.fullName}`}
             </Typography>
           </div>
+          <CardHeader title="3D assets added" />
+          <Divider />
+          <CardContent>
+            {ppFetching && !projProds.length ? (
+              <Loading />
+            ) : projProds.length ? (
+              <List>
+                {projProds.map((prod, prodIdx) => (
+                  <ListItem divider key={prodIdx} component={Button}>
+                    <ListItemText
+                      primary={prod.product?.name}
+                      secondary={`added ${moment(prod.createdAt).fromNow()}`}
+                      onClick={() => {
+                        setOpenViewProduct(true);
+                        setCurrentProd(prod.product);
+                      }}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            ) : (
+              <NoDisplayData message="No asset added yet" />
+            )}
+          </CardContent>
         </Card>
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
@@ -119,7 +181,18 @@ export const ProjectDetailPage = ({ match }) => {
           aria-labelledby="project-name"
           aria-describedby="project-description"
         >
-          <CardHeader title={`Project name: ${project.name?.toUpperCase()}`} />
+          <CardHeader
+            title={`Project name: ${project.name?.toUpperCase()}`}
+            // action={
+            //   <Button
+            //     variant="outlined"
+            //     color="primary"
+            //     onClick={() => setOpenAddProduct(true)}
+            //   >
+            //     Add a 3d asset
+            //   </Button>
+            // }
+          />
           <CardContent>
             {projectFetching ? (
               <Loading />
@@ -238,7 +311,7 @@ export const ProjectDetailPage = ({ match }) => {
                           </AccordionSummary>
                           {Boolean(history.content) && (
                             <AccordionDetails>
-                              {HtmlParser(history.content)}
+                              <Box>{HtmlParser(history.content)}</Box>
                             </AccordionDetails>
                           )}
                         </Accordion>

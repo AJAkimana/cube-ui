@@ -6,18 +6,31 @@ import { Material } from "./Material";
 import { Annotation } from "./Annotation";
 import { AREditor } from "./AREditor";
 import { useStyles } from "../productStyles";
-import { initialStates } from "./initialStates";
 import { updateAttributes } from "redux/actions/product";
 import { useSelector } from "react-redux";
+import { ManageImages } from "./ManageImages";
+import { initialStates } from "./initialStates";
+import { Poster } from "./Poster";
+import { AddedProducts } from "./AddedProducts";
+import { QRCodeViewer } from "./QRCodeViewer";
 
-export const AttributeEditor = ({ productId }) => {
+export const AttributeEditor = ({
+  productId,
+  attributes,
+  setAttributes,
+  modelViewRef,
+  currentHotspot,
+  setCurrentHotspot,
+}) => {
   const classes = useStyles();
   const [activeBtn, setActiveBtn] = useState("scene");
-  const [attributes, setAttributes] = useState(initialStates);
 
   const appState = useSelector((state) => state);
   const {
     attrUpdate: { loading },
+    login: {
+      userInfo: { user },
+    },
   } = appState;
 
   const onSetCounterValue = (attribute, name, currentValue) => {
@@ -46,6 +59,19 @@ export const AttributeEditor = ({ productId }) => {
     }
     setAttributes({ ...attributes, [attribute]: attributeValues });
   };
+  const onLightningCheck = ({ checked }, attribute) => {
+    const attributeValues = { ...attributes[attribute] };
+    attributeValues.active = checked;
+    if (!checked) {
+      attributeValues.image = "";
+    }
+    setAttributes({ ...attributes, [attribute]: attributeValues });
+  };
+  const onLighteningSelect = ({ value }, attribute) => {
+    const attributeValues = { ...attributes[attribute] };
+    attributeValues.image = value;
+    setAttributes({ ...attributes, [attribute]: attributeValues });
+  };
   return (
     <Grid container spacing={2} className={classes.editor}>
       <Grid item sm={4} md={4}>
@@ -56,34 +82,60 @@ export const AttributeEditor = ({ productId }) => {
           variant="text"
         >
           <Button
-            color={activeBtn === "scene" ? "primary" : "success"}
+            color={activeBtn === "scene" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("scene")}
           >
             Scene
           </Button>
           <Button
-            color={activeBtn === "lighting" ? "primary" : "success"}
+            color={activeBtn === "lighting" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("lighting")}
           >
             Lighting
           </Button>
           <Button
-            color={activeBtn === "material" ? "primary" : "success"}
+            color={activeBtn === "material" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("material")}
           >
             Material
           </Button>
           <Button
-            color={activeBtn === "annotation" ? "primary" : "success"}
+            color={activeBtn === "annotation" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("annotation")}
           >
             Annotations
           </Button>
           <Button
-            color={activeBtn === "ar" ? "primary" : "success"}
+            color={activeBtn === "ar" ? "primary" : "secondary"}
             onClick={() => setActiveBtn("ar")}
           >
             AR
+          </Button>
+          <Button
+            color={activeBtn === "poster" ? "primary" : "secondary"}
+            onClick={() => setActiveBtn("poster")}
+          >
+            Poster
+          </Button>
+          {user.role !== "Client" && (
+            <Button
+              color={activeBtn === "manage_images" ? "primary" : "secondary"}
+              onClick={() => setActiveBtn("manage_images")}
+            >
+              Manage images
+            </Button>
+          )}
+          {/* <Button
+            color={activeBtn === "added_projects" ? "primary" : "secondary"}
+            onClick={() => setActiveBtn("added_projects")}
+          >
+            Added projects
+          </Button> */}
+          <Button
+            color={activeBtn === "qr-code" ? "primary" : "secondary"}
+            onClick={() => setActiveBtn("qr-code")}
+          >
+            View QR code
           </Button>
         </ButtonGroup>
         <Button
@@ -110,6 +162,8 @@ export const AttributeEditor = ({ productId }) => {
           attName={activeBtn}
           attributes={attributes}
           onSliderChange={onSliderChange}
+          onLightningCheck={onLightningCheck}
+          onLighteningSelect={onLighteningSelect}
         />
         <Material
           attName={activeBtn}
@@ -120,12 +174,27 @@ export const AttributeEditor = ({ productId }) => {
           attName={activeBtn}
           attributes={attributes}
           onInputChange={onInputChange}
+          modelViewRef={modelViewRef}
+          setAttributes={setAttributes}
+          currentHotspot={currentHotspot}
+          setCurrentHotspot={setCurrentHotspot}
         />
         <AREditor
           attName={activeBtn}
           attributes={attributes}
           onInputChange={onInputChange}
         />
+        <Poster attName={activeBtn} modelViewRef={modelViewRef} />
+        {user.role !== "Client" && (
+          <ManageImages
+            attName={activeBtn}
+            attributes={attributes}
+            setAttributes={setAttributes}
+            productId={productId}
+          />
+        )}
+        <AddedProducts attName={activeBtn} productId={productId} />
+        <QRCodeViewer attName={activeBtn} productId={productId} />
       </Grid>
     </Grid>
   );

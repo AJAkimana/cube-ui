@@ -16,7 +16,7 @@ import {
   quotesGetReducer,
 } from "./quote.reducer";
 import { subscriptionsGetReducer } from "./subscription.reducer";
-import { reducer } from "../utils/reducer";
+import { promisedReducer } from "../utils/reducer";
 import {
   loginReducer,
   profileEditReducer,
@@ -29,14 +29,20 @@ import {
   usersListReducer,
 } from "./user.reducer";
 import {
+  ADD_ANALYTIC,
   ADD_NEW_PRODUCT,
+  ADD_PROJECT_PROD,
+  DELETE_ATTR_IMAGE,
+  GET_ANALYTICS,
   GET_PRODUCT,
   GET_PRODUCTS,
   GET_PRODUCT_IMAGES,
+  GET_PROJECT_PROD,
   UPDATE_ATTRIBUTES,
   UPDATE_PRODUCT,
   UPLOAD_PRODUCT_IMAGES,
 } from "redux/actions/actionTypes";
+import { attrImageReducer, qrCodeGeneratorReducer } from "./file.reducer";
 
 export default combineReducers({
   login: loginReducer,
@@ -63,11 +69,18 @@ export default combineReducers({
   notifsCount: notifsCountReducer,
   projectGet: projectGetReducer,
   logAdd: logAddReducer,
-  fileUpload: reducer(UPLOAD_PRODUCT_IMAGES, "filePath", "string"),
-  productAdd: reducer(ADD_NEW_PRODUCT, "product", "object"),
-  productsGet: reducer(GET_PRODUCTS, "products", "array"),
-  productImg: reducer(GET_PRODUCT_IMAGES, "image", "object"),
-  productEdit: reducer(UPDATE_PRODUCT, "message", "string"),
-  attrUpdate: reducer(UPDATE_ATTRIBUTES, "message", "string"),
-  productGet: reducer(GET_PRODUCT, "product", "object"),
+  fileUpload: promisedReducer(UPLOAD_PRODUCT_IMAGES, "filePath", "string"),
+  productAdd: promisedReducer(ADD_NEW_PRODUCT, "product", "object"),
+  productsGet: promisedReducer(GET_PRODUCTS, "products", "array"),
+  productImg: promisedReducer(GET_PRODUCT_IMAGES, "image", "object"),
+  productEdit: promisedReducer(UPDATE_PRODUCT, "message", "string"),
+  attrUpdate: promisedReducer(UPDATE_ATTRIBUTES, "message", "string"),
+  productGet: promisedReducer(GET_PRODUCT, "product", "object", true),
+  attrImg: attrImageReducer,
+  imgAttrDel: promisedReducer(DELETE_ATTR_IMAGE, "deletedFile", "string"),
+  projectAddProd: promisedReducer(ADD_PROJECT_PROD, "message", "string", true),
+  projectProdsGet: promisedReducer(GET_PROJECT_PROD, "projProds", "array"),
+  analyticsGet: promisedReducer(GET_ANALYTICS, "analytics", "array"),
+  analyticAdd: promisedReducer(ADD_ANALYTIC, "analytic", "object", true),
+  qrGenerate: qrCodeGeneratorReducer,
 });

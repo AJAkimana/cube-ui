@@ -12,7 +12,6 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import ColorPicker from "material-ui-color-picker";
 import { DropzoneDialog } from "material-ui-dropzone";
 import NumberFormat from "react-number-format";
 import { ComputerOutlined } from "@material-ui/icons";
@@ -27,6 +26,8 @@ import {
 } from "redux/actions/product";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { getUsersList } from "redux/actions/user";
+import { getProjects } from "redux/actions/project";
 
 export const ProductRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
@@ -34,16 +35,35 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
   const [openDz, setOpenDz] = useState(false);
   const appState = useSelector((state) => state);
   const {
-    fileUpload: { loaded: uploaded, filePath },
+    fileUpload: { loaded: uploaded, loading: uploading, filePath },
     productAdd: { loading: adding, loaded: added },
     productEdit: { loading: editing, loaded: edited },
+    userList: { users },
+    projectsGet: { projects },
+    login: {
+      userInfo: { user },
+    },
   } = appState;
+  useEffect(() => {
+    getUsersList("Client");
+  }, []);
+  useEffect(() => {
+    if (values.customer) {
+      getProjects({ clientId: values.customer });
+    }
+  }, [values.customer]);
   const onHandleChange = (e) => {
     e.preventDefault();
     const {
       target: { name, value },
     } = e;
-    setValues({ ...values, [name]: value });
+    setValues((prev) => {
+      const newValues = { ...prev, [name]: value };
+      if (name === "customer") {
+        newValues.project = "";
+      }
+      return newValues;
+    });
   };
   useEffect(() => {
     if (uploaded && filePath) {
@@ -56,21 +76,25 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
   useEffect(() => {
     if (added || edited) {
       setValues(initialState);
-      getProducts();
+      getProducts({});
     }
   }, [added, edited]);
   useEffect(() => {
     if (currentItem && action === "edit") {
-      const { createdAt, updatedAt, image, itemNumber, ...rest } = currentItem;
-      setValues(rest);
+      const { createdAt, updatedAt, image, project, customer, ...rest } =
+        currentItem;
+      setValues({ ...rest, project: project?._id, customer: customer?._id });
     }
   }, [action, currentItem]);
   const submitHandler = (e) => {
     e.preventDefault();
+    const user = users.find((u) => u._id === values.customer);
+    values.website = user?.companyUrl;
     if (action === "add") {
       addNewProduct(values);
     }
     if (action === "edit") {
+      delete values.itemNumber;
       editProduct(values);
     }
   };
@@ -79,11 +103,8 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
       notifier.error("Sorry only two files are needed");
       return;
     }
-    const formData = new FormData();
-    for (const key of Object.keys(files)) {
-      formData.append("productFiles", files[key]);
-    }
-    uploadProductImages(formData, currentItem?.image.src);
+
+    uploadProductImages(files);
   };
   return (
     <Card component="main" className={classes.root}>
@@ -94,7 +115,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
         <Typography component="h1" variant="h4">
           {action === "edit"
             ? `Update ${currentItem?.name.toUpperCase()}`
-            : "Add a new product"}
+            : "Add a new 3D asset"}
         </Typography>
         <form className={classes.form} onSubmit={submitHandler}>
           <Grid container spacing={2}>
@@ -104,32 +125,69 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                 name="name"
                 variant="outlined"
                 fullWidth
-                label="Product name"
+                label="3D Asset name"
                 onChange={onHandleChange}
                 value={values.name}
               />
             </Grid>
+            {user.role !== "Client" && (
+              <>
+                <Grid item xs={12}>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel id="customer-or-comp">
+                      Customer or company
+                    </InputLabel>
+                    <Select
+                      labelId="customer-or-comp"
+                      value={values.customer}
+                      name="customer"
+                      onChange={onHandleChange}
+                      disabled={user.role === "Client"}
+                    >
+                      <MenuItem value="">---</MenuItem>
+                      {users.map((user, userIdx) => (
+                        <MenuItem value={user._id} key={userIdx}>
+                          {user.fullName}, {user.companyName}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel id="select-project">Select project</InputLabel>
+                    <Select
+                      labelId="select-project"
+                      value={values.project}
+                      name="project"
+                      onChange={onHandleChange}
+                      disabled={
+                        !Boolean(values.customer) || user.role === "Client"
+                      }
+                    >
+                      <MenuItem value="">---</MenuItem>
+                      {projects.map((project, projectIdx) => (
+                        <MenuItem value={project._id} key={projectIdx}>
+                          {project.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </>
+            )}
             <Grid item lg={6} md={6} sm={6} xs={12}>
               <TextField
                 className={classes.input}
                 name="sku"
                 variant="outlined"
                 fullWidth
-                label="Product SKU"
+                label="SKU"
                 onChange={onHandleChange}
                 value={values.sku}
               />
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={12}>
-              <ColorPicker
-                defaultValue="Color"
-                name="bgColor"
-                floatingLabelText="Background color"
-                onChange={(color) => setValues({ ...values, bgColor: color })}
-                value={values.bgColor}
-              />
-            </Grid>
-            <Grid item xs={12}>
               <NumberFormat
                 className={classes.input}
                 value={values.price}
@@ -144,35 +202,27 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                 label="Price(in USD)"
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel id="product-status">Status</InputLabel>
-                <Select
-                  labelId="product-status"
-                  value={values.status}
-                  name="status"
-                  onChange={onHandleChange}
-                >
-                  <MenuItem value="">---</MenuItem>
-                  {productStatuses.map((status, choiceIdx) => (
-                    <MenuItem value={status} key={choiceIdx}>
-                      {status}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                className={classes.input}
-                variant="outlined"
-                fullWidth
-                name="customer"
-                label="Customer or company"
-                value={values.customer}
-                onChange={onHandleChange}
-              />
-            </Grid>
+            {user.role !== "Client" && (
+              <Grid item xs={12}>
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel id="product-status">Status</InputLabel>
+                  <Select
+                    labelId="product-status"
+                    value={values.status}
+                    name="status"
+                    onChange={onHandleChange}
+                    disabled={user.role === "Client"}
+                  >
+                    <MenuItem value="">---</MenuItem>
+                    {productStatuses.map((status, choiceIdx) => (
+                      <MenuItem value={status} key={choiceIdx}>
+                        {status}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            )}
             <Grid item xs={12}>
               <TextField
                 className={classes.input}
@@ -189,23 +239,28 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
             {action === "add" && (
               <Grid item xs={12}>
                 <Button onClick={() => setOpenDz(true)}>
-                  Add Product Images
+                  Add the 3D asset files
                 </Button>
                 <DropzoneDialog
                   open={openDz}
                   onSave={onUploadImages}
                   acceptedFiles={[".glb", ".usdz"]}
                   showPreviews={true}
-                  maxFileSize={5000000}
+                  maxFileSize={50000000}
                   filesLimit={2}
                   onClose={() => setOpenDz(false)}
                   clearOnUnmount={uploaded}
+                  submitButtonText={
+                    uploading
+                      ? "Uploading files, please wait,..."
+                      : "Save files"
+                  }
                 />
               </Grid>
             )}
           </Grid>
           <CardActions>
-            {action === "add" ? (
+            {action === "add" && user.role !== "Client" && (
               <Button
                 type="submit"
                 fullWidth
@@ -215,7 +270,8 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
               >
                 Save
               </Button>
-            ) : (
+            )}
+            {action === "edit" && (
               <Button
                 type="submit"
                 fullWidth
@@ -223,7 +279,7 @@ export const ProductRegistration = ({ action = "add", currentItem = null }) => {
                 className={classes.submit}
                 disabled={editing}
               >
-                Update the product
+                Update the asset
               </Button>
             )}
           </CardActions>

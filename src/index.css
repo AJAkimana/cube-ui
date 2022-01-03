@@ -1,63 +1,94 @@
 body {
-	margin: 0;
-	height: 100vh;
+  margin: 0;
+  height: 100vh;
 }
 a {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 .login-input {
-	padding: 1rem;
-	border-radius: 0.5rem;
-	border: 0.1rem #c0c0c0 solid;
-	font-size: 1.1rem;
-	font-family: Bahnschrift Light, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 0.1rem #c0c0c0 solid;
+  font-size: 1.1rem;
+  font-family: Bahnschrift Light, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .btn-login {
-	cursor: pointer;
-	width: 40%;
-	outline: none !important;
-	color: white;
+  cursor: pointer;
+  width: 40%;
+  outline: none !important;
+  color: white;
 }
 .login-input:hover {
-	border: 0.1rem #030202 solid;
+  border: 0.1rem #030202 solid;
 }
 
 .btn-login.primary {
-	background-color: #8967fc;
-	border-radius: 30rem;
-	margin: auto;
+  background-color: #8967fc;
+  border-radius: 30rem;
+  margin: auto;
 }
 .btn-login.block {
-	width: 100%;
+  width: 100%;
 }
 .form {
-	max-width: 25rem;
-	margin: 1.5rem auto;
-	border: 0.2rem #d3d3d3 solid;
-	border-radius: 0.5rem;
-	background-color: white;
+  max-width: 25rem;
+  margin: 1.5rem auto;
+  border: 0.2rem #d3d3d3 solid;
+  border-radius: 0.5rem;
+  background-color: white;
 }
 .form > div {
-	display: flex;
-	flex-direction: column;
-	margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
 }
 .form label {
-	margin: 1rem 0;
-	display: block;
-	font-size: 1.1rem;
+  margin: 1rem 0;
+  display: block;
+  font-size: 1.1rem;
 }
 
 .logo {
-	width: 30%;
-	display: block;
-	text-align: center;
-	margin: 20px auto;
+  width: 30%;
+  display: block;
+  text-align: center;
+  margin: 20px auto;
 }
+.hotspot {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: none;
+  /* background-color: blue; */
+}
+
+.annotation {
+  background-color: #888888;
+  position: absolute;
+  transform: translate(10px, 10px);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: left;
+}
+
+.hotspot.selected {
+  background-color: red;
+}
+.ar-button {
+  border: none;
+  position: absolute;
+  bottom: 16px;
+  right: 35%;
+  width: 30%;
+}
+
+/* .hotspot:not(.selected) > .annotation {
+  display: none;
+} */

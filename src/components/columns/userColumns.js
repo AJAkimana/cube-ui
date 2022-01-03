@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  ButtonGroup,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@material-ui/core";
+import { ButtonGroup, IconButton, Tooltip } from "@material-ui/core";
 import {
   EditRounded as EditIcon,
   ViewComfy as ViewComfyIcon,
@@ -12,12 +7,7 @@ import {
 } from "@material-ui/icons";
 
 export const userColumns = (onUserClick) => [
-  {
-    content: (item) => (
-      <Typography>{`${item.firstName} ${item.lastName}`}</Typography>
-    ),
-    label: "Names",
-  },
+  { path: "fullName", label: "Names" },
   { path: "email", label: "Email" },
   { path: "phoneNumber", label: "Phone number" },
   { path: "role", label: "User role" },

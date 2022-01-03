@@ -6,6 +6,7 @@ import { getQuotes } from "redux/actions/quote";
 import { initialPaginate, paginate } from "utils/paginate";
 import { quoteColumns } from "components/columns/quoteColumns";
 import { CustomisedTable } from "components/CustomizedTable";
+import { QuoteItemsDialog } from "./QuoteItemsDialog";
 
 export const QuotePage = () => {
   const quoteState = useSelector((state) => state);
@@ -13,10 +14,11 @@ export const QuotePage = () => {
   const [paginator, setPaginator] = useState(initialPaginate());
   const [currentItem, setCurrentItem] = useState(null);
   const [action, setAction] = useState("add");
+
   const {
     quotesGet: { loading, quotes },
     quoteAdd: { loaded: added },
-    quoteEdit: { loaded: updated },
+    quoteEdit: { loaded: updated, loading: updating },
     login: { userInfo },
   } = quoteState;
   useEffect(() => {
@@ -31,8 +33,7 @@ export const QuotePage = () => {
   }, []);
   useEffect(() => {
     if (added || updated) {
-      setCurrentItem(null);
-      setAction("add");
+      onReset();
       getQuotes();
     }
   }, [added, updated]);
@@ -42,6 +43,10 @@ export const QuotePage = () => {
   const onQuoteClick = (project = {}, action) => {
     setCurrentItem(project);
     setAction(action);
+  };
+  const onReset = () => {
+    setCurrentItem(null);
+    setAction("add");
   };
   return (
     <Grid
@@ -53,10 +58,17 @@ export const QuotePage = () => {
     >
       <Grid item xs={12} sm={4} md={4} lg={4}>
         <QuoteRegistration action={action} currentItem={currentItem} />
+        <QuoteItemsDialog
+          open={action === "items"}
+          setOpen={() => onReset()}
+          quote={currentItem}
+          loading={updating}
+          user={userInfo.user}
+        />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable
-          tableTitle="All quotes"
+          tableTitle="All proposals"
           columns={quoteColumns(onQuoteClick, userInfo.user)}
           loading={loading}
           data={paginatedData}
