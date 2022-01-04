@@ -58,7 +58,6 @@ export const productColumns = (onProductClick, user) => [
           <IconButton
             aria-label="Edit"
             color="secondary"
-            disabled={item.status === "COMPLETED"}
             onClick={() => onProductClick(item, "edit")}
           >
             <EditIcon /> Edit

@@ -52,7 +52,11 @@ export const ProductPage = () => {
         productId={currentItem?._id}
       />
       <Grid item xs={12} sm={4} md={4} lg={4}>
-        <ProductRegistration action={action} currentItem={currentItem} />
+        <ProductRegistration
+          action={action}
+          currentItem={currentItem}
+          setAction={setAction}
+        />
       </Grid>
       <Grid item xs={12} sm={8} md={8} lg={8}>
         <CustomisedTable
