@@ -61,6 +61,26 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
       });
     }
   }, [attributes.hotspots, currentHotspot]);
+  useEffect(() => {
+    const modelViewer = modelViewRef.current;
+    console.log("++++++++++++++++++++", modelViewer);
+    // const modelViewer = document.querySelector("model-viewer#image3d-viewer");
+    if (modelViewer && modelViewer.model) {
+      console.log("====================>Loaded");
+      let material = modelViewer.model.materials[0];
+      material.pbrMetallicRoughness.setBaseColorFactor([
+        0.7294, 0.5333, 0.0392,
+      ]);
+      material.pbrMetallicRoughness.setMetallicFactor(attributes.metalness);
+      material.pbrMetallicRoughness.setRoughnessFactor(attributes.roughness);
+      console.log(
+        material.pbrMetallicRoughness.metallicFactor,
+        material.pbrMetallicRoughness.roughnessFactor
+      );
+      console.log(attributes.metalness, attributes.roughness);
+      // });
+    }
+  }, [modelViewRef, product.image, attributes.metalness, attributes.roughness]);
   const onSelectHotspot = (hotspot) => {
     setCurrentHotspot(hotspot);
   };
@@ -127,11 +147,12 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 ar-scale={attributes.scale}
                 placement={attributes.placement}
                 ar
-                ar-modes="webxr scene-viewer quick-look"
                 camera-controls
                 autoplay
+                ar-modes="webxr scene-viewer quick-look"
                 quick-look-browsers="safari chrome firefox"
                 loading="eager"
+                interaction-prompt="none"
                 {...toAttributes(attributes)}
               >
                 {Boolean(attributes.arButtonImage) && (
@@ -144,20 +165,6 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                     alt={attributes.alt}
                   />
                 )}
-                {/* {attributes.hotspots?.map((hs, hsIdx) => (
-                  <button
-                    key={hsIdx}
-                    slot={`hotspot-${hs.hotspotNum}`}
-                    className={`${
-                      hs.selected ? "hotspot selected" : "hotspot"
-                    }`}
-                    data-position={hs.dataPosition}
-                    data-normal={hs.dataNormal}
-                    onClick={() => onSelectHotspot(hs)}
-                  >
-                    <div className="annotation">{hs.dataText}</div>
-                  </button>
-                ))} */}
               </model-viewer>
             </Grid>
           </Grid>
