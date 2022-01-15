@@ -39,7 +39,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
     }
   }, [loaded, product]);
   useEffect(() => {
-    const modelViewer = modelViewRef.current;
+    const modelViewer = document.querySelector("model-viewer#image3d-viewer");
     document.querySelectorAll("button.hotspot").forEach((e) => e.remove());
     if (attributes.hotspots.length && modelViewer) {
       attributes.hotspots.forEach((el) => {
@@ -62,25 +62,25 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
     }
   }, [attributes.hotspots, currentHotspot]);
   useEffect(() => {
+    const modelViewer = document.querySelector("model-viewer#image3d-viewer");
+    if (loaded && modelViewer) {
+      modelViewer.addEventListener("load", (ev) => {
+        let material = modelViewer.model.materials[0];
+        material.pbrMetallicRoughness.setMetallicFactor(attributes.metalness);
+        material.pbrMetallicRoughness.setRoughnessFactor(attributes.roughness);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loaded]);
+
+  useEffect(() => {
     const modelViewer = modelViewRef.current;
-    console.log("++++++++++++++++++++", modelViewer);
-    // const modelViewer = document.querySelector("model-viewer#image3d-viewer");
     if (modelViewer && modelViewer.model) {
-      console.log("====================>Loaded");
       let material = modelViewer.model.materials[0];
-      material.pbrMetallicRoughness.setBaseColorFactor([
-        0.7294, 0.5333, 0.0392,
-      ]);
       material.pbrMetallicRoughness.setMetallicFactor(attributes.metalness);
       material.pbrMetallicRoughness.setRoughnessFactor(attributes.roughness);
-      console.log(
-        material.pbrMetallicRoughness.metallicFactor,
-        material.pbrMetallicRoughness.roughnessFactor
-      );
-      console.log(attributes.metalness, attributes.roughness);
-      // });
     }
-  }, [modelViewRef, product.image, attributes.metalness, attributes.roughness]);
+  }, [attributes.metalness, attributes.roughness]);
   const onSelectHotspot = (hotspot) => {
     setCurrentHotspot(hotspot);
   };
