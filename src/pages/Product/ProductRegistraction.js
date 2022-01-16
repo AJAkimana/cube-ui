@@ -253,7 +253,7 @@ export const ProductRegistration = ({
                   <DropzoneDialog
                     open={openDz}
                     onSave={onUploadImages}
-                    acceptedFiles={[".glb", ".usdz"]}
+                    acceptedFiles={[".gltf", ".glb", ".usdz"]}
                     showPreviews={true}
                     maxFileSize={50000000}
                     filesLimit={2}

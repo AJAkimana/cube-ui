@@ -29,6 +29,17 @@ export const ProductViewPage = ({
       setAttributes(otherProps);
     }
   }, [loaded, product]);
+  useEffect(() => {
+    const modelViewer = document.querySelector("model-viewer#image3d-viewer");
+    if (loaded && modelViewer) {
+      modelViewer.addEventListener("load", (ev) => {
+        let material = modelViewer.model.materials[0];
+        material.pbrMetallicRoughness.setMetallicFactor(attributes.metalness);
+        material.pbrMetallicRoughness.setRoughnessFactor(attributes.roughness);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loaded]);
   if (loading) return <Loading />;
   if (!Boolean(product.imagesSrc)) return null;
   return (
