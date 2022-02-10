@@ -34,7 +34,6 @@ const initialState = {
   role: "client",
 };
 export const AccountDetails = ({ user, loading = false }) => {
-  console.log(user);
   const [userInfo, setUserInfo] = useState(initialState);
   const [openConfirm, setOpenConfirm] = useState(false);
   const classes = useStyles();
