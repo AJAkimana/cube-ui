@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.8a6f9628.chunk.css",
+    "main.js": "/static/js/main.cb5eda33.chunk.js",
+    "main.js.map": "/static/js/main.cb5eda33.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.e369d6b8.js",
+    "runtime-main.js.map": "/static/js/runtime-main.e369d6b8.js.map",
+    "static/css/2.8fc0f618.chunk.css": "/static/css/2.8fc0f618.chunk.css",
+    "static/js/2.8f77ff62.chunk.js": "/static/js/2.8f77ff62.chunk.js",
+    "static/js/2.8f77ff62.chunk.js.map": "/static/js/2.8f77ff62.chunk.js.map",
+    "static/js/3.b1cd0d94.chunk.js": "/static/js/3.b1cd0d94.chunk.js",
+    "static/js/3.b1cd0d94.chunk.js.map": "/static/js/3.b1cd0d94.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.8fc0f618.chunk.css.map": "/static/css/2.8fc0f618.chunk.css.map",
+    "static/css/main.8a6f9628.chunk.css.map": "/static/css/main.8a6f9628.chunk.css.map",
+    "static/js/2.8f77ff62.chunk.js.LICENSE.txt": "/static/js/2.8f77ff62.chunk.js.LICENSE.txt",
+    "static/media/ari_cube.2edefd08.png": "/static/media/ari_cube.2edefd08.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e369d6b8.js",
+    "static/css/2.8fc0f618.chunk.css",
+    "static/js/2.8f77ff62.chunk.js",
+    "static/css/main.8a6f9628.chunk.css",
+    "static/js/main.cb5eda33.chunk.js"
+  ]
+}
