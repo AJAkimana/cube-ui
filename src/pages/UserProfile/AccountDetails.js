@@ -42,7 +42,7 @@ export const AccountDetails = ({ user, loading = false }) => {
     if (user.createdAt) {
       setUserInfo(user);
     }
-  }, [user]);
+  });
 
   const handleChange = ({ target: { name, value } }) => {
     setUserInfo({ ...userInfo, [name]: value });
