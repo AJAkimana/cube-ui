@@ -68,7 +68,6 @@ export const getProductImages = (productId = "") => {
 };
 export const editProduct = (productBody) => {
   const { _id, __v, ...rest } = productBody;
-  // console.log(productBody);
   store.dispatch({
     type: UPDATE_PRODUCT,
     payload: http.patch(`${PRODUCTS_URL}/${_id}`, rest),

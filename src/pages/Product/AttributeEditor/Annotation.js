@@ -31,8 +31,6 @@ export const Annotation = ({
       const theHotspots = currentAttributes.hotspots.filter(
         (hs) => hs.hotspotNum !== currentHotspot.hotspotNum
       );
-      // currentAttributes.hotspots = theHotspots;
-      // console.log(currentAttributes.hotspots);
       setAttributes((prev) => ({ ...prev, hotspots: theHotspots }));
       setCurrentHotspot(null);
     }
@@ -44,7 +42,6 @@ export const Annotation = ({
       const lastHotspot = hotspots.pop();
       theNum = lastHotspot.hotspotNum + 1;
     }
-    // console.log("theNum====>", theNum);
     return theNum;
   };
   const onClickHotspot = (event) => {
@@ -70,28 +67,8 @@ export const Annotation = ({
       selected: "",
     }));
     theHotspots.push(newHotspot);
-    // currentAttributes.hotspots = [newHotspot, ...theHotspots];
-    // console.log(currentAttributes.hotspots);
     setAttributes({ ...attributes, hotspots: theHotspots });
     setCurrentHotspot(newHotspot);
-    // const newHotspot = document.createElement("button");
-    // newHotspot.slot = `hotspot-${hotstpotCount}`;
-    // setHotspotCount((count) => count + 1);
-    // newHotspot.classList.add("hotspot");
-    // newHotspot.dataset.position = position.toString();
-    // if (normal != null) {
-    //   newHotspot.dataset.normal = normal.toString();
-    // }
-    // imageViewer.appendChild(newHotspot);
-    // selectHotspot(newHotspot);
-    // newHotspot.addEventListener("click", () => {
-    //   selectHotspot(newHotspot);
-    // });
-    // const div = document.createElement("div");
-    // div.classList.add("annotation");
-    // div.textContent =
-    //   "data-position:\r\n" + position + "\r\ndata-normal:\r\n" + normal;
-    // newHotspot.appendChild(div);
     imageViewer.removeEventListener("click", onClickHotspot);
   };
   const onChangeAnnotationText = ({ target }) => {

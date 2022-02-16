@@ -39,7 +39,7 @@ export const ProductViewPage = ({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loaded]);
+  }, [loaded, attributes.metalness, attributes.roughness]);
   if (loading) return <Loading />;
   if (!Boolean(product.imagesSrc)) return null;
   return (

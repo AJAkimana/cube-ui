@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import NumberFormat from "react-number-format";
 import { DraftEditor } from "components/DraftEditor";
 import { EditorState } from "draft-js";
-import { stateToHTML } from "draft-js-export-html";
 import { stateFromHTML } from "draft-js-import-html";
 import {
   Avatar,
@@ -37,6 +36,7 @@ import { Loading } from "components/loading.component";
 import { useStyles } from "styles/formStyles";
 import { getProjects } from "redux/actions/project";
 import { getUsersList } from "redux/actions/user";
+import { toHtml } from "utils/helper";
 
 const initialState = {
   projectId: "",
@@ -114,8 +114,8 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    values.propasalText = stateToHTML(propTextState.getCurrentContent());
-    values.customerNote = stateToHTML(noteState.getCurrentContent());
+    values.propasalText = toHtml(propTextState);
+    values.customerNote = toHtml(noteState);
     const { amount, customer, ...quoteValues } = values;
     if (action !== "add" && currentItem) {
       updateQuote(quoteValues, currentItem._id);

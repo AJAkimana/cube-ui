@@ -46,7 +46,6 @@ const calculateAggregate = (items = [], { taxes, discount, isFixed }) => {
     discount: totDiscount.toFixed(2),
     total: (subTotal + totTax).toFixed(2),
   };
-  // console.log(aggreg);
   return aggreg;
 };
 const hasExpired = (aDate) => {
