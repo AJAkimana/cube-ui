@@ -348,7 +348,7 @@ export const QuoteRegistration = ({ action = "add", currentItem = null }) => {
                     </ul>
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography variant="h4">Propasal text</Typography>
+                    <Typography variant="h4">Proposal text</Typography>
                     <DraftEditor
                       editorState={propTextState}
                       setEditorState={setPropTextState}
