@@ -45,9 +45,8 @@ export const Annotation = ({
     return theNum;
   };
   const onClickHotspot = (event) => {
-    const rect = imageViewer.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const x = event.clientX;
+    const y = event.clientY;
     const positionAndNormal = imageViewer.positionAndNormalFromPoint(x, y);
     if (!positionAndNormal) {
       return;

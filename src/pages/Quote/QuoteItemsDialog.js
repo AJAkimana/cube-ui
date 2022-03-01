@@ -121,7 +121,7 @@ export const QuoteItemsDialog = ({
         <Grid container spacing={1}>
           <Grid item xs={12} sm={12} md={7} lg={7}>
             <Grid item xs={12}>
-              <Typography variant="h4">Propasal text</Typography>
+              <Typography variant="h4">Proposal text</Typography>
               <hr />
               {HtmlParser(quote?.propasalText)}
             </Grid>

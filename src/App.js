@@ -5,7 +5,6 @@ import { createBrowserHistory } from "history";
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "@material-ui/styles";
 import { renderRoutes } from "react-router-config";
-import "@google/model-viewer";
 import { store } from "./redux/store";
 import routes from "./routes";
 import theme from "./theme";

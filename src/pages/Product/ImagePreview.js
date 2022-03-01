@@ -20,6 +20,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   const modelViewRef = useRef(null);
   const [attributes, setAttributes] = useState(initialStates);
   const [currentHotspot, setCurrentHotspot] = useState(null);
+  const [mv, setMv] = useState(null);
   const [copied, setCopied] = useState(false);
   const appState = useSelector((state) => state);
   const {
@@ -64,6 +65,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
   useEffect(() => {
     const modelViewer = document.querySelector("model-viewer#image3d-viewer");
     if (loaded && modelViewer) {
+      setMv(modelViewer);
       modelViewer.addEventListener("load", (ev) => {
         let material = modelViewer.model.materials[0];
         material.pbrMetallicRoughness.setMetallicFactor(attributes.metalness);
@@ -123,6 +125,7 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 setAttributes={setAttributes}
                 modelViewRef={modelViewRef}
                 currentHotspot={currentHotspot}
+                mv={mv}
                 setCurrentHotspot={setCurrentHotspot}
               />
             </Grid>
@@ -144,12 +147,12 @@ export const ImagePreview = ({ open, setOpen, productId = null }) => {
                 shadow-intensity={attributes.shadowIntensity}
                 shadow-softness={attributes.shadowSoftness}
                 alt={attributes.alt}
-                ar-scale={attributes.scale}
-                placement={attributes.placement}
                 ar
+                ar-scale={attributes.scale}
+                ar-placement={attributes.placement}
+                ar-modes="webxr scene-viewer quick-look"
                 camera-controls
                 autoplay
-                ar-modes="webxr scene-viewer quick-look"
                 quick-look-browsers="safari chrome firefox"
                 loading="eager"
                 interaction-prompt="none"

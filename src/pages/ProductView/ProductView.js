@@ -64,7 +64,7 @@ export const ProductViewPage = ({
       shadow-softness={attributes.shadowSoftness}
       alt={attributes.alt}
       ar-scale={attributes.scale}
-      placement={attributes.placement}
+      ar-placement={attributes.placement}
       ar
       ar-modes="webxr scene-viewer quick-look"
       camera-controls
