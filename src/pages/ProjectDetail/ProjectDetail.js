@@ -104,9 +104,9 @@ export const ProjectDetailPage = ({ match }) => {
   const { button: buttonStyles, ...contentStyles } =
     useBlogTextInfoContentStyles();
   const toDowloadUrl = (projectHistory = {}) => {
-    let url = projectHistory.invoice;
-    if (projectHistory.quote) {
-      url = `${projectHistory.quote}?downloadType=proposal`;
+    let url = `${projectHistory.quote}?downloadType=proposal`;
+    if (projectHistory.invoice) {
+      url = `${projectHistory.invoice}?downloadType=invoice`;
     }
     return url;
   };
