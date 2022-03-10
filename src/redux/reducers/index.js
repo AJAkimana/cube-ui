@@ -33,6 +33,7 @@ import {
   ADD_NEW_PRODUCT,
   ADD_PROJECT_PROD,
   DELETE_ATTR_IMAGE,
+  DELETE_PRODUCT,
   GET_ANALYTICS,
   GET_PRODUCT,
   GET_PRODUCTS,
@@ -83,4 +84,5 @@ export default combineReducers({
   analyticsGet: promisedReducer(GET_ANALYTICS, "analytics", "array"),
   analyticAdd: promisedReducer(ADD_ANALYTIC, "analytic", "object", true),
   qrGenerate: qrCodeGeneratorReducer,
+  productRm: promisedReducer(DELETE_PRODUCT, "message", "string", true),
 });

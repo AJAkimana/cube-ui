@@ -5,8 +5,10 @@ import { ProductRegistration } from "./ProductRegistraction";
 import { useSelector } from "react-redux";
 import { initialPaginate, paginate } from "utils/paginate";
 import { productColumns } from "components/columns/productColumns";
-import { getProducts } from "redux/actions/product";
+import { deleteProduct, getProducts } from "redux/actions/product";
 import { ImagePreview } from "./ImagePreview";
+import { AlertConfirm } from "components/AlertConfirm";
+import { notifier } from "utils/notifier";
 
 export const ProductPage = () => {
   const [paginator, setPaginator] = useState(initialPaginate());
@@ -14,25 +16,34 @@ export const ProductPage = () => {
   const [openImgView, setOpenImgView] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [action, setAction] = useState("add");
+  const [confirmDel, setConfirmDel] = useState(false);
 
   const appState = useSelector((state) => state);
   const {
-    productsGet: { loading: fetching, products },
+    productsGet: { loading: fetching, products, loaded },
+    productRm: { loading: deleting, loaded: deleted, message },
     login: {
       userInfo: { user },
     },
   } = appState;
 
   useEffect(() => {
-    if (products.length > 0) {
+    if (loaded) {
       const { pageNumber, pageSize } = paginator;
       const paginatedData = paginate(products, pageNumber, pageSize);
       setPaginatedData(paginatedData);
     }
-  }, [products, paginator]);
+  }, [products, paginator, loaded]);
   useEffect(() => {
     getProducts({});
   }, []);
+  useEffect(() => {
+    if (deleted) {
+      notifier.success(message);
+      setConfirmDel(false);
+      getProducts({});
+    }
+  }, [deleted, message]);
   const onPageChange = ({ selected }) => {
     setPaginator({ ...paginator, pageNumber: selected + 1 });
   };
@@ -42,10 +53,23 @@ export const ProductPage = () => {
       setOpenImgView(true);
       return;
     }
+    if (action === "delete") {
+      setConfirmDel(true);
+      return;
+    }
     setAction(action);
   };
   return (
     <Grid container spacing={2} sx={{ py: 3 }}>
+      <AlertConfirm
+        loading={deleting}
+        message={
+          currentItem && `Are you sure you want to delete ${currentItem.name}`
+        }
+        onConfirmYes={() => deleteProduct(currentItem?._id)}
+        open={confirmDel}
+        setOpen={() => setConfirmDel(false)}
+      />
       <ImagePreview
         open={openImgView}
         setOpen={() => setOpenImgView(false)}

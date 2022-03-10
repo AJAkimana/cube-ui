@@ -3,6 +3,7 @@ import {
   ADD_ANALYTIC,
   ADD_NEW_PRODUCT,
   DELETE_ATTR_IMAGE,
+  DELETE_PRODUCT,
   GENERATE_QR,
   GET_ANALYTICS,
   GET_PRODUCT,
@@ -147,5 +148,11 @@ export const generateQR = (productId) => {
   store.dispatch({
     type: GENERATE_QR,
     payload: `${process.env.REACT_APP_QR_URL}/create-qr-code/?${params}`,
+  });
+};
+export const deleteProduct = (productId) => {
+  store.dispatch({
+    type: DELETE_PRODUCT,
+    payload: http.delete(`${PRODUCTS_URL}/${productId}`),
   });
 };
