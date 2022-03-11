@@ -64,15 +64,17 @@ export const productColumns = (onProductClick, user) => [
             <EditIcon /> Edit
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete">
-          <IconButton
-            aria-label="Delete"
-            color="primary"
-            onClick={() => onProductClick(item, "delete")}
-          >
-            <DeleteIcon /> Delete
-          </IconButton>
-        </Tooltip>
+        {user?.role !== "Client" && (
+          <Tooltip title="Delete">
+            <IconButton
+              aria-label="Delete"
+              color="primary"
+              onClick={() => onProductClick(item, "delete")}
+            >
+              <DeleteIcon /> Delete
+            </IconButton>
+          </Tooltip>
+        )}
       </ButtonGroup>
     ),
     label: "Actions",
