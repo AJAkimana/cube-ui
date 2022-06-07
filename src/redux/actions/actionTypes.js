@@ -8,6 +8,8 @@ export const USER_DELETE = "USER_DELETE";
 export const UPDATE_PROFILE = "UPDATE_PROFILE";
 export const SEND_LINK = "SEND_LINK";
 export const RESET_PASSWORD = "RESET_PASSWORD";
+export const UPLOAD_PROFILE = "UPLOAD_PROFILE";
+export const REMOVE_PROFILE = "REMOVE_PROFILE";
 
 export const ADD_NEW_PROJECT = "ADD_NEW_PROJECT";
 export const EDIT_PROJECT = "EDIT_PROJECT";

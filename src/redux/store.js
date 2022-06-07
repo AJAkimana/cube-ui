@@ -6,15 +6,13 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "./reducers";
 import { errorHandler } from "./utils";
 
+const userInfo = localStorage.getItem("userInfo");
 const initialState = {
-  login: {
-    userInfo: localStorage.getItem("userInfo")
-      ? JSON.parse(localStorage.getItem("userInfo"))
-      : { user: {} },
-  },
+  login: { userInfo: userInfo ? JSON.parse(userInfo) : { user: {} } },
 };
+
 const configureStore = (preloadedState = initialState) => {
-  const isDev = process.env.NODE_ENV === "development";
+  // const isDev = process.env.NODE_ENV === "development";
   const middlewares = [errorHandler, thunkMiddleware, promise]; // loggerMiddleware
 
   // const middlewareEnhancer = isDev

@@ -18,17 +18,26 @@ export const UserProfile = () => {
   const {
     login: { userInfo },
     profileEdit: { loading, loaded, userInfo: updatedInfo },
+    profileImgAdd: { loaded: profileUpdated, fileName },
   } = useSelector((state) => state);
 
   useEffect(() => {
-    if (loaded) {
+    if (loaded || profileUpdated) {
       notifier.success("Your account has been successfully updated.");
-      localStorage.setItem(USER_INFO, JSON.stringify(updatedInfo));
+      if (updatedInfo) {
+        localStorage.setItem(USER_INFO, JSON.stringify(updatedInfo));
+      }
+      if (profileUpdated) {
+        const currentInfo = { ...userInfo };
+        currentInfo.user.profileImage = fileName;
+        localStorage.setItem(USER_INFO, JSON.stringify(currentInfo));
+      }
       setTimeout(() => {
         window.location.reload();
       }, 3000);
     }
-  }, [loaded, updatedInfo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loaded, profileUpdated, updatedInfo]);
   return (
     <div className={classes.root}>
       <Grid container spacing={4}>

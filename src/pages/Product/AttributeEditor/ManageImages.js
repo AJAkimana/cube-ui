@@ -109,6 +109,7 @@ export const ManageImages = ({
             onSave={onUploadImage}
             dialogTitle={`Upload ${imgType.toUpperCase()} image`}
           />
+
           <List dense>
             {attributes?.imageFiles
               ?.filter((img) => img.imageType === imgType)

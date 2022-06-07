@@ -38,9 +38,11 @@ import {
   GET_PRODUCTS,
   GET_PRODUCT_IMAGES,
   GET_PROJECT_PROD,
+  REMOVE_PROFILE,
   UPDATE_ATTRIBUTES,
   UPDATE_PRODUCT,
   UPLOAD_PRODUCT_IMAGES,
+  UPLOAD_PROFILE,
 } from "redux/actions/actionTypes";
 import { attrImageReducer, qrCodeGeneratorReducer } from "./file.reducer";
 
@@ -82,5 +84,7 @@ export default combineReducers({
   projectProdsGet: promisedReducer(GET_PROJECT_PROD, "projProds", "array"),
   analyticsGet: promisedReducer(GET_ANALYTICS, "analytics", "array"),
   analyticAdd: promisedReducer(ADD_ANALYTIC, "analytic", "object", true),
+  profileImgAdd: promisedReducer(UPLOAD_PROFILE, "fileName", "string"),
+  profileImgRm: promisedReducer(REMOVE_PROFILE, "message", "string"),
   qrGenerate: qrCodeGeneratorReducer,
 });

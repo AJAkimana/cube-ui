@@ -13,11 +13,17 @@ import {
   UPDATE_PRODUCT,
   UPLOAD_ATTR_IMAGE,
   UPLOAD_PRODUCT_IMAGES,
+  UPLOAD_PROFILE,
 } from "./actionTypes";
 import { http } from "utils/http";
 import { BASE_URL } from "utils/constants";
 
 const PRODUCTS_URL = "/products";
+const uploadType = {
+  image3d: UPLOAD_PRODUCT_IMAGES,
+  "attr-img": UPLOAD_ATTR_IMAGE,
+  "profile-img": UPLOAD_PROFILE,
+};
 export const uploadProductImages = (
   files,
   imageType = "image3d",
@@ -27,20 +33,19 @@ export const uploadProductImages = (
   for (const key of Object.keys(files)) {
     formData.append("productFiles", files[key]);
   }
-  const { productId, imgType } = otherAttribs;
+  const { productId, imgType, userId } = otherAttribs;
   const config = {
     headers: { "Content-Type": "multipart/form-data" },
   };
   let uploadUrl = `${PRODUCTS_URL}/upload/${imageType}`;
-  let actionType = UPLOAD_PRODUCT_IMAGES;
   if (productId && imgType) {
     uploadUrl += `?productId=${productId}&imgType=${imgType}`;
   }
-  if (imageType === "attr-image") {
-    actionType = UPLOAD_ATTR_IMAGE;
+  if (userId) {
+    uploadUrl += `?userId=${userId}`;
   }
   store.dispatch({
-    type: actionType,
+    type: uploadType[imageType],
     payload: http.post(uploadUrl, formData, config),
   });
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import { makeStyles } from "@material-ui/styles";
 import {
@@ -11,6 +11,10 @@ import {
   Button,
   LinearProgress,
 } from "@material-ui/core";
+import { DropzoneDialog } from "material-ui-dropzone";
+import { uploadProductImages } from "redux/actions/product";
+import { useSelector } from "react-redux";
+import { PROFILES_PATH } from "utils/constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -34,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
 
 export const AccountProfile = ({ user }) => {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const {
+    profileImgAdd: { loading, loaded },
+  } = useSelector((state) => state);
 
   return (
     <Card className={classes.root}>
@@ -59,16 +67,37 @@ export const AccountProfile = ({ user }) => {
               {Intl.DateTimeFormat().resolvedOptions().timeZone})
             </Typography>
           </div>
-          <Avatar className={classes.avatar} src={user.avatar} />
+          <Avatar
+            className={classes.avatar}
+            src={`${PROFILES_PATH}/${user.profileImage}`}
+          />
         </div>
         <div className={classes.progress}>
           <Typography variant="body1">My profile</Typography>
           <LinearProgress value={100} variant="determinate" />
         </div>
+        <DropzoneDialog
+          acceptedFiles={["image/*"]}
+          cancelButtonText={"cancel"}
+          submitButtonText={loading ? "Uploading,..." : "Submit"}
+          maxFileSize={5000000}
+          clearOnUnmount={loaded}
+          open={open}
+          onClose={() => setOpen(false)}
+          onSave={(files) =>
+            uploadProductImages(files, "profile-img", { userId: user._id })
+          }
+          dialogTitle={`Upload profile image`}
+        />
       </CardContent>
       <Divider />
       <CardActions>
-        <Button className={classes.uploadButton} color="primary" variant="text">
+        <Button
+          className={classes.uploadButton}
+          color="primary"
+          variant="text"
+          onClick={() => setOpen(true)}
+        >
           Upload picture
         </Button>
         <Button variant="text">Remove picture</Button>
