@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import DateFnsUtils from "@date-io/date-fns";
-import { 
-  KeyboardDatePicker, 
-  MuiPickersUtilsProvider } from '@material-ui/pickers';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 import { useSelector } from "react-redux";
 import NumberFormat from "react-number-format";
 import {
@@ -21,7 +22,6 @@ import {
 import moment from "moment";
 import { ComputerOutlined } from "@material-ui/icons";
 import { EditorState } from "draft-js";
-import { stateToHTML } from "draft-js-export-html";
 import { stateFromHTML } from "draft-js-import-html";
 import { addNewProject, updateProject } from "redux/actions/project";
 import { Loading } from "components/loading.component";
@@ -33,6 +33,7 @@ import {
   projectStatuses,
   projectTypes,
 } from "./projectConstants";
+import { toHtml } from "utils/helper";
 
 export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   const classes = useStyles();
@@ -93,16 +94,16 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
   };
 
   const changeStartDate = (value) => {
-    setValues({...values, startDate: value})
-  }
+    setValues({ ...values, startDate: value });
+  };
 
   const changeDueDate = (value) => {
-    setValues({...values, dueDate: value})
-  }
+    setValues({ ...values, dueDate: value });
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    values.description = stateToHTML(editorState.getCurrentContent());
+    values.description = toHtml(editorState);
     if (action !== "add" && currentItem) {
       updateProject(values, currentItem._id);
     } else {
@@ -196,8 +197,8 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
             </Grid>
             <Grid item lg={6} md={6} xl={6} xs={12}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker 
-                  label= "Start Date"
+                <KeyboardDatePicker
+                  label="Start Date"
                   inputVariant="outlined"
                   value={values.startDate}
                   InputAdornmentProps={{ position: "start" }}
@@ -210,10 +211,10 @@ export const ProjectRegistration = ({ action = "add", currentItem = null }) => {
             </Grid>
             <Grid item lg={6} md={6} xl={6} xs={12}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker 
-                  label= "Due Date"
+                <KeyboardDatePicker
+                  label="Due Date"
                   inputVariant="outlined"
-                  value={values.dueDate} 
+                  value={values.dueDate}
                   InputAdornmentProps={{ position: "start" }}
                   format="yyyy-MM-dd"
                   views={["year", "month", "date"]}

@@ -48,6 +48,7 @@ export const ManageImages = ({
       newAttribs.imageFiles?.push({
         imageType: imgType,
         imageFileName: fileName,
+        canBeDeleted: true,
       });
       setAttributes(newAttribs);
       setOpen(false);
@@ -116,17 +117,19 @@ export const ManageImages = ({
               .map((img, imgIdx) => (
                 <ListItem key={imgIdx}>
                   <ListItemText primary={img.imageFileName} />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      onClick={() =>
-                        deleteAttrImg(productId, img.imageFileName)
-                      }
-                      edge="end"
-                      aria-label="delete"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
+                  {img.canBeDeleted && (
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        onClick={() =>
+                          deleteAttrImg(productId, img.imageFileName)
+                        }
+                        edge="end"
+                        aria-label="delete"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  )}
                 </ListItem>
               ))}
           </List>

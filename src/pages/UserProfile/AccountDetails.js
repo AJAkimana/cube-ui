@@ -39,7 +39,7 @@ export const AccountDetails = ({ user, loading = false }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (user.createdAt) {
+    if (user.role) {
       setUserInfo(user);
     }
   }, [user]);

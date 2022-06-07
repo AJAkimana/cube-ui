@@ -39,7 +39,7 @@ export const ProductViewPage = ({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loaded]);
+  }, [loaded, attributes.metalness, attributes.roughness]);
   if (loading) return <Loading />;
   if (!Boolean(product.imagesSrc)) return null;
   return (
@@ -64,7 +64,7 @@ export const ProductViewPage = ({
       shadow-softness={attributes.shadowSoftness}
       alt={attributes.alt}
       ar-scale={attributes.scale}
-      placement={attributes.placement}
+      ar-placement={attributes.placement}
       ar
       ar-modes="webxr scene-viewer quick-look"
       camera-controls

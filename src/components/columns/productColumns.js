@@ -9,6 +9,7 @@ import {
 import {
   EditRounded as EditIcon,
   ViewComfy as ViewComfyIcon,
+  DeleteForever as DeleteIcon,
 } from "@material-ui/icons";
 
 export const productColumns = (onProductClick, user) => [
@@ -63,6 +64,17 @@ export const productColumns = (onProductClick, user) => [
             <EditIcon /> Edit
           </IconButton>
         </Tooltip>
+        {user?.role !== "Client" && (
+          <Tooltip title="Delete">
+            <IconButton
+              aria-label="Delete"
+              color="primary"
+              onClick={() => onProductClick(item, "delete")}
+            >
+              <DeleteIcon /> Delete
+            </IconButton>
+          </Tooltip>
+        )}
       </ButtonGroup>
     ),
     label: "Actions",

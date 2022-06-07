@@ -3,7 +3,6 @@ import moment from "moment";
 import HtmlParser from "react-html-parser";
 import { DraftEditor } from "components/DraftEditor";
 import { EditorState } from "draft-js";
-import { stateToHTML } from "draft-js-export-html";
 import {
   Avatar,
   Button,
@@ -43,7 +42,7 @@ import Loading from "components/loading.component";
 import { INVOICE_ROUTE } from "utils/constants";
 import { projectTypes } from "pages/Project/projectConstants";
 import { useStyles } from "styles/formStyles";
-import { notifUser } from "utils/helper";
+import { notifUser, toHtml } from "utils/helper";
 // import { AddProductDialog } from "./AddProductDialog";
 import { NoDisplayData } from "components/NoDisplayData";
 import { ViewProductDialog } from "./ViewProductDialog";
@@ -105,9 +104,9 @@ export const ProjectDetailPage = ({ match }) => {
   const { button: buttonStyles, ...contentStyles } =
     useBlogTextInfoContentStyles();
   const toDowloadUrl = (projectHistory = {}) => {
-    let url = projectHistory.invoice;
-    if (projectHistory.quote) {
-      url = `${projectHistory.quote}?downloadType=proposal`;
+    let url = `${projectHistory.quote}?downloadType=proposal`;
+    if (projectHistory.invoice) {
+      url = `${projectHistory.invoice}?downloadType=invoice`;
     }
     return url;
   };
@@ -254,9 +253,7 @@ export const ProjectDetailPage = ({ match }) => {
                             color="primary"
                             disabled={adding}
                             onClick={() => {
-                              newLog.description = stateToHTML(
-                                editorState.getCurrentContent()
-                              );
+                              newLog.description = toHtml(editorState);
                               addNewLog(projectId, newLog);
                             }}
                           >

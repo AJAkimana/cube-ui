@@ -33,6 +33,7 @@ import {
   ADD_NEW_PRODUCT,
   ADD_PROJECT_PROD,
   DELETE_ATTR_IMAGE,
+  DELETE_PRODUCT,
   GET_ANALYTICS,
   GET_PRODUCT,
   GET_PRODUCTS,
@@ -87,4 +88,5 @@ export default combineReducers({
   profileImgAdd: promisedReducer(UPLOAD_PROFILE, "fileName", "string"),
   profileImgRm: promisedReducer(REMOVE_PROFILE, "message", "string"),
   qrGenerate: qrCodeGeneratorReducer,
+  productRm: promisedReducer(DELETE_PRODUCT, "message", "string", true),
 });

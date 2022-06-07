@@ -3,6 +3,7 @@ import {
   ADD_ANALYTIC,
   ADD_NEW_PRODUCT,
   DELETE_ATTR_IMAGE,
+  DELETE_PRODUCT,
   GENERATE_QR,
   GET_ANALYTICS,
   GET_PRODUCT,
@@ -73,7 +74,6 @@ export const getProductImages = (productId = "") => {
 };
 export const editProduct = (productBody) => {
   const { _id, __v, ...rest } = productBody;
-  // console.log(productBody);
   store.dispatch({
     type: UPDATE_PRODUCT,
     payload: http.patch(`${PRODUCTS_URL}/${_id}`, rest),
@@ -153,5 +153,11 @@ export const generateQR = (productId) => {
   store.dispatch({
     type: GENERATE_QR,
     payload: `${process.env.REACT_APP_QR_URL}/create-qr-code/?${params}`,
+  });
+};
+export const deleteProduct = (productId) => {
+  store.dispatch({
+    type: DELETE_PRODUCT,
+    payload: http.delete(`${PRODUCTS_URL}/${productId}`),
   });
 };
