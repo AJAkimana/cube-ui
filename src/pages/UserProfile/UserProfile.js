@@ -19,17 +19,18 @@ export const UserProfile = () => {
     login: { userInfo },
     profileEdit: { loading, loaded, userInfo: updatedInfo },
     profileImgAdd: { loaded: profileUpdated, fileName },
+    profileImgRm: { loaded: rmLoaded },
   } = useSelector((state) => state);
 
   useEffect(() => {
-    if (loaded || profileUpdated) {
+    if (loaded || profileUpdated || rmLoaded) {
       notifier.success("Your account has been successfully updated.");
       if (updatedInfo) {
         localStorage.setItem(USER_INFO, JSON.stringify(updatedInfo));
       }
-      if (profileUpdated) {
+      if (profileUpdated || rmLoaded) {
         const currentInfo = { ...userInfo };
-        currentInfo.user.profileImage = fileName;
+        currentInfo.user.profileImage = fileName || "";
         localStorage.setItem(USER_INFO, JSON.stringify(currentInfo));
       }
       setTimeout(() => {
@@ -37,7 +38,7 @@ export const UserProfile = () => {
       }, 3000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loaded, profileUpdated, updatedInfo]);
+  }, [loaded, profileUpdated, rmLoaded, updatedInfo]);
   return (
     <div className={classes.root}>
       <Grid container spacing={4}>

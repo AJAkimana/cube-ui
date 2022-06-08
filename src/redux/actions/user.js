@@ -1,5 +1,6 @@
 import { store } from "../store";
 import {
+  REMOVE_PROFILE,
   RESET_PASSWORD,
   SEND_LINK,
   SET_PASSWORD,
@@ -62,6 +63,12 @@ export const updateProfile = (userInfo) => {
   store.dispatch({
     type: UPDATE_PROFILE,
     payload: http.patch(`/auth/edit-profile`, userInfo),
+  });
+};
+export const removeProfilePic = () => {
+  store.dispatch({
+    type: REMOVE_PROFILE,
+    payload: http.delete(`/auth/delete-profile-pic`),
   });
 };
 export const sendLink = (email = "") => {

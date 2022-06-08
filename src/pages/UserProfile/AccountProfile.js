@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { makeStyles } from "@material-ui/styles";
 import {
@@ -15,6 +15,7 @@ import { DropzoneDialog } from "material-ui-dropzone";
 import { uploadProductImages } from "redux/actions/product";
 import { useSelector } from "react-redux";
 import { PROFILES_PATH } from "utils/constants";
+import { removeProfilePic } from "redux/actions/user";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -41,7 +42,14 @@ export const AccountProfile = ({ user }) => {
   const [open, setOpen] = useState(false);
   const {
     profileImgAdd: { loading, loaded },
+    profileImgRm: { loading: rmLoading },
   } = useSelector((state) => state);
+
+  useEffect(() => {
+    if (loaded) {
+      setOpen(false);
+    }
+  }, [loaded]);
 
   return (
     <Card className={classes.root}>
@@ -100,7 +108,13 @@ export const AccountProfile = ({ user }) => {
         >
           Upload picture
         </Button>
-        <Button variant="text">Remove picture</Button>
+        <Button
+          variant="text"
+          onClick={() => removeProfilePic()}
+          disabled={rmLoading}
+        >
+          {rmLoading ? "Removing,..." : "Remove picture"}
+        </Button>
       </CardActions>
     </Card>
   );
