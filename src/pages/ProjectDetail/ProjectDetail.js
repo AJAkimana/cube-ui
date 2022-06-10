@@ -46,6 +46,7 @@ import { notifUser, toHtml } from "utils/helper";
 // import { AddProductDialog } from "./AddProductDialog";
 import { NoDisplayData } from "components/NoDisplayData";
 import { ViewProductDialog } from "./ViewProductDialog";
+import { useHistory } from "react-router";
 
 const logInitialState = { title: "", description: "" };
 // const productInitialState = { product: "", website: "", projectId: "" };
@@ -60,6 +61,7 @@ export const ProjectDetailPage = ({ match }) => {
   const [openViewProduct, setOpenViewProduct] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const { projectId } = match.params;
+  const routerHistory = useHistory();
 
   const appState = useSelector((state) => state);
   const {
@@ -320,7 +322,7 @@ export const ProjectDetailPage = ({ match }) => {
             )}
           </CardContent>
           <CardActions>
-            <Button onClick={() => {}} color="primary">
+            <Button onClick={() => routerHistory.goBack()} color="primary">
               Close
             </Button>
           </CardActions>
