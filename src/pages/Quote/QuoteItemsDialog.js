@@ -132,166 +132,171 @@ export const QuoteItemsDialog = ({
             </Grid>
           </Grid>
           <Grid item xs={12} sm={12} md={5} lg={5}>
-            <Grid container spacing={1}>
-              <Grid item xs={12} sm={12} md={4} lg={4}>
-                <TextField
-                  name="name"
-                  variant="outlined"
-                  fullWidth
-                  label="Name"
-                  onChange={onHandleChange}
-                  value={item.name}
-                  size="small"
-                  disabled={
-                    user.role === "Client" ||
-                    (quote?.status !== "Draft" && quote?.status !== "Pending")
-                  }
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={3} lg={3}>
-                <TextField
-                  name="price"
-                  variant="outlined"
-                  fullWidth
-                  label="Price"
-                  type="number"
-                  onChange={onHandleChange}
-                  value={item.price}
-                  size="small"
-                  disabled={item.name === ""}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={3} lg={3}>
-                <TextField
-                  name="quantity"
-                  variant="outlined"
-                  fullWidth
-                  label="Quantity"
-                  type="number"
-                  onChange={onHandleChange}
-                  value={item.quantity}
-                  size="small"
-                  disabled={item.price <= 0}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={2} lg={2}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => onAdd()}
-                  disabled={item.quantity <= 0}
-                >
-                  Add
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <TableContainer component={Paper}>
-                  {items.length > 0 ? (
-                    <Table aria-label="item-table" size="small">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell align="center" colSpan={3}>
-                            Item details
-                          </TableCell>
-                          <TableCell align="right">Item price</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Name</TableCell>
-                          <TableCell align="right">Qty.</TableCell>
-                          <TableCell align="right">Price</TableCell>
-                          <TableCell align="right">Total</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {items.map((item, itemIdx) => (
-                          <TableRow key={itemIdx}>
-                            <TableCell>
-                              {item.name}
-                              {user.role !== "Client" && (
-                                <>
-                                  <IconButton
-                                    size="small"
-                                    onClick={() =>
-                                      setItem((prev) => ({ ...prev, ...item }))
-                                    }
-                                  >
-                                    <EditIcon />
-                                  </IconButton>
-                                  <IconButton
-                                    size="small"
-                                    onClick={() => onRemove(item.name)}
-                                  >
-                                    <DeleteIcon />
-                                  </IconButton>
-                                </>
-                              )}
-                            </TableCell>
-                            <TableCell align="right">{item.quantity}</TableCell>
-                            <TableCell align="right">
-                              ${item.price?.toLocaleString("en-US")}
-                            </TableCell>
-                            <TableCell align="right">
-                              ${item.total?.toLocaleString("en-US")}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                        <TableRow>
-                          <TableCell rowSpan={4} />
-                          <TableCell colSpan={2}>Subtotal</TableCell>
-                          <TableCell align="right">
-                            ${aggregate.subtotal?.toLocaleString("en-US")}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Taxes</TableCell>
-                          <TableCell align="right">
-                            {quote?.taxes?.reduce(
-                              (a, b) => a + `${b.amount}%, `,
-                              ""
-                            )}
-                          </TableCell>
-                          <TableCell align="right">
-                            ${aggregate.tax?.toLocaleString("en-US")}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Discount</TableCell>
-                          <TableCell align="right">
-                            {quote?.isFixed
-                              ? `${quote?.discount.toLocaleString("en-US")}`
-                              : `${quote?.discount}%`}
-                          </TableCell>
-                          <TableCell align="right">
-                            ${aggregate.discount?.toLocaleString("en-US")}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell colSpan={2}>Total</TableCell>
-                          <TableCell align="right">
-                            ${aggregate.total?.toLocaleString("en-US")}
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  ) : (
-                    <NoDisplayData message="Not items added yet" />
-                  )}
-                </TableContainer>
-              </Grid>
-              {user.role === "Client" && (
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    name="comment"
-                    label="Add comment"
-                    value={quote?.comment}
-                    disabled={quote?.status !== "Pending"}
-                    onChange={onHandleCommentChange}
-                  />
+            {user.role !== "Client" && (
+              <>
+                <Grid container spacing={1}>
+                  <Grid item xs={12} sm={12} md={4} lg={4}>
+                    <TextField
+                      name="name"
+                      variant="outlined"
+                      fullWidth
+                      label="Name"
+                      onChange={onHandleChange}
+                      value={item.name}
+                      size="small"
+                      disabled={
+                        user.role === "Client" ||
+                        (quote?.status !== "Draft" &&
+                          quote?.status !== "Pending")
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={3} lg={3}>
+                    <TextField
+                      name="price"
+                      variant="outlined"
+                      fullWidth
+                      label="Price"
+                      type="number"
+                      onChange={onHandleChange}
+                      value={item.price}
+                      size="small"
+                      disabled={item.name === ""}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={3} lg={3}>
+                    <TextField
+                      name="quantity"
+                      variant="outlined"
+                      fullWidth
+                      label="Quantity"
+                      type="number"
+                      onChange={onHandleChange}
+                      value={item.quantity}
+                      size="small"
+                      disabled={item.price <= 0}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={2} lg={2}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => onAdd()}
+                      disabled={item.quantity <= 0}
+                    >
+                      Add
+                    </Button>
+                  </Grid>
                 </Grid>
+                <hr />
+              </>
+            )}
+            <TableContainer component={Paper}>
+              {items.length > 0 ? (
+                <Table aria-label="item-table" size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center" colSpan={3}>
+                        Item details
+                      </TableCell>
+                      <TableCell align="right">Item price</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell align="right">Qty.</TableCell>
+                      <TableCell align="right">Price</TableCell>
+                      <TableCell align="right">Total</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {items.map((item, itemIdx) => (
+                      <TableRow key={itemIdx}>
+                        <TableCell>
+                          {item.name}
+                          {user.role !== "Client" && (
+                            <>
+                              <IconButton
+                                size="small"
+                                onClick={() =>
+                                  setItem((prev) => ({ ...prev, ...item }))
+                                }
+                              >
+                                <EditIcon />
+                              </IconButton>
+                              <IconButton
+                                size="small"
+                                onClick={() => onRemove(item.name)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </>
+                          )}
+                        </TableCell>
+                        <TableCell align="right">{item.quantity}</TableCell>
+                        <TableCell align="right">
+                          ${item.price?.toLocaleString("en-US")}
+                        </TableCell>
+                        <TableCell align="right">
+                          ${item.total?.toLocaleString("en-US")}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    <TableRow>
+                      <TableCell rowSpan={4} />
+                      <TableCell colSpan={2}>Subtotal</TableCell>
+                      <TableCell align="right">
+                        ${aggregate.subtotal?.toLocaleString("en-US")}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Taxes</TableCell>
+                      <TableCell align="right">
+                        {quote?.taxes?.reduce(
+                          (a, b) => a + `${b.amount}%, `,
+                          ""
+                        )}
+                      </TableCell>
+                      <TableCell align="right">
+                        ${aggregate.tax?.toLocaleString("en-US")}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Discount</TableCell>
+                      <TableCell align="right">
+                        {quote?.isFixed
+                          ? `${quote?.discount.toLocaleString("en-US")}`
+                          : `${quote?.discount}%`}
+                      </TableCell>
+                      <TableCell align="right">
+                        ${aggregate.discount?.toLocaleString("en-US")}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell colSpan={2}>Total</TableCell>
+                      <TableCell align="right">
+                        ${aggregate.total?.toLocaleString("en-US")}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              ) : (
+                <NoDisplayData message="Not items added yet" />
               )}
-            </Grid>
+            </TableContainer>
+            <hr />
+            {user.role === "Client" && (
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  name="comment"
+                  label="Add comment"
+                  value={quote?.comment}
+                  disabled={quote?.status !== "Pending"}
+                  onChange={onHandleCommentChange}
+                />
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </DialogContent>

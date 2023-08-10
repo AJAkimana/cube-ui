@@ -104,7 +104,7 @@ export const Annotation = ({
         <CardHeader title="Modal annotation" />
         <CardContent>
           <TextField
-            label="Model alt text"
+            label="SEO text"
             style={{ margin: 8 }}
             placeholder="Type here"
             fullWidth
@@ -120,7 +120,7 @@ export const Annotation = ({
             Add new hotspot
           </Button>
           <TextField
-            label="Model alt text"
+            label="Annotation text"
             style={{ margin: 8 }}
             placeholder="Type annotation text"
             fullWidth
